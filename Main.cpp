@@ -16,7 +16,7 @@ int main(int argc, char* args[]) {
 
 	if (window->initialize("hello !!!", SCREEN_WIDTH, SCREEN_HEIGHT, false)) {
 		window->show();
-		SDL_Delay(2000);
+		SDL_Delay(50000);
 		window->finalize();
 	}
 	else {
