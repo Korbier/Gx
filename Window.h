@@ -12,11 +12,13 @@ public:
 	bool initialize(const char* title, int width, int height, bool fullscreen);
 	void finalize();
 
-	void show();
+	void setFullscreen(bool fullscreen);
+	bool isFullscreen();
 
 private:
 	SDL_Window* window = NULL;
-
+	SDL_Renderer* renderer = NULL;
+	bool fullscreen = false;
 };
 
 #endif WINDOWS_H_
