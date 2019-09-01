@@ -1,12 +1,16 @@
 #pragma once
-#include "SDL.h"
+
 
 #define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT 480
+#define FRAMES_PER_SECOND 60
+#define TICKS_PER_FRAME 1000 / FRAMES_PER_SECOND
 
 class GameHandler;
-class Window;
+class Display;
 class Gamestate;
+class Timer;
+class TextureManager;
 
 class Game
 {
@@ -20,12 +24,19 @@ public:
 
 	bool isRunning();
 
+	TextureManager* getTextureManager();
+
 private:
 
 	bool         running  = false;
-	Window*      window   = nullptr;
+	Display*     display  = nullptr;
 	Gamestate*   state    = nullptr; //TODO Mettre en place le gamestate manager
 	GameHandler* gHandler = nullptr;
+
+	TextureManager* textureManager = nullptr;
+
+	int frame = 0;
+	Timer* capTimer = nullptr;
 
 	void render();
 

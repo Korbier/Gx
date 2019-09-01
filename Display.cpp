@@ -1,30 +1,33 @@
-#include "Window.h"
+#include "Display.h"
 
 #define ENABLE_TRACE
 #include "Trace.h"
 
-bool Window::initialize(const char* title, int width, int height, bool fullscreen)
+#include <iostream>
+
+bool Display::initialize(const char* title, int width, int height, bool fullscreen)
 {
 
 	this->fullscreen = fullscreen;
 
 	Uint32 flag = SDL_WINDOW_SHOWN;
-	if ( this->isFullscreen() ) flag |= SDL_WINDOW_FULLSCREEN;
+	if (this->isFullscreen()) flag |= SDL_WINDOW_FULLSCREEN;
 
 	this->window = SDL_CreateWindow(
 		title,
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		width, 
+		width,
 		height,
 		flag
 	);
 
 	if (this->window == nullptr) {
-		ERROR( "could not create window: %s", SDL_GetError() );
+		ERROR("could not create window: %s", SDL_GetError());
 		return false;
 	}
 	else {
 		TRACE("Window created");
+		std::cout << "test";
 	}
 
 	this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
@@ -36,34 +39,34 @@ bool Window::initialize(const char* title, int width, int height, bool fullscree
 		SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
 		TRACE("Renderer created");
 	}
-
+	
 	return true;
 
 }
 
-void Window::finalize()
-{	
-	SDL_DestroyWindow( this->window );
-	SDL_DestroyRenderer( this->renderer );
+void Display::finalize()
+{
+	SDL_DestroyRenderer(this->renderer);
+	SDL_DestroyWindow(this->window);
 }
 
-void Window::setFullscreen(bool fullscreen)
+void Display::setFullscreen(bool fullscreen)
 {
 	this->fullscreen = fullscreen;
-	SDL_SetWindowFullscreen( this->window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0 );
+	SDL_SetWindowFullscreen(this->window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
 }
 
-bool Window::isFullscreen()
+bool Display::isFullscreen()
 {
 	return this->fullscreen;
 }
 
-SDL_Window* Window::getWindow()
+SDL_Window* Display::getWindow()
 {
 	return this->window;
 }
 
-SDL_Renderer* Window::getRenderer()
+SDL_Renderer* Display::getRenderer()
 {
 	return this->renderer;
 }

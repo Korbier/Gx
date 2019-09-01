@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include <stdio.h>
 
-class Window
+class Display
 {
 
 public:

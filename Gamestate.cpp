@@ -1,17 +1,26 @@
 #include "Gamestate.h"
 
-#include "Window.h"
+#include "SDL_image.h"
+
+#include "Display.h"
 #include "GameHandler.h"
 
-void Gamestate::initialize(Window* window, GameHandler* gamehandler)
+#define ENABLE_TRACE
+#include "Trace.h"
+
+#define RESOURCE_TANK "resources/tank_001.png"
+
+void Gamestate::initialize(Display* display, GameHandler* gamehandler)
 {
-	this->window = window;
+	this->display = display;
 	this->gameHandler = gamehandler;
+	this->texture = gamehandler->getTexture(RESOURCE_TANK );
 }
 
 void Gamestate::finalize()
 {
-	
+	//SDL_DestroyTexture( this->texture );
+	SDL_FreeSurface( this->image );
 }
 
 void Gamestate::input()
@@ -28,8 +37,10 @@ void Gamestate::input()
 
 void Gamestate::update()
 {
+
 }
 
 void Gamestate::render()
 {
+	SDL_RenderCopy(this->display->getRenderer(), this->texture, NULL, NULL);
 }

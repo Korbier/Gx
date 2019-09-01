@@ -1,19 +1,27 @@
 #include "Game.h"
 
+#include "SDL.h"
+#include "SDL_image.h"
+
 #define ENABLE_TRACE
 #include "Trace.h"
 
 #include "GameHandler.h"
-#include "Window.h"
+#include "Display.h"
 #include "Gamestate.h"
+#include "Timer.h"
+#include "TextureManager.h"
 
 void Game::initialize()
 {
 	this->running = false;
 
 	this->gHandler = new GameHandler();
-	this->window = new Window();
+	this->display = new Display();
 	this->state = new Gamestate();
+	this->textureManager = new TextureManager();
+
+	this->capTimer = new Timer();
 
 	TRACE("Game start");
 
@@ -22,13 +30,16 @@ void Game::initialize()
 void Game::finalize()
 {
 	
+	this->textureManager->finalize();
 	this->state->finalize();
-	this->window->finalize();
+	this->display->finalize();
 
+	IMG_Quit();
 	SDL_Quit();
 
 	delete this->state;
-	delete this->window;
+	delete this->display;
+	delete this->capTimer;
 
 	TRACE("Game end");
 
@@ -36,16 +47,27 @@ void Game::finalize()
 
 void Game::run()
 {
+
+	SDL_Init(SDL_INIT_VIDEO);
+	IMG_Init(IMG_INIT_PNG);
+
 	this->gHandler->initialize(this);
 
-	if (this->window->initialize("MyGame", SCREEN_WIDTH, SCREEN_HEIGHT, false)) {
-		TRACE("Window initialized");		
+	TRACE("Initializing display");
+
+	if (!this->display->initialize("MyGame", SCREEN_WIDTH, SCREEN_HEIGHT, false)) {
+		ERROR("An error occured during display init");
 	}
 	else {
-		ERROR("An error occured during window init");
+		TRACE("Display initialized");
 	}
 
-	this->state->initialize(this->window, this->gHandler);
+	TRACE("Initializing texture manager");
+	this->textureManager->initialize(this->display);
+	TRACE("Texture manager initialized");
+
+	TRACE("Initializing gamestate");
+	this->state->initialize(this->display, this->gHandler);
 	TRACE("Gamestate initialized");
 
 	TRACE("Executing game loop");
@@ -53,9 +75,20 @@ void Game::run()
 
 	//game loop
 	while (this->isRunning()) {
+
+		this->capTimer->start();
+
 		this->state->input();
+
 		this->state->update();
 		this->render();
+
+		int frameTicks = this->capTimer->getTicks();
+		if (frameTicks < TICKS_PER_FRAME )
+		{
+			SDL_Delay(TICKS_PER_FRAME - frameTicks);
+		}
+
 	}
 	
 	this->finalize();
@@ -73,9 +106,14 @@ bool Game::isRunning()
 	return this->running;
 }
 
+TextureManager* Game::getTextureManager()
+{
+	return this->textureManager;
+}
+
 void Game::render()
 {
-	SDL_RenderClear(this->window->getRenderer());
+	SDL_RenderClear(this->display->getRenderer());
 	this->state->render();
-	SDL_RenderPresent(this->window->getRenderer());
+	SDL_RenderPresent(this->display->getRenderer());
 }

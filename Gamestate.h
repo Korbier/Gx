@@ -2,14 +2,14 @@
 
 #include <SDL.h>
 
-class Window;
+class Display;
 class GameHandler;
 
 class Gamestate
 {
 public:
 	
-	void initialize(Window* window, GameHandler* gamehandler);
+	void initialize(Display* display, GameHandler* gamehandler);
 	void finalize();
 
 	void input();
@@ -17,8 +17,11 @@ public:
 	void render();
 
 private:
-	Window*      window      = nullptr;
+	Display* display = nullptr;
 	GameHandler* gameHandler = nullptr;
+
+	SDL_Surface* image = nullptr;
+	SDL_Texture* texture = nullptr;
 
 };
 
