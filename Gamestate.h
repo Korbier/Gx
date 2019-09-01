@@ -1,11 +1,15 @@
 #pragma once
-#include "Window.h"
+
+#include <SDL.h>
+
+class Window;
+class GameHandler;
 
 class Gamestate
 {
 public:
 	
-	void initialize(Window* window);
+	void initialize(Window* window, GameHandler* gamehandler);
 	void finalize();
 
 	void input();
@@ -13,6 +17,8 @@ public:
 	void render();
 
 private:
-	Window* window = NULL;
+	Window*      window      = nullptr;
+	GameHandler* gameHandler = nullptr;
+
 };
 

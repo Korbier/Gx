@@ -15,10 +15,13 @@ public:
 	void setFullscreen(bool fullscreen);
 	bool isFullscreen();
 
+	SDL_Window* getWindow();
+	SDL_Renderer* getRenderer();
+
 private:
-	SDL_Window* window = NULL;
-	SDL_Renderer* renderer = NULL;
-	bool fullscreen = false;
+	SDL_Window*   window     = nullptr;
+	SDL_Renderer* renderer   = nullptr;
+	bool          fullscreen = false;
 };
 
 #endif WINDOWS_H_

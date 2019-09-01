@@ -1,10 +1,12 @@
 #pragma once
 #include "SDL.h"
-#include "Window.h"
-#include "Gamestate.h"
 
-#define SCREEN_WIDTH 640
+#define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT 480
+
+class GameHandler;
+class Window;
+class Gamestate;
 
 class Game
 {
@@ -20,9 +22,12 @@ public:
 
 private:
 
-	bool       running = false;
-	Window*    window  = NULL;
-	Gamestate* state   = NULL; //TODO Mettre en place le gamestate manager
+	bool         running  = false;
+	Window*      window   = nullptr;
+	Gamestate*   state    = nullptr; //TODO Mettre en place le gamestate manager
+	GameHandler* gHandler = nullptr;
+
+	void render();
 
 };
 
