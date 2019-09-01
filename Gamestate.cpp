@@ -12,15 +12,15 @@
 
 void Gamestate::initialize(Display* display, GameHandler* gamehandler)
 {
-	this->display = display;
+	this->display     = display;
 	this->gameHandler = gamehandler;
-	this->texture = gamehandler->getTexture(RESOURCE_TANK );
+	this->texture     = gamehandler->getTexture( RESOURCE_TANK );
+	this->texture2    = gamehandler->getTexture(RESOURCE_TANK);
+	this->dst = new SDL_Rect();
 }
 
 void Gamestate::finalize()
 {
-	//SDL_DestroyTexture( this->texture );
-	SDL_FreeSurface( this->image );
 }
 
 void Gamestate::input()
@@ -37,10 +37,14 @@ void Gamestate::input()
 
 void Gamestate::update()
 {
-
+	this->dst->w = 32;
+	this->dst->h = 32;
+	this->dst->x = 100;
+	this->dst->y = 100;
 }
 
 void Gamestate::render()
 {
-	SDL_RenderCopy(this->display->getRenderer(), this->texture, NULL, NULL);
+	SDL_RenderCopy(this->display->getRenderer(), this->texture2, NULL, NULL);
+	SDL_RenderCopy(this->display->getRenderer(), this->texture, NULL, this->dst);
 }

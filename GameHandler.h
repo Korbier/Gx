@@ -16,6 +16,7 @@ public:
 	SDL_Texture* getTexture(std::string path);
 
 private:
-	Game* game = nullptr;
+	Game*     game = nullptr;
+
 };
 
