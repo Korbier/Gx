@@ -3,8 +3,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
-#define ENABLE_TRACE
-#include "Trace.h"
+#include "boost/log/trivial.hpp"
 
 #include "GameHandler.h"
 #include "Display.h"
@@ -12,8 +11,12 @@
 #include "Timer.h"
 #include "TextureManager.h"
 
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+
 void Game::initialize()
 {
+
 	this->running = false;
 
 	this->gHandler = new GameHandler();
@@ -23,7 +26,7 @@ void Game::initialize()
 
 	this->capTimer = new Timer();
 
-	TRACE("Game start");
+	BOOST_LOG_TRIVIAL(info) << "Game start";
 
 }
 
@@ -41,7 +44,7 @@ void Game::finalize()
 	delete this->display;
 	delete this->capTimer;
 
-	TRACE("Game end");
+	BOOST_LOG_TRIVIAL(info) << "Game end";
 
 }
 
@@ -51,26 +54,26 @@ void Game::run()
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
 
-	this->gHandler->initialize(this);
+	this->gHandler->initialize(this->display, this);
 
-	TRACE("Initializing display");
+	BOOST_LOG_TRIVIAL(info) << "Initializing display";
 
 	if (!this->display->initialize("MyGame", SCREEN_WIDTH, SCREEN_HEIGHT, false)) {
-		ERROR("An error occured during display init");
+		BOOST_LOG_TRIVIAL(info) << "An error occured during display init";
 	}
 	else {
-		TRACE("Display initialized");
+		BOOST_LOG_TRIVIAL(info) << "Display initialized";
 	}
 
-	TRACE("Initializing texture manager");
+	BOOST_LOG_TRIVIAL(info) << "Initializing texture manager\n";
 	this->textureManager->initialize(this->display);
-	TRACE("Texture manager initialized");
+	BOOST_LOG_TRIVIAL(info) << "Texture manager initialized";
 
-	TRACE("Initializing gamestate");
+	BOOST_LOG_TRIVIAL(info) << "Initializing gamestate";
 	this->state->initialize(this->display, this->gHandler);
-	TRACE("Gamestate initialized");
+	BOOST_LOG_TRIVIAL(info) << "Gamestate initialized";
 
-	TRACE("Executing game loop");
+	BOOST_LOG_TRIVIAL(info) << "Executing game loop";
 	this->running = true;
 
 	//game loop
@@ -78,7 +81,7 @@ void Game::run()
 
 		this->capTimer->start();
 
-		this->state->input();
+		this->input();
 
 		this->state->update();
 		this->render();
@@ -97,7 +100,7 @@ void Game::run()
 
 void Game::stop() 
 {
-	TRACE("Game interruption requested");
+	BOOST_LOG_TRIVIAL(info) << "Game interruption requested";
 	this->running = false;
 }
 
@@ -109,6 +112,21 @@ bool Game::isRunning()
 TextureManager* Game::getTextureManager()
 {
 	return this->textureManager;
+}
+
+void Game::input()
+{
+	
+	SDL_Event event;
+	SDL_PollEvent(&event);
+
+	switch (event.type) {
+	case SDL_QUIT:
+		this->stop();
+	}
+
+	this->state->input( &event );
+
 }
 
 void Game::render()

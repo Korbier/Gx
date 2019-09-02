@@ -1,12 +1,10 @@
 #include "Gamestate.h"
 
+#include "boost/log/trivial.hpp"
 #include "SDL_image.h"
 
 #include "Display.h"
 #include "GameHandler.h"
-
-#define ENABLE_TRACE
-#include "Trace.h"
 
 #define RESOURCE_TANK "resources/tank_001.png"
 
@@ -23,16 +21,9 @@ void Gamestate::finalize()
 {
 }
 
-void Gamestate::input()
+void Gamestate::input(SDL_Event* event)
 {
-	SDL_Event event;
-	SDL_PollEvent(&event);
-
-	switch (event.type) {
-	case SDL_QUIT:
-		this->gameHandler->stop();
-	}
-
+	
 }
 
 void Gamestate::update()
@@ -45,6 +36,6 @@ void Gamestate::update()
 
 void Gamestate::render()
 {
-	SDL_RenderCopy(this->display->getRenderer(), this->texture2, NULL, NULL);
-	SDL_RenderCopy(this->display->getRenderer(), this->texture, NULL, this->dst);
+	this->gameHandler->render( this->texture2, nullptr, nullptr);
+	this->gameHandler->render( this->texture, nullptr, this->dst);
 }

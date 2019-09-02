@@ -38,6 +38,7 @@ private:
 	int frame = 0;
 	Timer* capTimer = nullptr;
 
+	void input();
 	void render();
 
 };

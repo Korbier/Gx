@@ -1,9 +1,7 @@
 #include "Display.h"
 
-#define ENABLE_TRACE
-#include "Trace.h"
-
 #include <iostream>
+#include "boost/log/trivial.hpp"
 
 bool Display::initialize(const char* title, int width, int height, bool fullscreen)
 {
@@ -22,22 +20,21 @@ bool Display::initialize(const char* title, int width, int height, bool fullscre
 	);
 
 	if (this->window == nullptr) {
-		ERROR("could not create window: %s", SDL_GetError());
+		BOOST_LOG_TRIVIAL(error) << "could not create window: " << SDL_GetError();
 		return false;
 	}
 	else {
-		TRACE("Window created");
-		std::cout << "test";
+		BOOST_LOG_TRIVIAL(info) << "Window created";
 	}
 
 	this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
 	if (this->renderer == nullptr) {
-		ERROR("could not create renderer: %s", SDL_GetError());
+		BOOST_LOG_TRIVIAL(error) << "could not create renderer: " << SDL_GetError();
 		return false;
 	}
 	else {
 		SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
-		TRACE("Renderer created");
+		BOOST_LOG_TRIVIAL(info) << "Renderer created";
 	}
 	
 	return true;

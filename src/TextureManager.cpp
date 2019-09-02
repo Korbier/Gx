@@ -1,10 +1,9 @@
 #include "TextureManager.h"
 
 #include "SDL_image.h"
-#include "Display.h"
+#include "boost/log/trivial.hpp"
 
-#define ENABLE_TRACE
-#include "Trace.h"
+#include "Display.h"
 
 void TextureManager::initialize( Display* display )
 {
@@ -15,7 +14,7 @@ void TextureManager::finalize()
 {
 	for (std::map<std::string, SDL_Texture*>::iterator ii = this->textures.begin(); ii != this->textures.end(); ++ii)
 	{
-		TRACE("Destroying texture \"%s\"", &*ii->first.begin());
+		BOOST_LOG_TRIVIAL(info) << "Destroying texture \"" << ii->first << "\"";
 		SDL_DestroyTexture(ii->second);
 	}
 }
@@ -28,12 +27,12 @@ SDL_Texture* TextureManager::get( std::string path )
 	auto textureIt = this->textures.find(path);
 
 	if (textureIt == this->textures.end()) {
-		TRACE("Loading texture \"%s\" from disk", &*path.begin());
+		BOOST_LOG_TRIVIAL(info) << "Loading texture \"" << path << "\" from disk";
 		texture = this->load(path);
 		this->textures[path] = texture;
 	}
 	else {
-		TRACE("Loading texture \"%s\" from memory", &*path.begin());
+		BOOST_LOG_TRIVIAL(info) << "Loading texture \"" << path << "\" from memory";
 		texture = textureIt->second;
 	}
 
@@ -50,7 +49,7 @@ SDL_Texture* TextureManager::load( std::string path )
 	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
 	if (loadedSurface == nullptr )
 	{
-		printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
+		BOOST_LOG_TRIVIAL(error) << "Unable to load image " << path.c_str() << "SDL_image Error: " << IMG_GetError();
 	}
 	else
 	{
@@ -58,7 +57,7 @@ SDL_Texture* TextureManager::load( std::string path )
 		newTexture = SDL_CreateTextureFromSurface(this->display->getRenderer(), loadedSurface);
 		if (newTexture == nullptr)
 		{
-			printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
+			BOOST_LOG_TRIVIAL(error) << "Unable to create texture from " << path.c_str() << "SDL_image Error: " << SDL_GetError();
 		}
 
 		//Get rid of old loaded surface

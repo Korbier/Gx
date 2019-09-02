@@ -19,29 +19,31 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameHandler.cpp" />
-    <ClCompile Include="Gamestate.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Display.cpp" />
-    <ClCompile Include="TextureManager.cpp" />
-    <ClCompile Include="Timer.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameHandler.h" />
-    <ClInclude Include="Gamestate.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="TextureManager.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Trace.h" />
-    <ClInclude Include="Display.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="TankGame.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\tank_001.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Display.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GameHandler.cpp" />
+    <ClCompile Include="src\Gamestate.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\TextureManager.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Display.h" />
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\GameHandler.h" />
+    <ClInclude Include="src\Gamestate.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="src\TextureManager.h" />
+    <ClInclude Include="src\Timer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -94,7 +96,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\$(Configuration)\obj\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -155,5 +160,20 @@
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\boost.1.70.0.0\build\boost.targets" Condition="Exists('packages\boost.1.70.0.0\build\boost.targets')" />
+    <Import Project="packages\boost_log-vc142.1.70.0.0\build\boost_log-vc142.targets" Condition="Exists('packages\boost_log-vc142.1.70.0.0\build\boost_log-vc142.targets')" />
+    <Import Project="packages\boost_filesystem-vc142.1.70.0.0\build\boost_filesystem-vc142.targets" Condition="Exists('packages\boost_filesystem-vc142.1.70.0.0\build\boost_filesystem-vc142.targets')" />
+    <Import Project="packages\boost_date_time-vc142.1.70.0.0\build\boost_date_time-vc142.targets" Condition="Exists('packages\boost_date_time-vc142.1.70.0.0\build\boost_date_time-vc142.targets')" />
+    <Import Project="packages\boost_thread-vc142.1.70.0.0\build\boost_thread-vc142.targets" Condition="Exists('packages\boost_thread-vc142.1.70.0.0\build\boost_thread-vc142.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Ce projet fait référence à des packages NuGet qui sont manquants sur cet ordinateur. Utilisez l'option de restauration des packages NuGet pour les télécharger. Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkID=322105. Le fichier manquant est : {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\boost.1.70.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost.1.70.0.0\build\boost.targets'))" />
+    <Error Condition="!Exists('packages\boost_log-vc142.1.70.0.0\build\boost_log-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost_log-vc142.1.70.0.0\build\boost_log-vc142.targets'))" />
+    <Error Condition="!Exists('packages\boost_filesystem-vc142.1.70.0.0\build\boost_filesystem-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost_filesystem-vc142.1.70.0.0\build\boost_filesystem-vc142.targets'))" />
+    <Error Condition="!Exists('packages\boost_date_time-vc142.1.70.0.0\build\boost_date_time-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost_date_time-vc142.1.70.0.0\build\boost_date_time-vc142.targets'))" />
+    <Error Condition="!Exists('packages\boost_thread-vc142.1.70.0.0\build\boost_thread-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost_thread-vc142.1.70.0.0\build\boost_thread-vc142.targets'))" />
+  </Target>
 </Project>

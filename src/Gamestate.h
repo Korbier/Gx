@@ -12,7 +12,7 @@ public:
 	void initialize(Display* display, GameHandler* gamehandler);
 	void finalize();
 
-	void input();
+	void input(SDL_Event* event);
 	void update();
 	void render();
 
