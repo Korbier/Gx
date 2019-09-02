@@ -6,6 +6,7 @@
 class Display;
 class Game;
 class TextureManager;
+class Sprite;
 
 class GameHandler
 {
@@ -16,7 +17,7 @@ public:
 	void         stop();
 	SDL_Texture* getTexture(std::string path);
 
-	void render(SDL_Texture* texture, const SDL_Rect* src, const SDL_Rect* dst);
+	void render(Sprite* sprite);
 
 private:
 	Display* display = nullptr;

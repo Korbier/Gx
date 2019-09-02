@@ -118,14 +118,17 @@ void Game::input()
 {
 	
 	SDL_Event event;
-	SDL_PollEvent(&event);
+	
+	while (SDL_PollEvent(&event)) {
 
-	switch (event.type) {
-	case SDL_QUIT:
-		this->stop();
+		switch (event.type) {
+		case SDL_QUIT:
+			this->stop();
+		}
+
+		this->state->input(&event);
+
 	}
-
-	this->state->input( &event );
 
 }
 

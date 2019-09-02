@@ -23,6 +23,15 @@
     <Image Include="resources\tank_001.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
+    <Image Include="resources\tank_move_001.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="..\_ressources\images\tank\tank_001.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="resources\tank_move_002.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -49,6 +58,12 @@
     <ClCompile Include="src\Timer.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sprite.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimatedSprite.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Display.h">
@@ -70,6 +85,12 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sprite.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimatedSprite.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
