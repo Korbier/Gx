@@ -14,10 +14,15 @@ public:
 
 	void initialize(Display* display, Game* game);
 
-	void         stop();
-	SDL_Texture* getTexture(std::string path);
+	/* Game configuration */
+	int getFramerate();
 
-	void render(Sprite* sprite);
+	/*Game control*/
+	void stop();
+	void render(Sprite* sprite, SDL_Rect* target);
+
+	/*Resource loader*/
+	SDL_Texture* getTexture(std::string path);
 
 private:
 	Display* display = nullptr;

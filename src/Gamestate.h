@@ -1,10 +1,14 @@
 #pragma once
 
 #include <SDL.h>
+#include <string>
 
 class Display;
 class GameHandler;
 class AnimatedSprite;
+
+const Uint32 TANK_SPEED = 0;
+const std::string TANK_SPRITESHEET = "resources/tank_move_002.png";
 
 class Gamestate
 {

@@ -11,6 +11,11 @@ void GameHandler::initialize(Display* display, Game* game)
 	this->game    = game;
 }
 
+int GameHandler::getFramerate()
+{
+	return this->game->getFramerate();
+}
+
 void GameHandler::stop()
 {
 	this->game->stop();
@@ -21,7 +26,7 @@ SDL_Texture* GameHandler::getTexture(std::string path)
 	return this->game->getTextureManager()->get(path);
 }
 
-void GameHandler::render(Sprite* sprite)
+void GameHandler::render(Sprite* sprite, SDL_Rect* target)
 {
-	SDL_RenderCopyEx(this->display->getRenderer(), sprite->getTexture(), sprite->getCrop(), sprite->getDstRect(), 90, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopy(this->display->getRenderer(), sprite->getTexture(), sprite->getCrop(), target);
 }

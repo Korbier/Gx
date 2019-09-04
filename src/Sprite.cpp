@@ -1,24 +1,15 @@
 #include "Sprite.h"
 
-Sprite::Sprite(SDL_Texture* texture, SDL_Rect* crop, int x, int y, int size)
-{
-	
-	this->texture = texture;
+Sprite::Sprite(SDL_Texture* texture, SDL_Rect* crop, int x, int y)
+{	
+	this->texture     = texture;
 	this->textureCrop = crop;
 	this->x = x;
-	this->y = y;
-
-	this->dstRect = new SDL_Rect();
-	this->dstRect->h = size;
-	this->dstRect->w = size;
-
-	this->update();
-
+	this->y = y;	
 }
 
 Sprite::~Sprite()
 {
-	delete this->dstRect;
 }
 
 int Sprite::getX()
@@ -56,13 +47,3 @@ SDL_Rect* Sprite::getCrop()
 	return this->textureCrop;
 }
 
-SDL_Rect* Sprite::getDstRect()
-{
-	return this->dstRect;
-}
-
-void Sprite::update()
-{
-	this->dstRect->x = this->getX();
-	this->dstRect->y = this->getY();
-}
