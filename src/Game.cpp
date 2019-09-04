@@ -43,6 +43,7 @@ void Game::finalize()
 	delete this->state;
 	delete this->display;
 	delete this->capTimer;
+	delete this->gHandler;
 
 	BOOST_LOG_TRIVIAL(info) << "Game end";
 
@@ -61,19 +62,14 @@ void Game::run()
 	if (!this->display->initialize("MyGame", SCREEN_WIDTH, SCREEN_HEIGHT, false)) {
 		BOOST_LOG_TRIVIAL(info) << "An error occured during display init";
 	}
-	else {
-		BOOST_LOG_TRIVIAL(info) << "Display initialized";
-	}
 
 	BOOST_LOG_TRIVIAL(info) << "Initializing texture manager\n";
 	this->textureManager->initialize(this->display);
-	BOOST_LOG_TRIVIAL(info) << "Texture manager initialized";
 
 	BOOST_LOG_TRIVIAL(info) << "Initializing gamestate";
 	this->state->initialize(this->display, this->gHandler);
-	BOOST_LOG_TRIVIAL(info) << "Gamestate initialized";
 
-	BOOST_LOG_TRIVIAL(info) << "Executing game loop";
+	BOOST_LOG_TRIVIAL(info) << "Entering game loop";
 	this->running = true;
 
 	//game loop
