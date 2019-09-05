@@ -2,7 +2,7 @@
 
 #include "boost/log/trivial.hpp"
 
-AnimatedSprite::AnimatedSprite(SDL_Texture* texture,int x, int y, Uint32 delay):Sprite(texture, nullptr, x, y)
+AnimatedSprite::AnimatedSprite(SDL_Texture* texture, float delay):Sprite(texture, nullptr)
 {
 	this->delay = delay;
 	this->timer = new Timer();
@@ -23,12 +23,12 @@ void AnimatedSprite::addFrame(int x, int y, int w, int h)
 	}
 }
 
-void AnimatedSprite::setDelay(Uint32 delay)
+void AnimatedSprite::setDelay(float delay)
 {
 	this->delay = delay;
 }
 
-Uint32 AnimatedSprite::getDelay()
+float AnimatedSprite::getDelay()
 {
 	return this->delay;
 }

@@ -5,28 +5,29 @@
 
 class Display;
 class GameHandler;
-class AnimatedSprite;
+class Entity;
+class InputBuffer;
 
-const Uint32 TANK_SPEED = 0;
+const float TANK_SPEED = 0;
 const std::string TANK_SPRITESHEET = "resources/tank_move_002.png";
 
 class Gamestate
 {
 public:
 	
-	void initialize(Display* display, GameHandler* gamehandler);
-	void finalize();
+	Gamestate(Display* display, GameHandler* gamehandler);
+	~Gamestate();
 
-	void input(SDL_Event* event);
-	void update();
+	void initialize();
+
+	void update(InputBuffer* input, Uint32 delta);
 	void render();
 
 private:
 	Display*     display     = nullptr;
 	GameHandler* gameHandler = nullptr;
 
-	AnimatedSprite* tank = nullptr;
+	Entity* tank = nullptr;
 	SDL_Rect* crop = nullptr;
 
 };
-

@@ -12,10 +12,7 @@ class GameHandler
 {
 public:
 
-	void initialize(Display* display, Game* game);
-
-	/* Game configuration */
-	int getFramerate();
+	GameHandler(Display* display, Game* game);
 
 	/*Game control*/
 	void stop();

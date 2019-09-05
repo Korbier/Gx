@@ -10,33 +10,25 @@
 #include "Gamestate.h"
 #include "Timer.h"
 #include "TextureManager.h"
+#include "InputBuffer.h"
 
-void Game::initialize()
+Game::Game()
 {
-
-	this->running = false;
-
-	this->gHandler = new GameHandler();
-	this->display = new Display();
-	this->state = new Gamestate();
-	this->textureManager = new TextureManager();
-	
-	BOOST_LOG_TRIVIAL(info) << "Game start";
-
+	this->running        = false;
+	this->display        = new Display("MyGame", SCREEN_WIDTH, SCREEN_HEIGHT, false);
+	this->textureManager = new TextureManager(this->display);
+	this->gHandler       = new GameHandler(this->display, this);
+	this->state          = new Gamestate(this->display, this->gHandler);
+	this->inputBuffer = new InputBuffer();
 }
 
-void Game::finalize()
+Game::~Game()
 {
 	
-	this->textureManager->finalize();
-	this->state->finalize();
-	this->display->finalize();
-
-	IMG_Quit();
-	SDL_Quit();
-
-	delete this->state;
+	delete this->inputBuffer;
+	delete this->textureManager;
 	delete this->display;
+	delete this->state;
 	delete this->gHandler;
 
 	BOOST_LOG_TRIVIAL(info) << "Game end";
@@ -46,41 +38,36 @@ void Game::finalize()
 void Game::run()
 {
 
+	BOOST_LOG_TRIVIAL(info) << "Game start";
+
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
 
-	this->gHandler->initialize(this->display, this);
-
-	BOOST_LOG_TRIVIAL(info) << "Initializing display";
-
-	if (!this->display->initialize("MyGame", SCREEN_WIDTH, SCREEN_HEIGHT, false)) {
-		BOOST_LOG_TRIVIAL(info) << "An error occured during display init";
-	}
-
-	BOOST_LOG_TRIVIAL(info) << "Initializing texture manager\n";
-	this->textureManager->initialize(this->display);
-
-	BOOST_LOG_TRIVIAL(info) << "Initializing gamestate";
-	this->state->initialize(this->display, this->gHandler);
-
+	this->display->show();
+	this->state->initialize();
+	
 	BOOST_LOG_TRIVIAL(info) << "Entering game loop";
-	this->next_time = SDL_GetTicks() + TICKS_PER_FRAME;
-	this->running   = true;
+	Uint32 lastMeasure = SDL_GetTicks();
+	this->running     = true;
 
 	//game loop
 	while (this->isRunning()) {
 		
 		this->input();
 
-		this->state->update();
+		Uint32 currentMeasure = SDL_GetTicks();
+
+		this->state->update( this->inputBuffer, currentMeasure - lastMeasure );
 		this->render();
 
-		SDL_Delay(this->time_left());
-		next_time += TICKS_PER_FRAME;
+		lastMeasure = currentMeasure;
+		
+		SDL_Delay(1);
 
 	}
-	
-	this->finalize();
+
+	IMG_Quit();
+	SDL_Quit();
 
 }
 
@@ -93,11 +80,6 @@ void Game::stop()
 bool Game::isRunning()
 {
 	return this->running;
-}
-
-int Game::getFramerate()
-{
-	return FRAMES_PER_SECOND;
 }
 
 TextureManager* Game::getTextureManager()
@@ -113,11 +95,10 @@ void Game::input()
 	while (SDL_PollEvent(&event)) {
 
 		switch (event.type) {
-		case SDL_QUIT:
-			this->stop();
+		case SDL_KEYDOWN: this->inputBuffer->press(event.key.keysym.scancode); break;
+		case SDL_KEYUP:   this->inputBuffer->release(event.key.keysym.scancode); break;
+		case SDL_QUIT:    this->stop(); break;
 		}
-
-		this->state->input(&event);
 
 	}
 
@@ -128,15 +109,4 @@ void Game::render()
 	SDL_RenderClear(this->display->getRenderer());
 	this->state->render();
 	SDL_RenderPresent(this->display->getRenderer());
-}
-
-Uint32 Game::time_left()
-{
-	Uint32 now;
-
-	now = SDL_GetTicks();
-	if (this->next_time <= now)
-		return 0;
-	else
-		return next_time - now;
 }

@@ -6,7 +6,6 @@
 int main(int argc, char* args[]) {
 
 	Game* game = new Game();
-	game->initialize();
 	game->run();
 
 	delete game;

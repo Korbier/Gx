@@ -6,56 +6,55 @@
 #include "Display.h"
 #include "GameHandler.h"
 #include "AnimatedSprite.h"
+#include "Entity.h"
+#include "InputBuffer.h"
 
-void Gamestate::initialize(Display* display, GameHandler* gamehandler)
+
+Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 {
 	this->display     = display;
 	this->gameHandler = gamehandler;
-	this->tank        = new AnimatedSprite(gamehandler->getTexture( TANK_SPRITESHEET ), 100, 100, 50);
-	this->tank->addFrame(0,  0, 32, 32);
-	this->tank->addFrame(32, 0, 32, 32);
-	this->tank->addFrame(64, 0, 32, 32);
-	this->tank->addFrame(96, 0, 32, 32);
+
 }
 
-void Gamestate::finalize()
+Gamestate::~Gamestate()
 {
 	delete this->tank;
 }
 
-void Gamestate::input(SDL_Event* event)
-{
-
-	if (event->type == SDL_KEYUP && event->key.keysym.sym == SDLK_LEFT) {
-		this->tank->setDelay(this->tank->getDelay() - 10);
-		BOOST_LOG_TRIVIAL(info) << "New delay : " << tank->getDelay();
-	}
-
-	if (event->type == SDL_KEYUP && event->key.keysym.sym == SDLK_RIGHT) {
-		this->tank->setDelay(this->tank->getDelay() + 10);
-		BOOST_LOG_TRIVIAL(info) << "New delay : " << tank->getDelay();
-	}
-
+void Gamestate::initialize() {
+	this->tank = new Entity(new AnimatedSprite(this->gameHandler->getTexture(TANK_SPRITESHEET), 50), 0, 0);
+	this->tank->setXVelocity( 300 );
+	this->tank->setYVelocity(300);
+	this->tank->getSprite()->addFrame(0, 0, 32, 32);
+	this->tank->getSprite()->addFrame(32, 0, 32, 32);
+	this->tank->getSprite()->addFrame(64, 0, 32, 32);
+	this->tank->getSprite()->addFrame(96, 0, 32, 32);
 }
 
-void Gamestate::update()
+void Gamestate::update(InputBuffer* input, Uint32 delta )
 {
-	this->tank->setX( this->tank->getX() + (TANK_SPEED / this->gameHandler->getFramerate() ) );
 	
-	if (this->tank->getX() > 640) {
-		this->tank->setX(0);
-	}
+	float xVal = 0;
+	float yVal = 0;
 
-	this->tank->animate();
+	if (input->isPressed(SDL_SCANCODE_RIGHT)) xVal = this->tank->getXVelocity() * (delta / 1000.f);
+	if (input->isPressed(SDL_SCANCODE_LEFT))  xVal = -1 * this->tank->getXVelocity() * (delta / 1000.f);
+	if (input->isPressed(SDL_SCANCODE_UP))    yVal = -1 * this->tank->getYVelocity() * (delta / 1000.f);
+	if (input->isPressed(SDL_SCANCODE_DOWN))  yVal = this->tank->getYVelocity() * (delta / 1000.f);
+
+	this->tank->move(xVal, yVal);
+
+	this->tank->getSprite()->animate();
 
 }
 
 void Gamestate::render()
 {
 	SDL_Rect* dst = new SDL_Rect();
-	dst->x = this->tank->getX();
-	dst->y = this->tank->getY();
+	dst->x = (int) this->tank->getX();
+	dst->y = (int) this->tank->getY();
 	dst->w = dst->h = 64;
-	this->gameHandler->render( this->tank, dst );
+	this->gameHandler->render(this->tank->getSprite(), dst );
 	delete dst;
 }

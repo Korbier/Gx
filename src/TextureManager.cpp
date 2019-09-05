@@ -5,12 +5,12 @@
 
 #include "Display.h"
 
-void TextureManager::initialize( Display* display )
+TextureManager::TextureManager( Display* display )
 {
 	this->display = display;
 }
 
-void TextureManager::finalize()
+TextureManager::~TextureManager()
 {
 	for (std::map<std::string, SDL_Texture*>::iterator ii = this->textures.begin(); ii != this->textures.end(); ++ii)
 	{

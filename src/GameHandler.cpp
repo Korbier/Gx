@@ -5,15 +5,10 @@
 #include "TextureManager.h"
 #include "Sprite.h"
 
-void GameHandler::initialize(Display* display, Game* game)
+GameHandler::GameHandler(Display* display, Game* game)
 {
 	this->display = display;
 	this->game    = game;
-}
-
-int GameHandler::getFramerate()
-{
-	return this->game->getFramerate();
 }
 
 void GameHandler::stop()

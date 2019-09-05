@@ -9,8 +9,8 @@ class Display;
 class TextureManager
 {
 public:
-	void initialize( Display* display );
-	void finalize();
+	TextureManager( Display* display );
+	~TextureManager();
 
 	SDL_Texture* get(std::string path);
 

@@ -9,8 +9,10 @@ class Display
 
 public:
 
-	bool initialize(const char* title, int width, int height, bool fullscreen);
-	void finalize();
+	Display(const char* title, int width, int height, bool fullscreen);
+	~Display();
+
+	void show();
 
 	void setFullscreen(bool fullscreen);
 	bool isFullscreen();
@@ -21,7 +23,12 @@ public:
 private:
 	SDL_Window*   window     = nullptr;
 	SDL_Renderer* renderer   = nullptr;
-	bool          fullscreen = false;
+
+	bool  fullscreen = false;
+	const char* title;
+	int   width;
+	int   height;
+
 };
 
 #endif WINDOWS_H_
