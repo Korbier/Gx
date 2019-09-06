@@ -11,8 +11,6 @@ public:
 	AnimatedSprite(SDL_Texture* texture, float delay);
 	void addFrame(int x, int y, int w, int h);
 	
-	void dCastMarker() {};
-
 	void setDelay(float delay);
 	float getDelay();
 
