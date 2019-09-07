@@ -9,6 +9,9 @@ class AnimatedTexture : public Texture
 {
 public:
 	AnimatedTexture(SDL_Texture* texture, float delay);
+	AnimatedTexture(SDL_Texture* texture);
+	~AnimatedTexture();
+
 	void addFrame(int x, int y, int w, int h);
 	
 	void setDelay(float delay);

@@ -9,7 +9,7 @@ class Sprite
 {
 public:
 	
-	Sprite(AnimatedTexture* Texture, float x, float y );
+	Sprite(AnimatedTexture* texture, float x, float y );
 	~Sprite();
 
 	float getXVelocity();
@@ -34,6 +34,6 @@ private:
 	float xVelocity;
 	float yVelocity;
 	float angle;
-	AnimatedTexture* Texture;
+	AnimatedTexture* texture;
 };
 

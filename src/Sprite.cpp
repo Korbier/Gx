@@ -2,15 +2,15 @@
 
 #include "AnimatedTexture.h"
 
-Sprite::Sprite(AnimatedTexture* Texture, float x, float y)
+Sprite::Sprite(AnimatedTexture* texture, float x, float y)
 {
-	this->Texture = Texture;
+	this->texture = texture;
 	this->moveTo(x, y);
 }
 
 Sprite::~Sprite()
 {
-	delete this->Texture;
+	delete this->texture;
 }
 
 float Sprite::getXVelocity()
@@ -70,6 +70,6 @@ void Sprite::setAngle(float angle)
 
 AnimatedTexture* Sprite::getTexture()
 {
-	return this->Texture;
+	return this->texture;
 }
 

@@ -22,12 +22,6 @@
     <ResourceCompile Include="TankGame.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\_ressources\images\tank\tank_001.bmp" />
-    <Image Include="resources\tank_001.png" />
-    <Image Include="resources\tank_move_001.png" />
-    <Image Include="resources\tank_move_002.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -41,7 +35,10 @@
     <ClCompile Include="src\Gamestate.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\TextureManager.cpp" />
+    <ClCompile Include="src\Tile.cpp" />
     <ClCompile Include="src\Timer.cpp" />
+    <ClCompile Include="src\TileMap.cpp" />
+    <ClCompile Include="src\Tileset.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AnimatedTexture.h" />
@@ -54,7 +51,19 @@
     <ClInclude Include="src\InputBuffer.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\TextureManager.h" />
+    <ClInclude Include="src\Tile.h" />
+    <ClInclude Include="src\Tileset.h" />
     <ClInclude Include="src\Timer.h" />
+    <ClInclude Include="src\TileMap.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\_ressources\images\tank\tank_001.bmp" />
+    <Image Include="..\_ressources\images\tank\tank_001.png" />
+    <Image Include="..\_ressources\images\tank\tank_move_001.png" />
+    <Image Include="..\_ressources\images\tank\tileset.png" />
+    <Image Include="resources\tank_move_002.png" />
+    <Image Include="resources\tileset.png" />
+    <Image Include="resources\wang-blob-tilesets.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

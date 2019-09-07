@@ -20,20 +20,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="resources\tank_001.png">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
-    <Image Include="resources\tank_move_001.png">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
-    <Image Include="..\_ressources\images\tank\tank_001.bmp">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
-    <Image Include="resources\tank_move_002.png">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +54,15 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="src\Sprite.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tile.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TileMap.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tileset.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -105,5 +100,37 @@
     <ClInclude Include="src\Sprite.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="src\Tile.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileMap.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tileset.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\tank_move_002.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="resources\tileset.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="resources\wang-blob-tilesets.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="..\_ressources\images\tank\tank_001.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="..\_ressources\images\tank\tank_move_001.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="..\_ressources\images\tank\tileset.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="..\_ressources\images\tank\tank_001.bmp">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
   </ItemGroup>
 </Project>

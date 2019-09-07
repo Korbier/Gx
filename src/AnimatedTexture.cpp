@@ -9,6 +9,13 @@ AnimatedTexture::AnimatedTexture(SDL_Texture* texture, float delay):Texture(text
 	this->timer->start();
 }
 
+AnimatedTexture::AnimatedTexture(SDL_Texture* texture) :AnimatedTexture(texture, 0.0) {}
+
+AnimatedTexture::~AnimatedTexture()
+{
+	//TODO Delete animation frames
+}
+
 void AnimatedTexture::addFrame(int x, int y, int w, int h)
 {
 	SDL_Rect* frame = new SDL_Rect();

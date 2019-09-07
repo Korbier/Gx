@@ -7,9 +7,13 @@ class Display;
 class GameHandler;
 class Sprite;
 class InputBuffer;
+class Tile;
+class Tileset;
+class TileMap;
 
 const float TANK_SPEED = 0;
-const std::string TANK_TextureSHEET = "resources/tank_move_002.png";
+const std::string TANK_SPRITESHEET = "resources/tank_move_002.png";
+const std::string TILESET = "resources/wang-blob-tilesets.png";
 
 class Gamestate
 {
@@ -28,6 +32,9 @@ private:
 	GameHandler* gameHandler = nullptr;
 
 	Sprite* tank = nullptr;
-	SDL_Rect* crop = nullptr;
+	SDL_Rect* target = nullptr;
+
+	Tileset* tileset = nullptr;
+	TileMap* tilemap = nullptr;
 
 };
