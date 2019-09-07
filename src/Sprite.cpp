@@ -1,29 +1,75 @@
 #include "Sprite.h"
 
-Sprite::Sprite(SDL_Texture* texture):Sprite(texture, nullptr) {}
+#include "AnimatedTexture.h"
 
-Sprite::Sprite(SDL_Texture* texture, SDL_Rect* crop)
-{	
-	this->texture     = texture;
-	this->textureCrop = crop;
+Sprite::Sprite(AnimatedTexture* Texture, float x, float y)
+{
+	this->Texture = Texture;
+	this->moveTo(x, y);
 }
 
 Sprite::~Sprite()
 {
+	delete this->Texture;
 }
 
-void Sprite::crop(SDL_Rect* crop)
+float Sprite::getXVelocity()
 {
-	this->textureCrop = crop;
+	return this->xVelocity;
 }
 
-SDL_Texture* Sprite::getTexture()
+float Sprite::getYVelocity()
 {
-	return this->texture;
+	return this->yVelocity;
 }
 
-SDL_Rect* Sprite::getCrop()
+void Sprite::setXVelocity(float xVelocity)
 {
-	return this->textureCrop;
+	this->xVelocity = xVelocity;
+}
+
+void Sprite::setYVelocity(float yVelocity) {
+	this->yVelocity = yVelocity;
+}
+
+float Sprite::getX()
+{
+	return this->x;
+}
+
+float Sprite::getY()
+{
+	return this->y;
+}
+
+void Sprite::move(float x, float y)
+{
+	this->moveTo(this->x + x, this->y + y);
+}
+
+void Sprite::moveTo(float x, float y)
+{
+	this->x = x;
+	this->y = y;
+}
+
+float Sprite::getAngle()
+{
+	return this->angle;
+}
+
+void Sprite::rotate(float angle)
+{
+	this->setAngle(this->angle + angle);
+}
+
+void Sprite::setAngle(float angle)
+{
+	this->angle = angle;
+}
+
+AnimatedTexture* Sprite::getTexture()
+{
+	return this->Texture;
 }
 

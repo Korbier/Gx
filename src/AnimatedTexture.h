@@ -5,10 +5,10 @@
 #include "Texture.h"
 #include "Timer.h"
 
-class AnimatedSprite : public Sprite
+class AnimatedTexture : public Texture
 {
 public:
-	AnimatedSprite(SDL_Texture* texture, float delay);
+	AnimatedTexture(SDL_Texture* texture, float delay);
 	void addFrame(int x, int y, int w, int h);
 	
 	void setDelay(float delay);

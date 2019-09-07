@@ -3,8 +3,8 @@
 #include "Game.h"
 #include "Display.h"
 #include "TextureManager.h"
-#include "Entity.h"
-#include "AnimatedSprite.h"
+#include "Sprite.h"
+#include "AnimatedTexture.h"
 
 GameHandler::GameHandler(Display* display, Game* game)
 {
@@ -22,7 +22,7 @@ SDL_Texture* GameHandler::getTexture(std::string path)
 	return this->game->getTextureManager()->get(path);
 }
 
-void GameHandler::render(Entity* entity, SDL_Rect* target)
+void GameHandler::render(Sprite* Sprite, SDL_Rect* target)
 {
-	SDL_RenderCopyEx(this->display->getRenderer(), entity->getSprite()->getTexture(), entity->getSprite()->getCrop(), target, entity->getAngle(), nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(this->display->getRenderer(), Sprite->getTexture()->getTexture(), Sprite->getTexture()->getCrop(), target, Sprite->getAngle(), nullptr, SDL_FLIP_NONE);
 }

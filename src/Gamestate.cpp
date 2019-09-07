@@ -5,8 +5,8 @@
 
 #include "Display.h"
 #include "GameHandler.h"
-#include "AnimatedSprite.h"
-#include "Entity.h"
+#include "AnimatedTexture.h"
+#include "Sprite.h"
 #include "InputBuffer.h"
 
 
@@ -23,13 +23,13 @@ Gamestate::~Gamestate()
 }
 
 void Gamestate::initialize() {
-	this->tank = new Entity(new AnimatedSprite(this->gameHandler->getTexture(TANK_SPRITESHEET), 20), 0, 0);
+	this->tank = new Sprite(new AnimatedTexture(this->gameHandler->getTexture(TANK_TextureSHEET), 20), 0, 0);
 	this->tank->setXVelocity( 300 );
 	this->tank->setYVelocity(300);
-	this->tank->getSprite()->addFrame(0, 0, 32, 32);
-	this->tank->getSprite()->addFrame(32, 0, 32, 32);
-	this->tank->getSprite()->addFrame(64, 0, 32, 32);
-	this->tank->getSprite()->addFrame(96, 0, 32, 32);
+	this->tank->getTexture()->addFrame(0, 0, 32, 32);
+	this->tank->getTexture()->addFrame(32, 0, 32, 32);
+	this->tank->getTexture()->addFrame(64, 0, 32, 32);
+	this->tank->getTexture()->addFrame(96, 0, 32, 32);
 }
 
 void Gamestate::update(InputBuffer* input, Uint32 delta )
@@ -66,7 +66,7 @@ void Gamestate::update(InputBuffer* input, Uint32 delta )
 	}
 
 	if (animateTank) {
-		this->tank->getSprite()->animate();
+		this->tank->getTexture()->animate();
 	}
 
 }

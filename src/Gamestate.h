@@ -5,11 +5,11 @@
 
 class Display;
 class GameHandler;
-class Entity;
+class Sprite;
 class InputBuffer;
 
 const float TANK_SPEED = 0;
-const std::string TANK_SPRITESHEET = "resources/tank_move_002.png";
+const std::string TANK_TextureSHEET = "resources/tank_move_002.png";
 
 class Gamestate
 {
@@ -27,7 +27,7 @@ private:
 	Display*     display     = nullptr;
 	GameHandler* gameHandler = nullptr;
 
-	Entity* tank = nullptr;
+	Sprite* tank = nullptr;
 	SDL_Rect* crop = nullptr;
 
 };

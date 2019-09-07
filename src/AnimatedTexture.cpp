@@ -1,15 +1,15 @@
-#include "AnimatedSprite.h"
+#include "AnimatedTexture.h"
 
 #include "boost/log/trivial.hpp"
 
-AnimatedSprite::AnimatedSprite(SDL_Texture* texture, float delay):Sprite(texture, nullptr)
+AnimatedTexture::AnimatedTexture(SDL_Texture* texture, float delay):Texture(texture, nullptr)
 {
 	this->delay = delay;
 	this->timer = new Timer();
 	this->timer->start();
 }
 
-void AnimatedSprite::addFrame(int x, int y, int w, int h)
+void AnimatedTexture::addFrame(int x, int y, int w, int h)
 {
 	SDL_Rect* frame = new SDL_Rect();
 	frame->x = x;
@@ -23,17 +23,17 @@ void AnimatedSprite::addFrame(int x, int y, int w, int h)
 	}
 }
 
-void AnimatedSprite::setDelay(float delay)
+void AnimatedTexture::setDelay(float delay)
 {
 	this->delay = delay;
 }
 
-float AnimatedSprite::getDelay()
+float AnimatedTexture::getDelay()
 {
 	return this->delay;
 }
 
-void AnimatedSprite::animate()
+void AnimatedTexture::animate()
 {
 
 	if ( this->timer->getTicks() > this->getDelay()) {
@@ -51,12 +51,12 @@ void AnimatedSprite::animate()
 	
 }
 
-void AnimatedSprite::play()
+void AnimatedTexture::play()
 {
 	this->timer->unpause();
 }
 
-void AnimatedSprite::pause()
+void AnimatedTexture::pause()
 {
 	this->timer->pause();
 }
