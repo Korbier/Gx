@@ -6,7 +6,7 @@
 class Display;
 class Game;
 class TextureManager;
-class Sprite;
+class Entity;
 
 class GameHandler
 {
@@ -16,7 +16,7 @@ public:
 
 	/*Game control*/
 	void stop();
-	void render(Sprite* sprite, SDL_Rect* target);
+	void render(Entity* entity, SDL_Rect* target);
 
 	/*Resource loader*/
 	SDL_Texture* getTexture(std::string path);

@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include <sstream>
+
 #include "SDL.h"
 #include "SDL_image.h"
 
@@ -15,7 +17,7 @@
 Game::Game()
 {
 	this->running        = false;
-	this->display        = new Display("MyGame", SCREEN_WIDTH, SCREEN_HEIGHT, false);
+	this->display        = new Display("MyGame", SCREEN_WIDTH, SCREEN_HEIGHT, false, false);
 	this->textureManager = new TextureManager(this->display);
 	this->gHandler       = new GameHandler(this->display, this);
 	this->state          = new Gamestate(this->display, this->gHandler);
@@ -50,6 +52,9 @@ void Game::run()
 	Uint32 lastMeasure = SDL_GetTicks();
 	this->running     = true;
 
+	int fpsTime = 0;
+	int fps = 0;
+
 	//game loop
 	while (this->isRunning()) {
 		
@@ -60,6 +65,16 @@ void Game::run()
 		this->state->update( this->inputBuffer, currentMeasure - lastMeasure );
 		this->render();
 
+		fps++;
+		fpsTime += (currentMeasure - lastMeasure);
+		if (fpsTime >= 1000) {
+			std::stringstream title;
+			title << "MyGame (fps: " << fps << ")";
+			this->display->setWindowTitle(title.str());
+			fps = 0;
+			fpsTime = 0;
+		}
+			 
 		lastMeasure = currentMeasure;
 		
 		SDL_Delay(1);

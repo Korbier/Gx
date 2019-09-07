@@ -3,19 +3,22 @@
 
 #include <SDL.h>
 #include <stdio.h>
+#include <string>
 
 class Display
 {
 
 public:
 
-	Display(const char* title, int width, int height, bool fullscreen);
+	Display(const char* title, int width, int height, bool fullscreen, bool vsync);
 	~Display();
 
 	void show();
 
 	void setFullscreen(bool fullscreen);
 	bool isFullscreen();
+
+	void setWindowTitle(std::string title);
 
 	SDL_Window* getWindow();
 	SDL_Renderer* getRenderer();
@@ -28,6 +31,7 @@ private:
 	const char* title;
 	int   width;
 	int   height;
+	bool  vsync = true;
 
 };
 

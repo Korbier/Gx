@@ -23,7 +23,7 @@ Gamestate::~Gamestate()
 }
 
 void Gamestate::initialize() {
-	this->tank = new Entity(new AnimatedSprite(this->gameHandler->getTexture(TANK_SPRITESHEET), 50), 0, 0);
+	this->tank = new Entity(new AnimatedSprite(this->gameHandler->getTexture(TANK_SPRITESHEET), 20), 0, 0);
 	this->tank->setXVelocity( 300 );
 	this->tank->setYVelocity(300);
 	this->tank->getSprite()->addFrame(0, 0, 32, 32);
@@ -44,8 +44,30 @@ void Gamestate::update(InputBuffer* input, Uint32 delta )
 	if (input->isPressed(SDL_SCANCODE_DOWN))  yVal = this->tank->getYVelocity() * (delta / 1000.f);
 
 	this->tank->move(xVal, yVal);
+	
+	bool animateTank = true;
 
-	this->tank->getSprite()->animate();
+	if (xVal > 0) {
+		if (yVal > 0)      this->tank->setAngle(135.0);
+		else if (yVal < 0) this->tank->setAngle(45.0);
+		else               this->tank->setAngle(90.0);
+	}
+	else if (xVal < 0) {
+		if (yVal > 0)      this->tank->setAngle(225.0);
+		else if (yVal < 0) this->tank->setAngle(315.0);
+		else               this->tank->setAngle(270.0);
+	}
+	else {
+		if (yVal > 0)      this->tank->setAngle(180.0);
+		else if (yVal < 0) this->tank->setAngle(0.0);
+		else {
+			animateTank = false;
+		}
+	}
+
+	if (animateTank) {
+		this->tank->getSprite()->animate();
+	}
 
 }
 
@@ -54,7 +76,7 @@ void Gamestate::render()
 	SDL_Rect* dst = new SDL_Rect();
 	dst->x = (int) this->tank->getX();
 	dst->y = (int) this->tank->getY();
-	dst->w = dst->h = 64;
-	this->gameHandler->render(this->tank->getSprite(), dst );
+	dst->w = dst->h = 32;
+	this->gameHandler->render(this->tank, dst );
 	delete dst;
 }

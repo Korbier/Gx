@@ -1,16 +1,17 @@
 #include "Display.h"
 
 #include <iostream>
+#include <string>
 #include "boost/log/trivial.hpp"
 
-Display::Display(const char* title, int width, int height, bool fullscreen)
+Display::Display(const char* title, int width, int height, bool fullscreen, bool vsync)
 {
 
 	this->fullscreen = fullscreen;
 	this->title = title;
 	this->width = width;
 	this->height = height;
-
+	this->vsync = vsync;
 
 }
 
@@ -34,7 +35,11 @@ void Display::show() {
 		BOOST_LOG_TRIVIAL(info) << "Window created";
 	}
 
-	this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
+	Uint32 rFlag = SDL_RENDERER_ACCELERATED;
+	if (this->vsync) rFlag |= SDL_RENDERER_PRESENTVSYNC;
+
+	this->renderer = SDL_CreateRenderer(this->window, -1, rFlag);
+
 	if (this->renderer == nullptr) {
 		BOOST_LOG_TRIVIAL(error) << "could not create renderer: " << SDL_GetError();
 	}
@@ -59,6 +64,11 @@ void Display::setFullscreen(bool fullscreen)
 bool Display::isFullscreen()
 {
 	return this->fullscreen;
+}
+
+void Display::setWindowTitle(std::string title)
+{
+	SDL_SetWindowTitle( this->window, title.c_str() );
 }
 
 SDL_Window* Display::getWindow()
