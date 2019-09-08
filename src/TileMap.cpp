@@ -48,39 +48,24 @@ int TileMap::toValue(int x, int y) {
 	
 	int value = 0;
 
-	if (this->getCell(x, y - 1) == 1) {
-		value += 1;  //North
-	}
-	/*
-	if (this->getCell(x + 1, y - 1) == 1) {
-		value += 2;  //North East
-	}
-	*/
-	if (this->getCell(x + 1, y) == 1) {
-		value += 4;  //East
-	}
-	/*
-	if (this->getCell(x + 1, y + 1) == 1) {
-		value += 8;  //South East
-	}
-	*/
-	if (this->getCell(x, y + 1) == 1) {
-		value += 16; //South
-	}
-	/*
-	if (this->getCell(x - 1, y + 1) == 1) {
-		value += 32; //South West
-	}
-	*/
-	if (this->getCell(x - 1, y) == 1) {
-		value += 64; //West
-	}
-	/*
-	if (this->getCell(x - 1, y - 1) == 1) {
-		value += 128;//North West
-	}
-	*/
+	bool n  = this->getCell(x, y - 1) == 1;
+	bool ne = this->getCell(x + 1, y - 1) == 1;
+	bool e  = this->getCell(x + 1, y) == 1;
+	bool se = this->getCell(x + 1, y + 1) == 1;
+	bool s  = this->getCell(x, y + 1) == 1;
+	bool sw = this->getCell(x - 1, y + 1) == 1;
+	bool w  = this->getCell(x - 1, y) == 1;
+	bool nw = this->getCell(x - 1, y - 1) == 1;
 
+	value += n ? 1 : 0;
+	value += (n && ne & e) ? 2 : 0;
+	value += e ? 4 : 0;
+	value += (e && se && s) ? 8 : 0;
+	value += s ? 16 : 0;
+	value += (s && sw && w) ? 32 : 0;
+	value += w ? 64 : 0;
+	value += (w && nw && n) ? 128 : 0;
+	
 	return value;
 
 }

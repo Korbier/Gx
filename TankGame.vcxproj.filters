@@ -120,17 +120,5 @@
     <Image Include="resources\wang-blob-tilesets.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="..\_ressources\images\tank\tank_001.png">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
-    <Image Include="..\_ressources\images\tank\tank_move_001.png">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
-    <Image Include="..\_ressources\images\tank\tileset.png">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
-    <Image Include="..\_ressources\images\tank\tank_001.bmp">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
   </ItemGroup>
 </Project>

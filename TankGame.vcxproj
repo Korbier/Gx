@@ -57,10 +57,6 @@
     <ClInclude Include="src\TileMap.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\_ressources\images\tank\tank_001.bmp" />
-    <Image Include="..\_ressources\images\tank\tank_001.png" />
-    <Image Include="..\_ressources\images\tank\tank_move_001.png" />
-    <Image Include="..\_ressources\images\tank\tileset.png" />
     <Image Include="resources\tank_move_002.png" />
     <Image Include="resources\tileset.png" />
     <Image Include="resources\wang-blob-tilesets.png" />
