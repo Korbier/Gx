@@ -5,11 +5,9 @@
 
 int main(int argc, char* args[]) {
 
-	Game* game = new Game();
-	game->run();
-
-	delete game;
-
+	Game game;
+	game.run();
+	
 	return 0;
 
 }

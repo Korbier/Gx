@@ -59,6 +59,7 @@
   <ItemGroup>
     <Image Include="resources\tank_move_002.png" />
     <Image Include="resources\tileset.png" />
+    <Image Include="resources\tileset_01.png" />
     <Image Include="resources\wang-blob-tilesets.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

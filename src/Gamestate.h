@@ -13,7 +13,8 @@ class TileMap;
 
 const float TANK_SPEED = 0;
 const std::string TANK_SPRITESHEET = "resources/tank_move_002.png";
-const std::string TILESET = "resources/wang-blob-tilesets.png";
+const std::string TILESET_OLD = "resources/wang-blob-tilesets.png";
+const std::string TILESET = "resources/tileset_01.png";
 
 class Gamestate
 {

@@ -1,5 +1,7 @@
 #include "Gamestate.h"
 
+#include <vector>
+
 #include "boost/log/trivial.hpp"
 #include "SDL_image.h"
 
@@ -24,28 +26,30 @@ Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 
 	this->tileset = new Tileset();
 
-	int height = 10;
-	int width  = 10;
+	int height = 20;
+	int width  = 25;
 
-	int** map = new int* [width];
-
+	std::vector<std::vector<int>> map;
+	
 	for (int i = 0; i < width; i++) {
-
-		map[i] = new int[height];
-
+		std::vector<int> row;
 		for (int j = 0; j < height; j++) {
-			map[i][j] = 0;
+			row.push_back( 0 );
 		}
+		map.push_back(row);
 	}
+	
+	map[10][10] = 1;
+	map[10][11] = 1;
+	map[10][12] = 1;
+	map[11][11] = 1;
+	map[11][12] = 1;
 
-	map[1][1] = 1;
-	map[2][1] = 1;
-	map[2][2] = 1;
-	map[1][2] = 1;
-	map[1][3] = 1;
-	map[3][2] = 1;
-	map[2][3] = 1;
-	map[3][3] = 1;
+	map[12][10] = 1;
+	map[12][11] = 1;
+	map[12][12] = 1;
+	map[13][11] = 1;
+	map[13][12] = 1;
 
 	this->tilemap = new TileMap(map, width, height);
 
@@ -56,7 +60,6 @@ Gamestate::~Gamestate()
 	delete this->tank;
 	delete this->target;
 	delete this->tileset;
-	delete this->tilemap;
 }
 
 void Gamestate::initialize() {
@@ -115,16 +118,18 @@ void Gamestate::update(InputBuffer* input, Uint32 delta )
 void Gamestate::render()
 {
 
-	for (int i = 0; i < this->tileset->getWidth(); i++) {
-		for (int j = 0; j < this->tileset->getHeight(); j++) {
-			this->target->x = i * 35;
-			this->target->y = j * 35;
-			this->gameHandler->render(this->tileset->getTile(i, j), target);
+	
+	for (int i = 0; i < this->tilemap->getWidth(); i++) {
+		for (int j = 0; j < this->tilemap->getHeight(); j++) {
+			this->target->x = i * 32;
+			this->target->y = j * 32;
+			std::pair<Tile*, int> tile = this->tilemap->getTileAt(i, j);
+			this->gameHandler->render(tile.first, tile.second, target);
 		}
 	}
-	
+
 	this->target->x = (int)this->tank->getX();
 	this->target->y = (int)this->tank->getY();
 	this->gameHandler->render(this->tank, this->target);
-
+	
 }

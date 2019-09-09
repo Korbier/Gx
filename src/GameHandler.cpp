@@ -28,7 +28,7 @@ void GameHandler::render(Sprite* Sprite, SDL_Rect* target)
 	SDL_RenderCopyEx(this->display->getRenderer(), Sprite->getTexture()->getTexture(), Sprite->getTexture()->getCrop(), target, Sprite->getAngle(), nullptr, SDL_FLIP_NONE);
 }
 
-void GameHandler::render(Tile* tile, SDL_Rect* target)
+void GameHandler::render(Tile* tile, int angle, SDL_Rect* target)
 {
-	SDL_RenderCopy(this->display->getRenderer(), tile->getTexture()->getTexture(), tile->getTexture()->getCrop(), target);
+	SDL_RenderCopyEx(this->display->getRenderer(), tile->getTexture()->getTexture(), tile->getTexture()->getCrop(), target, angle, nullptr, SDL_FLIP_NONE);
 }

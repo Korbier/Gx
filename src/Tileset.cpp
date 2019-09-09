@@ -24,9 +24,9 @@ void Tileset::loadTileset(SDL_Texture* sdlTexture, int tileSize )
 			rect->w = rect->h = tileSize;
 			Texture* texture = new Texture(this->texture, rect);
 			this->tiles[i][j] = new Tile(texture);
-
 		}
 	}
+
 }
 
 Tile* Tileset::getTile(int xIndex, int yIndex)

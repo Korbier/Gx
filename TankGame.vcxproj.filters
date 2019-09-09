@@ -120,5 +120,8 @@
     <Image Include="resources\wang-blob-tilesets.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
+    <Image Include="resources\tileset_01.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
   </ItemGroup>
 </Project>

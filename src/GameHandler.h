@@ -18,7 +18,7 @@ public:
 	/*Game control*/
 	void stop();
 	void render(Sprite* Sprite, SDL_Rect* target);
-	void render(Tile* tile, SDL_Rect* target);
+	void render(Tile* tile, int angle, SDL_Rect* target);
 
 	/*Resource loader*/
 	SDL_Texture* getTexture(std::string path);
