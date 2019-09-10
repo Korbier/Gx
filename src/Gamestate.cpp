@@ -38,7 +38,10 @@ Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 		}
 		map.push_back(row);
 	}
-	
+
+	map[5][5] = 1;
+	map[6][5] = 1;
+
 	map[10][10] = 1;
 	map[10][11] = 1;
 	map[10][12] = 1;
@@ -50,6 +53,16 @@ Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 	map[12][12] = 1;
 	map[13][11] = 1;
 	map[13][12] = 1;
+	map[14][12] = 1;
+	map[15][12] = 1;
+	map[16][12] = 1;
+	map[17][12] = 1;
+	map[13][13] = 1;
+	map[14][13] = 1;
+	map[15][13] = 1;
+	map[16][13] = 1;
+	map[17][13] = 1;
+
 
 	this->tilemap = new TileMap(map, width, height);
 

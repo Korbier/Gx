@@ -19,7 +19,7 @@ void Display::show() {
 
 	Uint32 flag = SDL_WINDOW_SHOWN;
 	if (this->isFullscreen()) flag |= SDL_WINDOW_FULLSCREEN;
-
+	
 	this->window = SDL_CreateWindow(
 		title,
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,

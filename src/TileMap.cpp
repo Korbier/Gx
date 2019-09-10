@@ -42,7 +42,7 @@ void TileMap::load(Tileset* tilset)
 	this->setMapping(193, tilset->getTile(3, 0), 270);
 
 	this->setMapping(17, tilset->getTile(4, 0), 0);
-	this->setMapping(68, tilset->getTile(4, 0), 180);
+	this->setMapping(68, tilset->getTile(4, 0), 90);
 
 	this->setMapping(21, tilset->getTile(5, 0), 0);
 	this->setMapping(84, tilset->getTile(5, 0), 90);
@@ -77,7 +77,7 @@ void TileMap::load(Tileset* tilset)
 	this->setMapping(215, tilset->getTile(11, 0), 270);
 
 	this->setMapping(119, tilset->getTile(12, 0), 0);
-	this->setMapping(221, tilset->getTile(12, 0), 180);
+	this->setMapping(221, tilset->getTile(12, 0), 90);
 
 	this->setMapping(127, tilset->getTile(13, 0), 0);
 	this->setMapping(253, tilset->getTile(13, 0), 90);
