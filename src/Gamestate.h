@@ -10,11 +10,13 @@ class InputBuffer;
 class Tile;
 class Tileset;
 class TileMap;
+class Map;
 
 const float TANK_SPEED = 0;
 const std::string TANK_SPRITESHEET = "resources/tank_move_002.png";
 const std::string TILESET_OLD = "resources/wang-blob-tilesets.png";
 const std::string TILESET = "resources/tileset_01.png";
+const std::string TILESET2 = "resources/tileset_02.png";
 
 class Gamestate
 {
@@ -36,6 +38,8 @@ private:
 	SDL_Rect* target = nullptr;
 
 	Tileset* tileset = nullptr;
-	TileMap* tilemap = nullptr;
+	Tileset* tileset2 = nullptr;
+	//TileMap* tilemap = nullptr;
 
+	Map* map = nullptr;
 };

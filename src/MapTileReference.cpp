@@ -1,6 +1,6 @@
 #include "MapTileReference.h"
 
-MapTileReference::MapTileReference(Tileset* tilset, int x, int y)
+MapTileReference::MapTileReference(Tileset* tileset, int x, int y)
 {
 	this->tileset = tileset;
 	this->autotile = false;
@@ -9,7 +9,7 @@ MapTileReference::MapTileReference(Tileset* tilset, int x, int y)
 	this->tileY = y;
 }
 
-MapTileReference::MapTileReference(Tileset* tilset, bool merged)
+MapTileReference::MapTileReference(Tileset* tileset, bool merged)
 {
 	this->tileset = tileset;
 	this->autotile = true;

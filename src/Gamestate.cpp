@@ -12,7 +12,8 @@
 #include "InputBuffer.h"
 #include "Tile.h"
 #include "Tileset.h"
-#include "TileMap.h"
+#include "Map.h"
+#include "MapTile.h"
 
 const int TILE_SIZE = 32;
 
@@ -25,46 +26,11 @@ Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 	this->target->w = this->target->h = TILE_SIZE;
 
 	this->tileset = new Tileset();
-
-	int height = 20;
-	int width  = 25;
-
-	std::vector<std::vector<int>> map;
-	
-	for (int i = 0; i < width; i++) {
-		std::vector<int> row;
-		for (int j = 0; j < height; j++) {
-			row.push_back( 0 );
-		}
-		map.push_back(row);
-	}
-
-	map[5][5] = 1;
-	map[6][5] = 1;
-
-	map[10][10] = 1;
-	map[10][11] = 1;
-	map[10][12] = 1;
-	map[11][11] = 1;
-	map[11][12] = 1;
-
-	map[12][10] = 1;
-	map[12][11] = 1;
-	map[12][12] = 1;
-	map[13][11] = 1;
-	map[13][12] = 1;
-	map[14][12] = 1;
-	map[15][12] = 1;
-	map[16][12] = 1;
-	map[17][12] = 1;
-	map[13][13] = 1;
-	map[14][13] = 1;
-	map[15][13] = 1;
-	map[16][13] = 1;
-	map[17][13] = 1;
+	this->tileset2 = new Tileset();
 
 
-	this->tilemap = new TileMap(map, width, height);
+
+	this->map = new Map();
 
 }
 
@@ -73,10 +39,14 @@ Gamestate::~Gamestate()
 	delete this->tank;
 	delete this->target;
 	delete this->tileset;
+	delete this->tileset2;
 }
 
 void Gamestate::initialize() {
-	
+
+	int height = 20;
+	int width = 25;
+
 	this->tank = new Sprite(new AnimatedTexture(this->gameHandler->getTexture(TANK_SPRITESHEET), 20), 0, 0);
 	this->tank->setXVelocity( 300 );
 	this->tank->setYVelocity( 300 );
@@ -86,7 +56,57 @@ void Gamestate::initialize() {
 	this->tank->getTexture()->addFrame(96, 0, 32, 32);
 
 	this->tileset->loadTileset(this->gameHandler->getTexture(TILESET), 32);
-	this->tilemap->load(this->tileset);
+	this->tileset2->loadTileset(this->gameHandler->getTexture(TILESET2), 32);
+
+	this->map->addReference(0, this->tileset, 0, 0);
+	this->map->addReference(1, this->tileset, true);
+	this->map->addReference(2, this->tileset2, true);
+
+
+	std::vector<std::vector<int>> m;
+
+	for (int i = 0; i < width; i++) {
+		std::vector<int> row;
+		for (int j = 0; j < height; j++) {
+			row.push_back(0);
+		}
+		m.push_back(row);
+	}
+
+	m[5][5] = 1;
+	m[6][5] = 1;
+
+	m[10][10] = 2;
+	m[10][11] = 2;
+	m[10][12] = 2;
+	m[11][11] = 2;
+	m[11][12] = 2;
+
+	m[11][13] = 2;
+	m[11][14] = 2;
+	m[11][15] = 2;
+	m[11][16] = 2;
+	m[11][17] = 2;
+
+	m[12][10] = 1;
+	m[12][11] = 1;
+	m[12][12] = 1;
+	m[13][11] = 1;
+	m[13][12] = 1;
+	m[14][12] = 1;
+	m[15][12] = 1;
+	m[16][12] = 1;
+	m[17][12] = 1;
+	m[13][13] = 1;
+	m[14][13] = 1;
+	m[15][13] = 1;
+	m[16][13] = 1;
+	m[17][13] = 1;
+
+	this->map->setData(m, width, height);
+
+	this->map->debug();
+
 }
 
 void Gamestate::update(InputBuffer* input, Uint32 delta )
@@ -132,12 +152,14 @@ void Gamestate::render()
 {
 
 	
-	for (int i = 0; i < this->tilemap->getWidth(); i++) {
-		for (int j = 0; j < this->tilemap->getHeight(); j++) {
+	for (int i = 0; i < this->map->getWidth(); i++) {
+		for (int j = 0; j < this->map->getHeight(); j++) {
 			this->target->x = i * 32;
 			this->target->y = j * 32;
-			std::pair<Tile*, int> tile = this->tilemap->getTileAt(i, j);
-			this->gameHandler->render(tile.first, tile.second, target);
+
+			MapTile* mTile = this->map->getTileAt(i, j);
+			this->gameHandler->render(mTile->getTile(), mTile->getAngle(), target);
+
 		}
 	}
 

@@ -59,9 +59,6 @@
     <ClCompile Include="src\Tile.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="src\TileMap.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="src\Tileset.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -69,6 +66,9 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="src\Map.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MapTile.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -109,9 +109,6 @@
     <ClInclude Include="src\Tile.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="src\TileMap.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="src\Tileset.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -119,6 +116,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="src\Map.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MapTile.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
@@ -133,6 +133,9 @@
       <Filter>Fichiers de ressources</Filter>
     </Image>
     <Image Include="resources\tileset_01.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="resources\tileset_02.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>

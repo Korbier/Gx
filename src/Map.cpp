@@ -1,16 +1,21 @@
 #include "Map.h"
 
 #include <vector>
+#include <sstream>
+#include <string>
+
+#include "boost/log/trivial.hpp"
 #include "MapTileReference.h"
 #include "Tileset.h"
+#include "MapTile.h"
 
 Map::Map() {
-	this->loadIndexes();
-	this->loadRotations();
 }
 
 void Map::addReference(int index, Tileset* tileset, int tileX, int tileY)
 {
+	BOOST_LOG_TRIVIAL(info) << "Tileset : " << tileset;
+
 	MapTileReference* reference = new MapTileReference(tileset, tileX, tileY);
 	this->references.insert(std::pair<int, MapTileReference*>(index, reference));
 }
@@ -21,143 +26,249 @@ void Map::addReference(int index, Tileset* tileset, bool merged)
 	this->references.insert(std::pair<int, MapTileReference*>(index, reference));
 }
 
-void Map::setData(std::vector<std::vector<int>> data)
+void Map::setData(std::vector<std::vector<int>> data, int width, int height)
 {
+
 	this->data = data;
+	this->width = width;
+	this->height = height;
+
+	this->loadIndexes();
+	this->loadRotations();
+	this->loadCache();
+
 }
 
-Tile* Map::getTileAt(int x, int y)
-{
-	int data = this->data[x][y];
-	MapTileReference* reference = this->references[data];
+void Map::debug() {
 
-	if (reference->isAutoTile()) {
-		return this->getAutoTile(reference);
+	std::stringstream messageMap;
+	std::stringstream message;
+
+	for (int j = 0; j < this->height; j++) {
+		for (int i = 0; i < this->width; i++) {
+
+			int cell = this->data[i][j];
+			int value = cell == 1 ? this->toAutoTileIndex(cell, this->references[cell], i, j) : 0;
+
+			message << " {" << std::to_string(value) << "}";
+			messageMap << "[" << std::to_string(cell) << "]";
+
+		}
+
+		message << "\n";
+		messageMap << "\n";
+
 	}
-	else {
-		return reference->getTileset()->getTile(
-			reference->getTileX(),
-			reference->getTileY()
-		);
-	}
-	return nullptr;
+
+	BOOST_LOG_TRIVIAL(info) << "\n" << messageMap.str();
+	BOOST_LOG_TRIVIAL(info) << "\n" << message.str();
+
+}
+MapTile* Map::getTileAt(int x, int y)
+{
+	return this->cache[x][y];
+}
+
+int Map::getWidth()
+{
+	return this->width;
+}
+
+int Map::getHeight()
+{
+	return this->height;
 }
 
 void Map::loadRotations()
 {
 	for (int i = 0; i < 255; i++) {
-		this->rotations.insert(std::pair<int, int>(i, 0));
+		this->rotations.insert({ i,0 });
 	}
 
-	this->rotations.insert(std::pair<int,int>(0,0));
-	this->rotations.insert(std::pair<int,int>(1,0));
-	this->rotations.insert(std::pair<int,int>(4,90));
-	this->rotations.insert(std::pair<int,int>(16,180));
-	this->rotations.insert(std::pair<int,int>(64,270));
-	this->rotations.insert(std::pair<int,int>(5,0));
-	this->rotations.insert(std::pair<int,int>(20,90));
-	this->rotations.insert(std::pair<int,int>(80,180));
-	this->rotations.insert(std::pair<int,int>(65,270));
-	this->rotations.insert(std::pair<int,int>(7,0));
-	this->rotations.insert(std::pair<int,int>(28,90));
-	this->rotations.insert(std::pair<int,int>(112,180));
-	this->rotations.insert(std::pair<int,int>(193,270));
-	this->rotations.insert(std::pair<int,int>(17,0));
-	this->rotations.insert(std::pair<int,int>(68,90));
-	this->rotations.insert(std::pair<int,int>(21,0));
-	this->rotations.insert(std::pair<int,int>(84,90));
-	this->rotations.insert(std::pair<int,int>(81,180));
-	this->rotations.insert(std::pair<int,int>(69,270));
-	this->rotations.insert(std::pair<int,int>(23,0));
-	this->rotations.insert(std::pair<int,int>(92,90));
-	this->rotations.insert(std::pair<int,int>(113,180));
-	this->rotations.insert(std::pair<int,int>(197,270));
-	this->rotations.insert(std::pair<int,int>(29,0));
-	this->rotations.insert(std::pair<int,int>(116,90));
-	this->rotations.insert(std::pair<int,int>(209,180));
-	this->rotations.insert(std::pair<int,int>(71,270));
-	this->rotations.insert(std::pair<int,int>(31,0));
-	this->rotations.insert(std::pair<int,int>(124,90));
-	this->rotations.insert(std::pair<int,int>(241,180));
-	this->rotations.insert(std::pair<int,int>(199,270));
-	this->rotations.insert(std::pair<int,int>(85,0));
-	this->rotations.insert(std::pair<int,int>(87,0));
-	this->rotations.insert(std::pair<int,int>(93,90));
-	this->rotations.insert(std::pair<int,int>(117,180));
-	this->rotations.insert(std::pair<int,int>(213,270));
-	this->rotations.insert(std::pair<int,int>(95,0));
-	this->rotations.insert(std::pair<int,int>(125,90));
-	this->rotations.insert(std::pair<int,int>(245,180));
-	this->rotations.insert(std::pair<int,int>(215,270));
-	this->rotations.insert(std::pair<int,int>(119,0));
-	this->rotations.insert(std::pair<int,int>(221,90));
-	this->rotations.insert(std::pair<int,int>(127,0));
-	this->rotations.insert(std::pair<int,int>(253,90));
-	this->rotations.insert(std::pair<int,int>(247,180));
-	this->rotations.insert(std::pair<int,int>(223,270));
-	this->rotations.insert(std::pair<int,int>(255,0));
+	this->rotations[0]=0;
+	this->rotations[1]=0;
+	this->rotations[4]=90;
+	this->rotations[16]=180;
+	this->rotations[64]=270;
+	this->rotations[5]=0;
+	this->rotations[20]=90;
+	this->rotations[80]=180;
+	this->rotations[65]=270;
+	this->rotations[7]=0;
+	this->rotations[28]=90;
+	this->rotations[112]=180;
+	this->rotations[193]=270;
+	this->rotations[17]=0;
+	this->rotations[68]=90;
+	this->rotations[21]=0;
+	this->rotations[84]=90;
+	this->rotations[81]=180;
+	this->rotations[69]=270;
+	this->rotations[23]=0;
+	this->rotations[92]=90;
+	this->rotations[113]=180;
+	this->rotations[197]=270;
+	this->rotations[29]=0;
+	this->rotations[116]=90;
+	this->rotations[209]=180;
+	this->rotations[71]=270;
+	this->rotations[31]=0;
+	this->rotations[124]=90;
+	this->rotations[241]=180;
+	this->rotations[199]=270;
+	this->rotations[85]=0;
+	this->rotations[87]=0;
+	this->rotations[93]=90;
+	this->rotations[117]=180;
+	this->rotations[213]=270;
+	this->rotations[95]=0;
+	this->rotations[125]=90;
+	this->rotations[245]=180;
+	this->rotations[215]=270;
+	this->rotations[119]=0;
+	this->rotations[221]=90;
+	this->rotations[127]=0;
+	this->rotations[253]=90;
+	this->rotations[247]=180;
+	this->rotations[223]=270;
+	this->rotations[255]=0;
 
 }
 
 void Map::loadIndexes()
 {
-	for (int i = 0; i < 255; i++) {
-		this->indexes.insert(std::pair<int, std::pair<int,int>>(i, std::pair<int,int>(0,0)));
+	for (int i = 0; i <= 255; i++) {
+		this->indexes.insert({ i,  {0,0} });
 	}
 
-	this->indexes.insert(std::pair<int, std::pair<int,int>>(0,  std::pair<int,int>(0, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(1, std::pair<int, int>(1, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(4, std::pair<int, int>(1, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(16, std::pair<int, int>(1, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(64, std::pair<int, int>(1, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(5, std::pair<int, int>(2, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(20, std::pair<int, int>(2, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(80, std::pair<int, int>(2, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(65, std::pair<int, int>(2, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(7, std::pair<int, int>(3, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(28, std::pair<int, int>(3, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(112, std::pair<int, int>(3, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(193, std::pair<int, int>(3, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(17, std::pair<int, int>(4, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(68, std::pair<int, int>(4, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(21, std::pair<int, int>(5, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(84, std::pair<int, int>(5, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(81, std::pair<int, int>(5, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(69, std::pair<int, int>(5, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(23, std::pair<int, int>(6, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(92, std::pair<int, int>(6, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(113, std::pair<int, int>(6, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(197, std::pair<int, int>(6, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(29, std::pair<int, int>(7, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(116, std::pair<int, int>(7, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(209, std::pair<int, int>(7, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(71, std::pair<int, int>(7, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(31, std::pair<int, int>(8, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(124, std::pair<int, int>(8, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(241, std::pair<int, int>(8, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(199, std::pair<int, int>(8, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(85, std::pair<int, int>(9, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(87, std::pair<int, int>(10, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(93, std::pair<int, int>(10, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(117, std::pair<int, int>(10, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(213, std::pair<int, int>(10, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(95, std::pair<int, int>(11, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(125, std::pair<int, int>(11, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(245, std::pair<int, int>(11, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(215, std::pair<int, int>(11, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(119, std::pair<int, int>(12, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(221, std::pair<int, int>(12, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(127, std::pair<int, int>(13, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(253, std::pair<int, int>(13, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(247, std::pair<int, int>(13, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(223, std::pair<int, int>(13, 0)));
-	this->indexes.insert(std::pair<int, std::pair<int, int>>(255, std::pair<int, int>(14,0)));
+	this->indexes[0] = {0, 0};
+	this->indexes[1] = {1, 0};
+	this->indexes[4] = {1, 0};
+	this->indexes[16] = {1, 0};
+	this->indexes[64] = {1, 0};
+	this->indexes[5] = {2, 0};
+	this->indexes[20] = {2, 0};
+	this->indexes[80] = {2, 0};
+	this->indexes[65] = {2, 0};
+	this->indexes[7] = {3, 0};
+	this->indexes[28] = {3, 0};
+	this->indexes[112] = {3, 0};
+	this->indexes[193] = {3, 0};
+	this->indexes[17] = {4, 0};
+	this->indexes[68] = {4, 0};
+	this->indexes[21] = {5, 0};
+	this->indexes[84] = {5, 0};
+	this->indexes[81] = {5, 0};
+	this->indexes[69] = {5, 0};
+	this->indexes[23] = {6, 0};
+	this->indexes[92] = {6, 0};
+	this->indexes[113] = {6, 0};
+	this->indexes[197] = {6, 0};
+	this->indexes[29] = {7, 0};
+	this->indexes[116] = {7, 0};
+	this->indexes[209] = {7, 0};
+	this->indexes[71] = {7, 0};
+	this->indexes[31] = {8, 0};
+	this->indexes[124] = {8, 0};
+	this->indexes[241] = {8, 0};
+	this->indexes[199] = {8, 0};
+	this->indexes[85] = {9, 0};
+	this->indexes[87] = {10, 0};
+	this->indexes[93] = {10, 0};
+	this->indexes[117] = {10, 0};
+	this->indexes[213] = {10, 0};
+	this->indexes[95] = {11, 0};
+	this->indexes[125] = {11, 0};
+	this->indexes[245] = {11, 0};
+	this->indexes[215] = {11, 0};
+	this->indexes[119] = {12, 0};
+	this->indexes[221] = {12, 0};
+	this->indexes[127] = {13, 0};
+	this->indexes[253] = {13, 0};
+	this->indexes[247] = {13, 0};
+	this->indexes[223] = {13, 0};
+	this->indexes[255] = {14, 0};
 
 }
 
-Tile* Map::getAutoTile(MapTileReference* reference)
+void Map::loadCache()
 {
-	return nullptr; //cf TileMap.getvalue()
+
+	for (int i = 0; i < this->getWidth(); i++) {
+		std::vector<MapTile*> row;
+		for (int j = 0; j < this->getHeight(); j++) {
+	
+			int data = this->getData(i, j);
+			MapTileReference* reference = this->references[data];
+			Tile* tile = nullptr;
+			int angle = 0;
+
+			if (reference->isAutoTile()) {
+				
+				int autoIndex = this->toAutoTileIndex(data, reference, i, j);
+				
+				//Recuperation du tile
+				std::pair<int, int> tileIndex = this->indexes[autoIndex];
+				tile = reference->getTileset()->getTile(tileIndex.first, tileIndex.second);
+
+				//Recuperation de la rotation
+				angle = this->rotations[autoIndex];
+
+			}
+			else {
+				tile = reference->getTileset()->getTile(
+					reference->getTileX(),
+					reference->getTileY()
+				);
+			}
+
+			row.push_back( new MapTile(tile, angle, reference) );
+
+		}
+		this->cache.push_back(row);
+	}
+}
+
+bool Map::isNeighbour(int data, MapTileReference* reference, int x, int y) {
+
+	bool value = this->getData(x, y) == data;
+
+	if (reference->isMergedAutoTile()) {
+		MapTileReference* otherRef = this->references[this->getData(x, y)];
+		value |= otherRef->isMergedAutoTile();
+	}
+
+	return value;
+
+}
+
+int Map::toAutoTileIndex(int data, MapTileReference* reference, int x, int y) {
+
+	int value = 0;
+	
+	bool n = this->isNeighbour(data, reference, x, y - 1);
+	bool ne = this->isNeighbour(data, reference, x + 1, y - 1);
+	bool e = this->isNeighbour(data, reference, x + 1, y);
+	bool se = this->isNeighbour(data, reference, x + 1, y + 1);
+	bool s = this->isNeighbour(data, reference, x, y + 1);
+	bool sw = this->isNeighbour(data, reference, x - 1, y + 1);
+	bool w = this->isNeighbour(data, reference, x - 1, y);
+	bool nw = this->isNeighbour(data, reference, x - 1, y - 1);
+
+	value += n ? 1 : 0;
+	value += (n && ne & e) ? 2 : 0;
+	value += e ? 4 : 0;
+	value += (e && se && s) ? 8 : 0;
+	value += s ? 16 : 0;
+	value += (s && sw && w) ? 32 : 0;
+	value += w ? 64 : 0;
+	value += (w && nw && n) ? 128 : 0;
+
+	return value;
+
+}
+int Map::getData(int x, int y) {
+	return this->data[x][y];
 }
 
 
