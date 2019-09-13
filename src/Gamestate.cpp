@@ -14,6 +14,7 @@
 #include "Tileset.h"
 #include "Map.h"
 #include "MapTile.h"
+#include "Camera.h"
 
 const int TILE_SIZE = 32;
 
@@ -28,9 +29,12 @@ Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 	this->tileset = new Tileset();
 	this->tileset2 = new Tileset();
 
-
-
 	this->map = new Map();
+
+	this->camera = new Camera();
+
+	this->camera->setPosition(0, 0);
+	this->camera->setSize(800, 600);
 
 }
 
@@ -40,12 +44,13 @@ Gamestate::~Gamestate()
 	delete this->target;
 	delete this->tileset;
 	delete this->tileset2;
+	delete this->map;
 }
 
 void Gamestate::initialize() {
 
-	int height = 20;
-	int width = 25;
+	int height = 100;
+	int width  = 100;
 
 	this->tank = new Sprite(new AnimatedTexture(this->gameHandler->getTexture(TANK_SPRITESHEET), 20), 0, 0);
 	this->tank->setXVelocity( 300 );
@@ -59,9 +64,8 @@ void Gamestate::initialize() {
 	this->tileset2->loadTileset(this->gameHandler->getTexture(TILESET2), 32);
 
 	this->map->addReference(0, this->tileset, 0, 0);
-	this->map->addReference(1, this->tileset, true);
-	this->map->addReference(2, this->tileset2, true);
-
+	this->map->addReference(1, this->tileset, false);
+	this->map->addReference(2, this->tileset2, false);
 
 	std::vector<std::vector<int>> m;
 
@@ -72,6 +76,8 @@ void Gamestate::initialize() {
 		}
 		m.push_back(row);
 	}
+
+	//m[0][0] = 1;
 
 	m[5][5] = 1;
 	m[6][5] = 1;
@@ -103,9 +109,21 @@ void Gamestate::initialize() {
 	m[16][13] = 1;
 	m[17][13] = 1;
 
+	for (int i = 20; i < 40; i++) {
+		for (int j = 20; j < 40; j++) {
+			m[i][j] = 1;
+		}
+	}
+
+	for (int i = 25; i < 35; i++) {
+		for (int j = 25; j < 35; j++) {
+			m[i][j] = 2;
+		}
+	}
+
 	this->map->setData(m, width, height);
 
-	this->map->debug();
+	//this->map->debug();
 
 }
 
@@ -146,25 +164,72 @@ void Gamestate::update(InputBuffer* input, Uint32 delta )
 		this->tank->getTexture()->animate();
 	}
 
+	/*
+	 * Camera manuelle
+	 */
+	/*
+	xVal = yVal = 0;
+	if (input->isPressed(SDL_SCANCODE_KP_6))  xVal = 600 * (delta / 1000.f);
+	if (input->isPressed(SDL_SCANCODE_KP_4))  xVal = -1 * 600 * (delta / 1000.f);
+	if (input->isPressed(SDL_SCANCODE_KP_8))  yVal = -1 * 600 * (delta / 1000.f);
+	if (input->isPressed(SDL_SCANCODE_KP_2))  yVal = 600 * (delta / 1000.f);
+	this->camera->setPosition(xVal, yVal);
+	*/
+
+	/*
+	 * Camera centre sur le sprite
+	 */
+	xVal = this->tank->getX() + (32 / 2) - this->camera->getSize().x / 2;
+	yVal = this->tank->getY() + (32 / 2) - this->camera->getSize().y / 2;
+
+	/*
+	* Limitation à la zone de jeu
+	*/
+	if (xVal < 0) xVal = 0;
+	if (yVal < 0) yVal = 0;
+	if (xVal + this->camera->getSize().x > this->map->getWidth() * 32)  xVal = this->map->getWidth() * 32 - this->camera->getSize().x;
+	if (yVal + this->camera->getSize().y > this->map->getHeight() * 32) yVal = this->map->getHeight() * 32 - this->camera->getSize().y;
+
+	this->camera->setPosition(xVal, yVal);
+
 }
 
 void Gamestate::render()
 {
 
-	
-	for (int i = 0; i < this->map->getWidth(); i++) {
-		for (int j = 0; j < this->map->getHeight(); j++) {
+	int minx, maxx, miny, maxy;
+	minx = this->camera->getPosition().x / 32;
+	miny = this->camera->getPosition().y / 32;
+	maxx = (this->camera->getPosition().x + this->camera->getSize().x) / 32;
+	maxy = (this->camera->getPosition().y + this->camera->getSize().y) / 32;
+
+	if (minx < 0) minx = 0;
+	if (miny < 0) miny = 0;
+	if (maxx >= this->map->getWidth())  maxx = this->map->getWidth() - 1;
+	if (maxy >= this->map->getHeight()) maxy = this->map->getHeight() - 1;
+
+	int count = 0;
+	for (int i = minx; i <= maxx; i++) {
+		for (int j = miny; j <= maxy; j++) {
+
 			this->target->x = i * 32;
 			this->target->y = j * 32;
 
+			this->camera->toCameraView( this->target );
+
 			MapTile* mTile = this->map->getTileAt(i, j);
 			this->gameHandler->render(mTile->getTile(), mTile->getAngle(), target);
+
+			count++;
 
 		}
 	}
 
 	this->target->x = (int)this->tank->getX();
 	this->target->y = (int)this->tank->getY();
+
+	this->camera->toCameraView(this->target);
+
 	this->gameHandler->render(this->tank, this->target);
 	
 }

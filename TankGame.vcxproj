@@ -25,6 +25,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\MapTile.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\MapTileReference.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="src\Tileset.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\MapTile.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\AnimatedTexture.h" />

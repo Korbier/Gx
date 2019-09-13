@@ -11,6 +11,7 @@ class Tile;
 class Tileset;
 class TileMap;
 class Map;
+class Camera;
 
 const float TANK_SPEED = 0;
 const std::string TANK_SPRITESHEET = "resources/tank_move_002.png";
@@ -34,12 +35,14 @@ private:
 	Display*     display     = nullptr;
 	GameHandler* gameHandler = nullptr;
 
-	Sprite* tank = nullptr;
+	Sprite*   tank   = nullptr;
 	SDL_Rect* target = nullptr;
 
 	Tileset* tileset = nullptr;
 	Tileset* tileset2 = nullptr;
-	//TileMap* tilemap = nullptr;
-
+	
 	Map* map = nullptr;
+
+	Camera* camera;
+
 };
