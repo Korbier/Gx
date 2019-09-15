@@ -7,17 +7,17 @@ class Camera
 {
 public:
 
-	void setPosition(int x, int y);
+	void setPosition(SDL_FPoint position);
 	void setSize(int width, int height);
 
 	void move(float x, float y);
-	SDL_Point getPosition();
+	SDL_FPoint getPosition();
 	SDL_Point getSize();
 
 	void toCameraView(SDL_Point * point);
 	void toCameraView(SDL_Rect * rect);
 
 private:
-	SDL_Point position;
+	SDL_FPoint position;
 	SDL_Point size;
 };

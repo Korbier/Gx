@@ -1,6 +1,7 @@
 #include "Gamestate.h"
 
 #include <vector>
+#include <cstdlib>
 
 #include "boost/log/trivial.hpp"
 #include "SDL_image.h"
@@ -33,7 +34,7 @@ Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 
 	this->camera = new Camera();
 
-	this->camera->setPosition(0, 0);
+	this->camera->setPosition({ 0.f, 0.f });
 	this->camera->setSize(800, 600);
 
 }
@@ -49,12 +50,11 @@ Gamestate::~Gamestate()
 
 void Gamestate::initialize() {
 
-	int height = 100;
-	int width  = 100;
+	int height = 300;
+	int width  = 300;
 
-	this->tank = new Sprite(new AnimatedTexture(this->gameHandler->getTexture(TANK_SPRITESHEET), 20), 0, 0);
-	this->tank->setXVelocity( 300 );
-	this->tank->setYVelocity( 300 );
+	this->tank = new Sprite(new AnimatedTexture(this->gameHandler->getTexture(TANK_SPRITESHEET), 20), { 0.f,0.f }, { 32,32 });
+	this->tank->setVelocity({ 300.f, 300.f });
 	this->tank->getTexture()->addFrame( 0, 0, 32, 32);
 	this->tank->getTexture()->addFrame(32, 0, 32, 32);
 	this->tank->getTexture()->addFrame(64, 0, 32, 32);
@@ -63,9 +63,9 @@ void Gamestate::initialize() {
 	this->tileset->loadTileset(this->gameHandler->getTexture(TILESET), 32);
 	this->tileset2->loadTileset(this->gameHandler->getTexture(TILESET2), 32);
 
-	this->map->addReference(0, this->tileset, 0, 0);
-	this->map->addReference(1, this->tileset, false);
-	this->map->addReference(2, this->tileset2, false);
+	this->map->addReference(0, this->tileset2,  false, 0, 0);
+	this->map->addReference(1, this->tileset,  true, false);
+	this->map->addReference(2, this->tileset2, false, true);
 
 	std::vector<std::vector<int>> m;
 
@@ -77,41 +77,35 @@ void Gamestate::initialize() {
 		m.push_back(row);
 	}
 
-	//m[0][0] = 1;
 
-	m[5][5] = 1;
-	m[6][5] = 1;
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+			m[0][j] = 2;
+			m[width-1][j] = 2;
+			m[i][0] = 2;
+			m[i][height-1] = 2;
+		}
+	}
 
-	m[10][10] = 2;
-	m[10][11] = 2;
-	m[10][12] = 2;
-	m[11][11] = 2;
-	m[11][12] = 2;
+	std::srand(std::time(nullptr));
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+			m[i][j] = std::rand() / ((RAND_MAX + 1u) / 3);
+			if (m[i][j] > 2) m[i][j] = 0;
+		}
+	}
 
-	m[11][13] = 2;
-	m[11][14] = 2;
-	m[11][15] = 2;
-	m[11][16] = 2;
-	m[11][17] = 2;
-
-	m[12][10] = 1;
-	m[12][11] = 1;
-	m[12][12] = 1;
-	m[13][11] = 1;
-	m[13][12] = 1;
-	m[14][12] = 1;
-	m[15][12] = 1;
-	m[16][12] = 1;
-	m[17][12] = 1;
-	m[13][13] = 1;
-	m[14][13] = 1;
-	m[15][13] = 1;
-	m[16][13] = 1;
-	m[17][13] = 1;
+	for (int i = 0; i < 30; i++) {
+		for (int j = 10; j < 40; j++) {
+			m[i][j] = 2;
+		}
+	}
 
 	for (int i = 20; i < 40; i++) {
 		for (int j = 20; j < 40; j++) {
-			m[i][j] = 1;
+			if (i != 25 && i != 34 && j != 34 && j != 25) {
+				m[i][j] = 1;
+			}
 		}
 	}
 
@@ -121,6 +115,7 @@ void Gamestate::initialize() {
 		}
 	}
 
+	
 	this->map->setData(m, width, height);
 
 	//this->map->debug();
@@ -133,12 +128,16 @@ void Gamestate::update(InputBuffer* input, Uint32 delta )
 	float xVal = 0;
 	float yVal = 0;
 
-	if (input->isPressed(SDL_SCANCODE_RIGHT)) xVal = this->tank->getXVelocity() * (delta / 1000.f);
-	if (input->isPressed(SDL_SCANCODE_LEFT))  xVal = -1 * this->tank->getXVelocity() * (delta / 1000.f);
-	if (input->isPressed(SDL_SCANCODE_UP))    yVal = -1 * this->tank->getYVelocity() * (delta / 1000.f);
-	if (input->isPressed(SDL_SCANCODE_DOWN))  yVal = this->tank->getYVelocity() * (delta / 1000.f);
+	/* Tank update from keyboard */
+	if (input->isPressed(SDL_SCANCODE_RIGHT)) xVal = this->tank->getVelocity().x * (delta / 1000.f);
+	if (input->isPressed(SDL_SCANCODE_LEFT))  xVal = -1 * this->tank->getVelocity().x * (delta / 1000.f);
+	if (input->isPressed(SDL_SCANCODE_UP))    yVal = -1 * this->tank->getVelocity().y * (delta / 1000.f);
+	if (input->isPressed(SDL_SCANCODE_DOWN))  yVal = this->tank->getVelocity().y * (delta / 1000.f);
 
-	this->tank->move(xVal, yVal);
+	this->tank->move({ xVal, yVal });
+
+	this->map->checkCollision(this->tank, { xVal, yVal });
+	this->map->boundToMap(this->tank);
 	
 	bool animateTank = true;
 
@@ -179,18 +178,18 @@ void Gamestate::update(InputBuffer* input, Uint32 delta )
 	/*
 	 * Camera centre sur le sprite
 	 */
-	xVal = this->tank->getX() + (32 / 2) - this->camera->getSize().x / 2;
-	yVal = this->tank->getY() + (32 / 2) - this->camera->getSize().y / 2;
+	xVal = this->tank->getPosition().x + (32 / 2) - this->camera->getSize().x / 2;
+	yVal = this->tank->getPosition().y + (32 / 2) - this->camera->getSize().y / 2;
 
 	/*
 	* Limitation à la zone de jeu
 	*/
-	if (xVal < 0) xVal = 0;
-	if (yVal < 0) yVal = 0;
-	if (xVal + this->camera->getSize().x > this->map->getWidth() * 32)  xVal = this->map->getWidth() * 32 - this->camera->getSize().x;
-	if (yVal + this->camera->getSize().y > this->map->getHeight() * 32) yVal = this->map->getHeight() * 32 - this->camera->getSize().y;
+	if (xVal < 0) xVal = 0.f;
+	if (yVal < 0) yVal = 0.f;
+	if (xVal + this->camera->getSize().x > this->map->getWidth() * 32)  xVal = (float) this->map->getWidth() * 32 - this->camera->getSize().x;
+	if (yVal + this->camera->getSize().y > this->map->getHeight() * 32) yVal = (float) this->map->getHeight() * 32 - this->camera->getSize().y;
 
-	this->camera->setPosition(xVal, yVal);
+	this->camera->setPosition({ xVal, yVal });
 
 }
 
@@ -198,10 +197,10 @@ void Gamestate::render()
 {
 
 	int minx, maxx, miny, maxy;
-	minx = this->camera->getPosition().x / 32;
-	miny = this->camera->getPosition().y / 32;
-	maxx = (this->camera->getPosition().x + this->camera->getSize().x) / 32;
-	maxy = (this->camera->getPosition().y + this->camera->getSize().y) / 32;
+	minx = (int) this->camera->getPosition().x / 32;
+	miny = (int) this->camera->getPosition().y / 32;
+	maxx = (int) (this->camera->getPosition().x + this->camera->getSize().x) / 32;
+	maxy = (int) (this->camera->getPosition().y + this->camera->getSize().y) / 32;
 
 	if (minx < 0) minx = 0;
 	if (miny < 0) miny = 0;
@@ -225,8 +224,8 @@ void Gamestate::render()
 		}
 	}
 
-	this->target->x = (int)this->tank->getX();
-	this->target->y = (int)this->tank->getY();
+	this->target->x = (int)this->tank->getPosition().x;
+	this->target->y = (int)this->tank->getPosition().y;
 
 	this->camera->toCameraView(this->target);
 

@@ -2,10 +2,12 @@
 
 #include "AnimatedTexture.h"
 
-Sprite::Sprite(AnimatedTexture* texture, float x, float y)
+Sprite::Sprite(AnimatedTexture* texture, SDL_FPoint position, SDL_Point size )
 {
 	this->texture = texture;
-	this->moveTo(x, y);
+	this->setPosition( position );
+	this->setVelocity({ 0, 0});
+	this->size = size;
 }
 
 Sprite::~Sprite()
@@ -13,44 +15,35 @@ Sprite::~Sprite()
 	delete this->texture;
 }
 
-float Sprite::getXVelocity()
+SDL_FPoint Sprite::getVelocity()
 {
-	return this->xVelocity;
+	return this->velocity;
 }
 
-float Sprite::getYVelocity()
+void Sprite::setVelocity(SDL_FPoint velocity)
 {
-	return this->yVelocity;
+	this->velocity = velocity;
 }
 
-void Sprite::setXVelocity(float xVelocity)
+SDL_FPoint Sprite::getPosition()
 {
-	this->xVelocity = xVelocity;
+	return this->position;
 }
 
-void Sprite::setYVelocity(float yVelocity) {
-	this->yVelocity = yVelocity;
+void Sprite::move(SDL_FPoint position)
+{
+	SDL_FPoint current = this->getPosition();
+	this->setPosition({ current.x + position.x, current.y + position.y });
 }
 
-float Sprite::getX()
+SDL_Point Sprite::getSize()
 {
-	return this->x;
+	return this->size;
 }
 
-float Sprite::getY()
+void Sprite::setPosition(SDL_FPoint position)
 {
-	return this->y;
-}
-
-void Sprite::move(float x, float y)
-{
-	this->moveTo(this->x + x, this->y + y);
-}
-
-void Sprite::moveTo(float x, float y)
-{
-	this->x = x;
-	this->y = y;
+	this->position = position;
 }
 
 float Sprite::getAngle()

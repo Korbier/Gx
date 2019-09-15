@@ -8,21 +8,22 @@
 #include "MapTileReference.h"
 #include "Tileset.h"
 #include "MapTile.h"
+#include "Sprite.h"
 
 Map::Map() {
 }
 
-void Map::addReference(int index, Tileset* tileset, int tileX, int tileY)
+void Map::addReference(int index, Tileset* tileset, bool solid, int tileX, int tileY)
 {
 	BOOST_LOG_TRIVIAL(info) << "Tileset : " << tileset;
 
-	MapTileReference* reference = new MapTileReference(tileset, tileX, tileY);
+	MapTileReference* reference = new MapTileReference(tileset, solid, tileX, tileY);
 	this->references.insert(std::pair<int, MapTileReference*>(index, reference));
 }
 
-void Map::addReference(int index, Tileset* tileset, bool merged)
+void Map::addReference(int index, Tileset* tileset, bool solid, bool merged)
 {
-	MapTileReference* reference = new MapTileReference(tileset, merged);
+	MapTileReference* reference = new MapTileReference(tileset, solid, merged);
 	this->references.insert(std::pair<int, MapTileReference*>(index, reference));
 }
 
@@ -67,6 +68,113 @@ void Map::debug() {
 MapTile* Map::getTileAt(int x, int y)
 {
 	return this->cache[x][y];
+}
+
+void Map::boundToMap(Sprite* sprite)
+{
+
+	SDL_FPoint sPosition = sprite->getPosition();
+	SDL_Point  sSize = sprite->getSize();
+
+	SDL_FPoint newPosition = { sPosition.x, sPosition.y };
+
+	if (sPosition.x < 0.f) newPosition.x = 0.f;
+	if (sPosition.y < 0.f) newPosition.y = 0.f;
+	if (sPosition.x + sSize.x > this->getWidth() * 32)  newPosition.x = (float) this->getWidth() * 32 - sSize.x;
+	if (sPosition.y + sSize.y > this->getHeight() * 32) newPosition.y = (float) this->getHeight() * 32 - sSize.y;
+
+	sprite->setPosition(newPosition);
+
+}
+
+SDL_FPoint Map::checkCollision(Sprite* sprite, SDL_FPoint decal)
+{
+
+	SDL_FPoint newDecal = { decal.x, decal.y };
+	SDL_FPoint newPosition = { sprite->getPosition().x, sprite->getPosition().y };
+
+	if (decal.x > 0) {
+		
+		float xCoord  = sprite->getPosition().x + sprite->getSize().x + decal.x;
+		float yCoord  = sprite->getPosition().y;
+		float yCoord2 = sprite->getPosition().y + sprite->getSize().y - 1;
+
+		int cellXCoord  = (int) xCoord  / 32;
+		int cellYCoord  = (int) yCoord  / 32;
+		int cellY2Coord = (int) yCoord2 / 32;
+		
+		float pixelCellXCoord = cellXCoord * 32;
+
+		int cell = this->getData(cellXCoord, cellYCoord);
+		int cell2 = this->getData(cellXCoord, cellY2Coord);
+		if (this->references[cell]->isSolid() || this->references[cell2]->isSolid()) {
+			newPosition.x = pixelCellXCoord - sprite->getSize().x;
+		}
+
+	} 
+	
+	if (decal.x < 0) {
+
+		float xCoord = sprite->getPosition().x + decal.x;
+		float yCoord = sprite->getPosition().y;
+		float yCoord2 = sprite->getPosition().y + sprite->getSize().y - 1;
+
+		int cellXCoord  = (int) xCoord / 32;
+		int cellYCoord  = (int) yCoord / 32;
+		int cellY2Coord = (int) yCoord2 / 32;
+
+		float pixelCellXCoord = cellXCoord * 32;
+
+		int cell = this->getData(cellXCoord, cellYCoord);
+		int cell2 = this->getData(cellXCoord, cellY2Coord);
+		if (this->references[cell]->isSolid() || this->references[cell2]->isSolid()) {
+			newPosition.x = pixelCellXCoord + 32;
+		}
+
+	}
+
+	if (decal.y > 0) {
+
+		float yCoord = sprite->getPosition().y + sprite->getSize().y + decal.y;
+		float xCoord = sprite->getPosition().x;
+		float xCoord2 = sprite->getPosition().x + sprite->getSize().x - 1;
+
+		int cellXCoord  = (int)xCoord / 32;
+		int cellX2Coord = (int)xCoord2 / 32;
+		int cellYCoord  = (int)yCoord / 32;
+		
+		float pixelCellYCoord = cellYCoord * 32;
+
+		int cell = this->getData(cellXCoord, cellYCoord);
+		int cell2 = this->getData(cellX2Coord, cellYCoord);
+		if (this->references[cell]->isSolid() || this->references[cell2]->isSolid()) {
+			newPosition.y = pixelCellYCoord - sprite->getSize().y;
+		}
+
+	}
+	
+	if (decal.y < 0) {
+
+		float yCoord = sprite->getPosition().y + decal.y;
+		float xCoord = sprite->getPosition().x;
+		float xCoord2 = sprite->getPosition().x + sprite->getSize().x - 1;
+
+		int cellXCoord = (int)xCoord / 32;
+		int cellX2Coord = (int)xCoord2 / 32;
+		int cellYCoord = (int)yCoord / 32;
+
+		float pixelCellYCoord = cellYCoord * 32;
+
+		int cell = this->getData(cellXCoord, cellYCoord);
+		int cell2 = this->getData(cellX2Coord, cellYCoord);
+		if (this->references[cell]->isSolid() || this->references[cell2]->isSolid()) {
+			newPosition.y = pixelCellYCoord + 32;
+		}
+
+	}
+
+	sprite->setPosition(newPosition);
+	return newDecal;
 }
 
 int Map::getWidth()
@@ -203,6 +311,8 @@ void Map::loadCache()
 			Tile* tile = nullptr;
 			int angle = 0;
 
+			//BOOST_LOG_TRIVIAL(info) << "Data : " << data;
+
 			if (reference->isAutoTile()) {
 				
 				int autoIndex = this->toAutoTileIndex(data, reference, i, j);
@@ -231,11 +341,17 @@ void Map::loadCache()
 
 bool Map::isNeighbour(int data, MapTileReference* reference, int x, int y) {
 
+	if (x < 0) return true;
+	if (y < 0) return true;
+	if (x >= this->getWidth()) return true;
+	if (y >= this->getHeight()) return true;
+
 	bool value = this->getData(x, y) == data;
 
 	if (reference->isMergedAutoTile()) {
-		MapTileReference* otherRef = this->references[this->getData(x, y)];
-		value |= otherRef->isMergedAutoTile();
+		return value |= this->getData(x, y) != 0;
+		// MapTileReference* otherRef = this->references[this->getData(x, y)];
+		// value |= otherRef->isMergedAutoTile();
 	}
 
 	return value;

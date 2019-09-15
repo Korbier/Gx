@@ -1,9 +1,8 @@
 #include "Camera.h"
 
-void Camera::setPosition(int x, int y)
+void Camera::setPosition(SDL_FPoint position)
 {
-	this->position.x = x;
-	this->position.y = y;
+	this->position = position;
 }
 
 void Camera::setSize(int width, int height)
@@ -18,7 +17,7 @@ void Camera::move(float x, float y)
 	this->position.y = this->position.y + y;
 }
 
-SDL_Point Camera::getPosition()
+SDL_FPoint Camera::getPosition()
 {
 	return this->position;
 }

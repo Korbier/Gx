@@ -9,18 +9,17 @@ class Sprite
 {
 public:
 	
-	Sprite(AnimatedTexture* texture, float x, float y );
+	Sprite(AnimatedTexture* texture, SDL_FPoint position, SDL_Point size );
 	~Sprite();
 
-	float getXVelocity();
-	float getYVelocity();
-	void setXVelocity(float xVelocity);
-	void setYVelocity(float yVelocity);
+	SDL_FPoint getVelocity();
+	void setVelocity(SDL_FPoint velocity);
 
-	float getX();
-	float getY();
-	void move(float x, float y);
-	void moveTo(float x, float y);
+	SDL_FPoint getPosition();
+	void setPosition(SDL_FPoint position);
+	void move(SDL_FPoint position);
+
+	SDL_Point getSize();
 
 	float getAngle();
 	void rotate(float angle);
@@ -29,11 +28,14 @@ public:
 	AnimatedTexture* getTexture();
 		
 private:
-	float x;
-	float y;
-	float xVelocity;
-	float yVelocity;
+	
+	SDL_FPoint position;
+	SDL_FPoint velocity;
+	SDL_Point size;
+
 	float angle;
+
 	AnimatedTexture* texture;
+
 };
 

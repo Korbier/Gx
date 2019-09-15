@@ -1,17 +1,19 @@
 #include "MapTileReference.h"
 
-MapTileReference::MapTileReference(Tileset* tileset, int x, int y)
+MapTileReference::MapTileReference(Tileset* tileset, bool solid, int x, int y)
 {
 	this->tileset = tileset;
+	this->solid = solid;
 	this->autotile = false;
 	this->merged = false;
 	this->tileX = x;
 	this->tileY = y;
 }
 
-MapTileReference::MapTileReference(Tileset* tileset, bool merged)
+MapTileReference::MapTileReference(Tileset* tileset, bool solid, bool merged)
 {
 	this->tileset = tileset;
+	this->solid = solid;
 	this->autotile = true;
 	this->merged = merged;
 }
@@ -39,4 +41,8 @@ bool MapTileReference::isAutoTile()
 bool MapTileReference::isMergedAutoTile()
 {
 	return this->merged;
+}
+
+bool MapTileReference::isSolid() {
+	return this->solid;
 }
