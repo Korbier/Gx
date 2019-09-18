@@ -24,7 +24,7 @@ public:
 
 	MapTile* getTileAt(int x, int y);
 	void boundToMap(Sprite* sprite);
-	SDL_FPoint checkCollision(Sprite* sprite, SDL_FPoint decal);
+	bool collide(Sprite* sprite);
 
 	int getWidth();
 	int getHeight();

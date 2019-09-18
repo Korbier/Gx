@@ -77,7 +77,6 @@ void Gamestate::initialize() {
 		m.push_back(row);
 	}
 
-
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 			m[0][j] = 2;
@@ -114,13 +113,13 @@ void Gamestate::initialize() {
 			m[i][j] = 2;
 		}
 	}
-
 	
 	this->map->setData(m, width, height);
 
 	//this->map->debug();
 
 }
+
 
 void Gamestate::update(InputBuffer* input, Uint32 delta )
 {
@@ -134,10 +133,22 @@ void Gamestate::update(InputBuffer* input, Uint32 delta )
 	if (input->isPressed(SDL_SCANCODE_UP))    yVal = -1 * this->tank->getVelocity().y * (delta / 1000.f);
 	if (input->isPressed(SDL_SCANCODE_DOWN))  yVal = this->tank->getVelocity().y * (delta / 1000.f);
 
-	this->tank->move({ xVal, yVal });
+	if (xVal != 0) {
+		this->tank->move({ xVal, 0 });
+		if (this->map->collide(this->tank)) {
+			this->tank->move({ -xVal, 0 });
+		}
+	}
 
-	this->map->checkCollision(this->tank, { xVal, yVal });
+	if (yVal != 0) {
+		this->tank->move({ 0, yVal });
+		if (this->map->collide(this->tank)) {
+			this->tank->move({ 0, -yVal });
+		}
+	}
+	
 	this->map->boundToMap(this->tank);
+
 	
 	bool animateTank = true;
 

@@ -87,94 +87,34 @@ void Map::boundToMap(Sprite* sprite)
 
 }
 
-SDL_FPoint Map::checkCollision(Sprite* sprite, SDL_FPoint decal)
+
+
+bool Map::collide(Sprite* sprite)
 {
 
-	SDL_FPoint newDecal = { decal.x, decal.y };
-	SDL_FPoint newPosition = { sprite->getPosition().x, sprite->getPosition().y };
+	int leftTile   = (int) sprite->getPosition().x / 32;
+	int topTile    = (int) sprite->getPosition().y / 32;
+	int rightTile  = (int) (sprite->getPosition().x + sprite->getSize().x - 1) / 32;
+	int bottomTile = (int) (sprite->getPosition().y + sprite->getSize().y - 1) / 32;
 
-	if (decal.x > 0) {
-		
-		float xCoord  = sprite->getPosition().x + sprite->getSize().x + decal.x;
-		float yCoord  = sprite->getPosition().y;
-		float yCoord2 = sprite->getPosition().y + sprite->getSize().y - 1;
+	if (leftTile < 0) leftTile = 0;
+	if (rightTile > this->getWidth()) rightTile = this->getWidth();
+	if (topTile < 0) topTile = 0;
+	if (bottomTile > this->getHeight()) bottomTile = this->getHeight();
 
-		int cellXCoord  = (int) xCoord  / 32;
-		int cellYCoord  = (int) yCoord  / 32;
-		int cellY2Coord = (int) yCoord2 / 32;
-		
-		float pixelCellXCoord = cellXCoord * 32;
-
-		int cell = this->getData(cellXCoord, cellYCoord);
-		int cell2 = this->getData(cellXCoord, cellY2Coord);
-		if (this->references[cell]->isSolid() || this->references[cell2]->isSolid()) {
-			newPosition.x = pixelCellXCoord - sprite->getSize().x;
+	for (int i = leftTile; i <= rightTile; i++)
+	{
+		for (int j = topTile; j <= bottomTile; j++)
+		{
+			int cell = this->getData(i, j);
+			if (this->references[cell]->isSolid()) {
+				return true;
+			}
 		}
-
-	} 
-	
-	if (decal.x < 0) {
-
-		float xCoord = sprite->getPosition().x + decal.x;
-		float yCoord = sprite->getPosition().y;
-		float yCoord2 = sprite->getPosition().y + sprite->getSize().y - 1;
-
-		int cellXCoord  = (int) xCoord / 32;
-		int cellYCoord  = (int) yCoord / 32;
-		int cellY2Coord = (int) yCoord2 / 32;
-
-		float pixelCellXCoord = cellXCoord * 32;
-
-		int cell = this->getData(cellXCoord, cellYCoord);
-		int cell2 = this->getData(cellXCoord, cellY2Coord);
-		if (this->references[cell]->isSolid() || this->references[cell2]->isSolid()) {
-			newPosition.x = pixelCellXCoord + 32;
-		}
-
 	}
 
-	if (decal.y > 0) {
+	return false;
 
-		float yCoord = sprite->getPosition().y + sprite->getSize().y + decal.y;
-		float xCoord = sprite->getPosition().x;
-		float xCoord2 = sprite->getPosition().x + sprite->getSize().x - 1;
-
-		int cellXCoord  = (int)xCoord / 32;
-		int cellX2Coord = (int)xCoord2 / 32;
-		int cellYCoord  = (int)yCoord / 32;
-		
-		float pixelCellYCoord = cellYCoord * 32;
-
-		int cell = this->getData(cellXCoord, cellYCoord);
-		int cell2 = this->getData(cellX2Coord, cellYCoord);
-		if (this->references[cell]->isSolid() || this->references[cell2]->isSolid()) {
-			newPosition.y = pixelCellYCoord - sprite->getSize().y;
-		}
-
-	}
-	
-	if (decal.y < 0) {
-
-		float yCoord = sprite->getPosition().y + decal.y;
-		float xCoord = sprite->getPosition().x;
-		float xCoord2 = sprite->getPosition().x + sprite->getSize().x - 1;
-
-		int cellXCoord = (int)xCoord / 32;
-		int cellX2Coord = (int)xCoord2 / 32;
-		int cellYCoord = (int)yCoord / 32;
-
-		float pixelCellYCoord = cellYCoord * 32;
-
-		int cell = this->getData(cellXCoord, cellYCoord);
-		int cell2 = this->getData(cellX2Coord, cellYCoord);
-		if (this->references[cell]->isSolid() || this->references[cell2]->isSolid()) {
-			newPosition.y = pixelCellYCoord + 32;
-		}
-
-	}
-
-	sprite->setPosition(newPosition);
-	return newDecal;
 }
 
 int Map::getWidth()
