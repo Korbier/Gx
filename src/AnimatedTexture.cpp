@@ -2,7 +2,7 @@
 
 #include "boost/log/trivial.hpp"
 
-AnimatedTexture::AnimatedTexture(SDL_Texture* texture, float delay):Texture(texture, nullptr)
+AnimatedTexture::AnimatedTexture(SDL_Texture* texture, float delay):Texture(texture)
 {
 	this->delay = delay;
 	this->timer = new Timer();
@@ -18,11 +18,11 @@ AnimatedTexture::~AnimatedTexture()
 
 void AnimatedTexture::addFrame(int x, int y, int w, int h)
 {
-	SDL_Rect* frame = new SDL_Rect();
-	frame->x = x;
-	frame->y = y;
-	frame->w = w;
-	frame->h = h;
+	SDL_Rect frame;
+	frame.x = x;
+	frame.y = y;
+	frame.w = w;
+	frame.h = h;
 	this->frames.push_back(frame);
 
 	if ( this->frames.size() == 1) {

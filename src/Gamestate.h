@@ -12,9 +12,11 @@ class Tileset;
 class TileMap;
 class Map;
 class Camera;
+class Bullet;
 
 const float TANK_SPEED = 0;
 const std::string TANK_SPRITESHEET = "resources/tank_move_002.png";
+const std::string BULLET_SPRITESHEET = "resources/sprite_bullet.png";
 const std::string TILESET_OLD = "resources/wang-blob-tilesets.png";
 const std::string TILESET = "resources/tileset_01.png";
 const std::string TILESET2 = "resources/tileset_02.png";
@@ -35,7 +37,9 @@ private:
 	Display*     display     = nullptr;
 	GameHandler* gameHandler = nullptr;
 
-	Sprite*   tank   = nullptr;
+	Sprite* tank   = nullptr;
+	Bullet* bullet = nullptr;
+	
 	SDL_Rect* target = nullptr;
 
 	Tileset* tileset = nullptr;

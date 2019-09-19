@@ -25,7 +25,7 @@ public:
 	void rotate(float angle);
 	void setAngle(float angle);
 
-	AnimatedTexture* getTexture();
+	virtual AnimatedTexture* getTexture();
 		
 private:
 	

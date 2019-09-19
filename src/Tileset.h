@@ -3,18 +3,18 @@
 #include <string>
 #include "SDL.h"
 
-class Tile;
+class Texture;
 
 class Tileset
 {
 public:
 	void loadTileset(SDL_Texture* texture, int tileSize);
-	Tile* getTile(int xIndex, int yIndex);
+	Texture* getTile(int xIndex, int yIndex);
 	int getWidth();
 	int getHeight();
 private:
 	SDL_Texture* texture = nullptr;
-	Tile*** tiles = {};
+	Texture*** tiles = {};
 	int width;
 	int height;
 	

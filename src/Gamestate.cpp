@@ -11,11 +11,11 @@
 #include "AnimatedTexture.h"
 #include "Sprite.h"
 #include "InputBuffer.h"
-#include "Tile.h"
 #include "Tileset.h"
 #include "Map.h"
 #include "MapTile.h"
 #include "Camera.h"
+#include "Bullet.h"
 
 const int TILE_SIZE = 32;
 
@@ -59,6 +59,8 @@ void Gamestate::initialize() {
 	this->tank->getTexture()->addFrame(32, 0, 32, 32);
 	this->tank->getTexture()->addFrame(64, 0, 32, 32);
 	this->tank->getTexture()->addFrame(96, 0, 32, 32);
+
+	this->bullet = new Bullet(new AnimatedTexture(this->gameHandler->getTexture(BULLET_SPRITESHEET), 20), { 0.f,0.f }, { 32,32 });
 
 	this->tileset->loadTileset(this->gameHandler->getTexture(TILESET), 32);
 	this->tileset2->loadTileset(this->gameHandler->getTexture(TILESET2), 32);
@@ -113,6 +115,11 @@ void Gamestate::initialize() {
 			m[i][j] = 2;
 		}
 	}
+
+	m[0][0] = 0;
+	m[0][1] = 0;
+	m[1][0] = 0;
+	m[1][1] = 0;
 	
 	this->map->setData(m, width, height);
 
@@ -237,9 +244,13 @@ void Gamestate::render()
 
 	this->target->x = (int)this->tank->getPosition().x;
 	this->target->y = (int)this->tank->getPosition().y;
-
 	this->camera->toCameraView(this->target);
 
 	this->gameHandler->render(this->tank, this->target);
 	
+	this->target->x = (int)this->bullet->getPosition().x;
+	this->target->y = (int)this->bullet->getPosition().y;
+	this->camera->toCameraView(this->target);
+	this->gameHandler->render(this->bullet, this->target);
+
 }

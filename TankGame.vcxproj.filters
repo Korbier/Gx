@@ -56,9 +56,6 @@
     <ClCompile Include="src\Sprite.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tile.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="src\Tileset.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -72,6 +69,12 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="src\Camera.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BulletManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bullet.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -109,9 +112,6 @@
     <ClInclude Include="src\Sprite.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="src\Tile.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="src\Tileset.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -125,6 +125,12 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="src\Camera.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulletManager.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bullet.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
@@ -142,6 +148,9 @@
       <Filter>Fichiers de ressources</Filter>
     </Image>
     <Image Include="resources\tileset_02.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="resources\sprite_bullet.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>

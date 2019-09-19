@@ -1,6 +1,5 @@
 #include "Tileset.h"
 
-#include "Tile.h"
 #include "Texture.h"
 
 void Tileset::loadTileset(SDL_Texture* sdlTexture, int tileSize )
@@ -11,25 +10,24 @@ void Tileset::loadTileset(SDL_Texture* sdlTexture, int tileSize )
 	this->width  = this->width / tileSize;
 	this->height = this->height / tileSize;
 
-	this->tiles = new Tile** [this->width];
+	this->tiles = new Texture ** [this->width];
 
 	for (int i = 0; i < this->width; i++) {
 
-		this->tiles[i] = new Tile* [this->height];
+		this->tiles[i] = new Texture* [this->height];
 
 		for (int j = 0; j < this->height; j++) {
-			SDL_Rect* rect = new SDL_Rect();
-			rect->x = i * tileSize;
-			rect->y = j * tileSize;
-			rect->w = rect->h = tileSize;
-			Texture* texture = new Texture(this->texture, rect);
-			this->tiles[i][j] = new Tile(texture);
+			SDL_Rect rect;
+			rect.x = i * tileSize;
+			rect.y = j * tileSize;
+			rect.w = rect.h = tileSize;
+			this->tiles[i][j] = new Texture(this->texture, rect);
 		}
 	}
 
 }
 
-Tile* Tileset::getTile(int xIndex, int yIndex)
+Texture* Tileset::getTile(int xIndex, int yIndex)
 {
 	return this->tiles[xIndex][yIndex];
 }

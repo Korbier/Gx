@@ -24,6 +24,6 @@ private:
 	Timer* timer = nullptr;
 	size_t index = 0;
 	float delay = 0;
-	std::vector<SDL_Rect*> frames;
+	std::vector<SDL_Rect> frames;
 };
 

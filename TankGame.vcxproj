@@ -25,6 +25,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Bullet.cpp" />
+    <ClCompile Include="src\BulletManager.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\MapTile.cpp" />
     <ClCompile Include="src\Map.cpp" />
@@ -39,11 +41,12 @@
     <ClCompile Include="src\Gamestate.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\TextureManager.cpp" />
-    <ClCompile Include="src\Tile.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Tileset.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Bullet.h" />
+    <ClInclude Include="src\BulletManager.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\MapTile.h" />
     <ClInclude Include="src\Map.h" />
@@ -58,11 +61,11 @@
     <ClInclude Include="src\InputBuffer.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\TextureManager.h" />
-    <ClInclude Include="src\Tile.h" />
     <ClInclude Include="src\Tileset.h" />
     <ClInclude Include="src\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="resources\sprite_bullet.png" />
     <Image Include="resources\tank_move_002.png" />
     <Image Include="resources\tileset.png" />
     <Image Include="resources\tileset_01.png" />

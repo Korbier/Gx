@@ -248,7 +248,7 @@ void Map::loadCache()
 	
 			int data = this->getData(i, j);
 			MapTileReference* reference = this->references[data];
-			Tile* tile = nullptr;
+			Texture* tile = nullptr;
 			int angle = 0;
 
 			//BOOST_LOG_TRIVIAL(info) << "Data : " << data;

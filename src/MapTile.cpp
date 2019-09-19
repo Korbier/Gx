@@ -1,13 +1,13 @@
 #include "MapTile.h"
 
-MapTile::MapTile(Tile* tile, int angle, bool solid)
+MapTile::MapTile(Texture* tile, int angle, bool solid)
 {
 	this->tile = tile;
 	this->angle = angle;
 	this->solid = solid;
 }
 
-Tile* MapTile::getTile()
+Texture* MapTile::getTile()
 {
 	return this->tile;
 }
