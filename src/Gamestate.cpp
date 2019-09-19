@@ -60,6 +60,7 @@ void Gamestate::initialize() {
 	this->tank->getTexture()->addFrame(96, 0, 32, 32);
 
 	this->bullet = new Bullet(new AnimatedTexture(this->gameHandler->getTexture(BULLET_SPRITESHEET), 20), { 0.f,0.f }, { 32,32 });
+	this->bullet->getTexture()->addFrame(0, 0, 32, 32);
 
 	this->tileset->loadTileset(this->gameHandler->getTexture(TILESET), 32);
 	this->tileset2->loadTileset(this->gameHandler->getTexture(TILESET2), 32);
