@@ -41,7 +41,6 @@ Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 
 Gamestate::~Gamestate()
 {
-	delete this->tank;
 	delete this->target;
 	delete this->tileset;
 	delete this->tileset2;
@@ -128,17 +127,17 @@ void Gamestate::initialize() {
 }
 
 
-void Gamestate::update(InputBuffer* input, Uint32 delta )
+void Gamestate::update(InputBuffer input, Uint32 delta )
 {
 	
 	float xVal = 0;
 	float yVal = 0;
 
 	/* Tank update from keyboard */
-	if (input->isPressed(SDL_SCANCODE_RIGHT)) xVal = this->tank->getVelocity().x * (delta / 1000.f);
-	if (input->isPressed(SDL_SCANCODE_LEFT))  xVal = -1 * this->tank->getVelocity().x * (delta / 1000.f);
-	if (input->isPressed(SDL_SCANCODE_UP))    yVal = -1 * this->tank->getVelocity().y * (delta / 1000.f);
-	if (input->isPressed(SDL_SCANCODE_DOWN))  yVal = this->tank->getVelocity().y * (delta / 1000.f);
+	if (input.isPressed(SDL_SCANCODE_RIGHT)) xVal = this->tank->getVelocity().x * (delta / 1000.f);
+	if (input.isPressed(SDL_SCANCODE_LEFT))  xVal = -1 * this->tank->getVelocity().x * (delta / 1000.f);
+	if (input.isPressed(SDL_SCANCODE_UP))    yVal = -1 * this->tank->getVelocity().y * (delta / 1000.f);
+	if (input.isPressed(SDL_SCANCODE_DOWN))  yVal = this->tank->getVelocity().y * (delta / 1000.f);
 
 	if (xVal != 0) {
 		this->tank->move({ xVal, 0 });

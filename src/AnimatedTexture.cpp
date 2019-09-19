@@ -5,8 +5,7 @@
 AnimatedTexture::AnimatedTexture(SDL_Texture* texture, float delay):Texture(texture)
 {
 	this->delay = delay;
-	this->timer = new Timer();
-	this->timer->start();
+	this->timer.start();
 }
 
 AnimatedTexture::AnimatedTexture(SDL_Texture* texture) :AnimatedTexture(texture, 0.0) {}
@@ -43,7 +42,7 @@ float AnimatedTexture::getDelay()
 void AnimatedTexture::animate()
 {
 
-	if ( this->timer->getTicks() > this->getDelay()) {
+	if ( this->timer.getTicks() > this->getDelay()) {
 
 		this->index++;
 
@@ -52,18 +51,18 @@ void AnimatedTexture::animate()
 		}
 
 		this->crop(this->frames.at(this->index));
-		this->timer->stop();
-		this->timer->start();
+		this->timer.stop();
+		this->timer.start();
 	}
 	
 }
 
 void AnimatedTexture::play()
 {
-	this->timer->unpause();
+	this->timer.unpause();
 }
 
 void AnimatedTexture::pause()
 {
-	this->timer->pause();
+	this->timer.pause();
 }

@@ -21,7 +21,7 @@ public:
 	void play();
 	void pause();
 private:
-	Timer* timer = nullptr;
+	Timer timer;
 	size_t index = 0;
 	float delay = 0;
 	std::vector<SDL_Rect> frames;

@@ -30,7 +30,7 @@ public:
 
 	void initialize();
 
-	void update(InputBuffer* input, Uint32 delta);
+	void update(InputBuffer input, Uint32 delta);
 	void render();
 
 private:

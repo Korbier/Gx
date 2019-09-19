@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SDL.h"
+#include "InputBuffer.h"
 
 const int SCREEN_WIDTH      = 800;
 const int SCREEN_HEIGHT     = 600;
@@ -12,7 +13,6 @@ class Display;
 class Gamestate;
 class Timer;
 class TextureManager;
-class InputBuffer;
 
 class Game
 {
@@ -35,7 +35,7 @@ private:
 	Gamestate*      state     = nullptr; //TODO Mettre en place le gamestate manager
 	GameHandler*    gHandler  = nullptr;
 	TextureManager* textureManager = nullptr;
-	InputBuffer*    inputBuffer = nullptr;
+	InputBuffer     inputBuffer;
 	
 	void input();
 	void render();

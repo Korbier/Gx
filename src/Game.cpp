@@ -21,13 +21,11 @@ Game::Game()
 	this->textureManager = new TextureManager(this->display);
 	this->gHandler       = new GameHandler(this->display, this);
 	this->state          = new Gamestate(this->display, this->gHandler);
-	this->inputBuffer = new InputBuffer();
 }
 
 Game::~Game()
 {
 	
-	delete this->inputBuffer;
 	delete this->textureManager;
 	delete this->display;
 	delete this->state;
@@ -110,8 +108,8 @@ void Game::input()
 	while (SDL_PollEvent(&event)) {
 
 		switch (event.type) {
-		case SDL_KEYDOWN: this->inputBuffer->press(event.key.keysym.scancode); break;
-		case SDL_KEYUP:   this->inputBuffer->release(event.key.keysym.scancode); break;
+		case SDL_KEYDOWN: this->inputBuffer.press(event.key.keysym.scancode); break;
+		case SDL_KEYUP:   this->inputBuffer.release(event.key.keysym.scancode); break;
 		case SDL_QUIT:    this->stop(); break;
 		}
 
