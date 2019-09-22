@@ -40,6 +40,30 @@ void Map::setData(std::vector<std::vector<int>> data, int width, int height)
 
 }
 
+void Map::setData(int x, int y, int value)
+{
+	this->data[x][y] = value;
+	
+	this->cache[x-1][y-1] = this->toMapTile(x-1, y-1, this->data[x - 1][y - 1]);
+	this->cache[x-1][y]   = this->toMapTile(x-1, y, this->data[x - 1][y]);
+	this->cache[x-1][y+1] = this->toMapTile(x-1, y+1, this->data[x - 1][y + 1]);
+
+	this->cache[x][y-1] = this->toMapTile(x, y-1, this->data[x][y - 1]);
+	this->cache[x][y]   = this->toMapTile(x, y, this->data[x][y]);
+	this->cache[x][y+1] = this->toMapTile(x, y+1, this->data[x][y + 1]);
+
+	this->cache[x + 1][y - 1] = this->toMapTile(x+1, y-1, this->data[x + 1][y - 1]);
+	this->cache[x + 1][y] = this->toMapTile(x+1, y, this->data[x + 1][y]);
+	this->cache[x + 1][y+1] = this->toMapTile(x+1, y+1, this->data[x + 1][y + 1]);
+
+}
+
+void Map::toMapView(SDL_Point* point)
+{
+	point->x = point->x / 32;
+	point->y = point->y / 32;
+}
+
 void Map::debug() {
 
 	std::stringstream messageMap;
@@ -239,41 +263,45 @@ void Map::loadIndexes()
 
 }
 
+MapTile* Map::toMapTile(int x, int y, int data) {
+
+	MapTileReference* reference = this->references[data];
+	Texture* tile = nullptr;
+	int angle = 0;
+
+	//BOOST_LOG_TRIVIAL(info) << "Data : " << data;
+
+	if (reference->isAutoTile()) {
+
+		int autoIndex = this->toAutoTileIndex(data, reference, x, y);
+
+		//Recuperation du tile
+		std::pair<int, int> tileIndex = this->indexes[autoIndex];
+		tile = reference->getTileset()->getTile(tileIndex.first, tileIndex.second);
+
+		//Recuperation de la rotation
+		angle = this->rotations[autoIndex];
+
+	}
+	else {
+		tile = reference->getTileset()->getTile(
+			reference->getTileX(),
+			reference->getTileY()
+		);
+	}
+
+	return new MapTile(tile, angle, reference);
+
+}
+
 void Map::loadCache()
 {
 
 	for (int i = 0; i < this->getWidth(); i++) {
 		std::vector<MapTile*> row;
 		for (int j = 0; j < this->getHeight(); j++) {
-	
 			int data = this->getData(i, j);
-			MapTileReference* reference = this->references[data];
-			Texture* tile = nullptr;
-			int angle = 0;
-
-			//BOOST_LOG_TRIVIAL(info) << "Data : " << data;
-
-			if (reference->isAutoTile()) {
-				
-				int autoIndex = this->toAutoTileIndex(data, reference, i, j);
-				
-				//Recuperation du tile
-				std::pair<int, int> tileIndex = this->indexes[autoIndex];
-				tile = reference->getTileset()->getTile(tileIndex.first, tileIndex.second);
-
-				//Recuperation de la rotation
-				angle = this->rotations[autoIndex];
-
-			}
-			else {
-				tile = reference->getTileset()->getTile(
-					reference->getTileX(),
-					reference->getTileY()
-				);
-			}
-
-			row.push_back( new MapTile(tile, angle, reference) );
-
+			row.push_back( this->toMapTile(i, j, data) );
 		}
 		this->cache.push_back(row);
 	}

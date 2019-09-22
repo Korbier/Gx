@@ -17,6 +17,8 @@ public:
 	void toCameraView(SDL_Point * point);
 	void toCameraView(SDL_Rect * rect);
 
+	void toWorldView(SDL_Point* point);
+
 private:
 	SDL_FPoint position;
 	SDL_Point size;

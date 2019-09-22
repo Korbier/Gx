@@ -78,21 +78,13 @@ void Gamestate::initialize() {
 		}
 		m.push_back(row);
 	}
-
+	/*
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 			m[0][j] = 2;
 			m[width-1][j] = 2;
 			m[i][0] = 2;
 			m[i][height-1] = 2;
-		}
-	}
-
-	std::srand(std::time(nullptr));
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
-			m[i][j] = std::rand() / ((RAND_MAX + 1u) / 3);
-			if (m[i][j] > 2) m[i][j] = 0;
 		}
 	}
 
@@ -116,11 +108,19 @@ void Gamestate::initialize() {
 		}
 	}
 
+	for (int i = 0; i < 34; i++) {
+		m[i][30] = 1;
+		m[i][31] = 1;
+		m[i][32] = 1;
+	}
+
 	m[0][0] = 0;
 	m[0][1] = 0;
 	m[1][0] = 0;
 	m[1][1] = 0;
 	
+	*/
+
 	this->map->setData(m, width, height);
 
 	//this->map->debug();
@@ -131,6 +131,15 @@ void Gamestate::initialize() {
 void Gamestate::update(InputBuffer input, Uint32 delta )
 {
 	
+	if (input.isMouseLeftPressed()) {
+		SDL_Point mouse;
+		input.mousePosition( &mouse );
+		camera->toWorldView( &mouse );
+		map->toMapView(&mouse);
+		BOOST_LOG_TRIVIAL(info) << "Left pressed on cell " << mouse.x << ", " << mouse.y;
+		map->setData(mouse.x, mouse.y, 1);
+	}
+
 	float xVal = 0;
 	float yVal = 0;
 

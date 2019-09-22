@@ -111,9 +111,21 @@ void Game::input()
 		case SDL_KEYDOWN: this->inputBuffer.press(event.key.keysym.scancode); break;
 		case SDL_KEYUP:   this->inputBuffer.release(event.key.keysym.scancode); break;
 		case SDL_QUIT:    this->stop(); break;
+		case SDL_MOUSEBUTTONDOWN: 
+			switch (event.button.button) {
+				case SDL_BUTTON_LEFT: this->inputBuffer.pressMouseLeft(); break;
+			}
+			break;
+		case SDL_MOUSEBUTTONUP:
+			switch (event.button.button) {
+				case SDL_BUTTON_LEFT: this->inputBuffer.releaseMouseLeft(); break;
+			}
+			break;
 		}
 
 	}
+
+	this->inputBuffer.updateMouse();
 
 }
 
