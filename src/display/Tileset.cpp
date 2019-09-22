@@ -1,6 +1,6 @@
 #include "Tileset.h"
 
-#include "Texture.h"
+#include "texture/Texture.h"
 
 void Tileset::loadTileset(SDL_Texture* sdlTexture, int tileSize )
 {

@@ -29,18 +29,18 @@ SDL_Point Camera::getSize()
 
 void Camera::toCameraView(SDL_Point* point)
 {
-	point->x = point->x - this->getPosition().x;
-	point->y = point->y - this->getPosition().y;
+	point->x = point->x - (int) this->getPosition().x;
+	point->y = point->y - (int) this->getPosition().y;
 }
 
 void Camera::toCameraView(SDL_Rect* rect)
 {
-	rect->x = rect->x - this->getPosition().x;
-	rect->y = rect->y - this->getPosition().y;
+	rect->x = rect->x - (int) this->getPosition().x;
+	rect->y = rect->y - (int) this->getPosition().y;
 }
 
 void Camera::toWorldView(SDL_Point* point)
 {
-	point->x = point->x + this->getPosition().x;
-	point->y = point->y + this->getPosition().y;
+	point->x = point->x + (int) this->getPosition().x;
+	point->y = point->y + (int) this->getPosition().y;
 }

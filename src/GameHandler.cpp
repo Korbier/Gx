@@ -2,10 +2,10 @@
 
 #include "Game.h"
 #include "Display.h"
-#include "TextureManager.h"
-#include "Sprite.h"
-#include "AnimatedTexture.h"
-#include "Texture.h"
+#include "display/texture/TextureManager.h"
+#include "display/Sprite.h"
+#include "display/texture/AnimatedTexture.h"
+#include "display/texture/Texture.h"
 
 GameHandler::GameHandler(Display* display, Game* game)
 {

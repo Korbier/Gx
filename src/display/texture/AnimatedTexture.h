@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <vector>
 #include "Texture.h"
-#include "Timer.h"
+#include "../../utils/Timer.h"
 
 class AnimatedTexture : public Texture
 {

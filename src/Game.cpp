@@ -9,10 +9,10 @@
 
 #include "GameHandler.h"
 #include "Display.h"
-#include "Gamestate.h"
-#include "Timer.h"
-#include "TextureManager.h"
-#include "InputBuffer.h"
+#include "gamestate/Gamestate.h"
+#include "utils/Timer.h"
+#include "display/texture/TextureManager.h"
+#include "input/InputBuffer.h"
 
 Game::Game()
 {
@@ -20,7 +20,8 @@ Game::Game()
 	this->display        = new Display("MyGame", SCREEN_WIDTH, SCREEN_HEIGHT, false, false);
 	this->textureManager = new TextureManager(this->display);
 	this->gHandler       = new GameHandler(this->display, this);
-	this->state          = new Gamestate(this->display, this->gHandler);
+	this->inputBuffer    = {};
+	this->gStateManager  = {};
 }
 
 Game::~Game()
@@ -28,7 +29,6 @@ Game::~Game()
 	
 	delete this->textureManager;
 	delete this->display;
-	delete this->state;
 	delete this->gHandler;
 
 	BOOST_LOG_TRIVIAL(info) << "Game end";
@@ -44,7 +44,7 @@ void Game::run()
 	IMG_Init(IMG_INIT_PNG);
 
 	this->display->show();
-	this->state->initialize();
+	this->gStateManager.push(new Gamestate(this->display, this->gHandler));
 	
 	BOOST_LOG_TRIVIAL(info) << "Entering game loop";
 	Uint32 lastMeasure = SDL_GetTicks();
@@ -60,7 +60,7 @@ void Game::run()
 
 		Uint32 currentMeasure = SDL_GetTicks();
 
-		this->state->update( this->inputBuffer, currentMeasure - lastMeasure );
+		this->gStateManager.update(this->inputBuffer, currentMeasure - lastMeasure);
 		this->render();
 
 		fps++;
@@ -132,6 +132,6 @@ void Game::input()
 void Game::render()
 {
 	SDL_RenderClear(this->display->getRenderer());
-	this->state->render();
+	this->gStateManager.render();
 	SDL_RenderPresent(this->display->getRenderer());
 }

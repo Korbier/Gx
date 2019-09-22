@@ -6,9 +6,9 @@
 
 #include "boost/log/trivial.hpp"
 #include "MapTileReference.h"
-#include "Tileset.h"
+#include "../Tileset.h"
 #include "MapTile.h"
-#include "Sprite.h"
+#include "../Sprite.h"
 
 Map::Map() {
 }
@@ -44,17 +44,21 @@ void Map::setData(int x, int y, int value)
 {
 	this->data[x][y] = value;
 	
-	this->cache[x-1][y-1] = this->toMapTile(x-1, y-1, this->data[x - 1][y - 1]);
-	this->cache[x-1][y]   = this->toMapTile(x-1, y, this->data[x - 1][y]);
-	this->cache[x-1][y+1] = this->toMapTile(x-1, y+1, this->data[x - 1][y + 1]);
+	if (x > 0) {
+		if ( y > 0 ) this->cache[x - 1][y - 1] = this->toMapTile(x - 1, y - 1, this->data[x - 1][y - 1]);
+		this->cache[x - 1][y] = this->toMapTile(x - 1, y, this->data[x - 1][y]);
+		if ( y < this->getHeight() - 1 ) this->cache[x - 1][y + 1] = this->toMapTile(x - 1, y + 1, this->data[x - 1][y + 1]);
+	}
 
-	this->cache[x][y-1] = this->toMapTile(x, y-1, this->data[x][y - 1]);
+	if (y > 0) this->cache[x][y-1] = this->toMapTile(x, y-1, this->data[x][y - 1]);
 	this->cache[x][y]   = this->toMapTile(x, y, this->data[x][y]);
-	this->cache[x][y+1] = this->toMapTile(x, y+1, this->data[x][y + 1]);
+	if (y < this->getHeight() - 1) this->cache[x][y+1] = this->toMapTile(x, y+1, this->data[x][y + 1]);
 
-	this->cache[x + 1][y - 1] = this->toMapTile(x+1, y-1, this->data[x + 1][y - 1]);
-	this->cache[x + 1][y] = this->toMapTile(x+1, y, this->data[x + 1][y]);
-	this->cache[x + 1][y+1] = this->toMapTile(x+1, y+1, this->data[x + 1][y + 1]);
+	if (x < this->getWidth() - 1) {
+		if (y > 0) this->cache[x + 1][y - 1] = this->toMapTile(x + 1, y - 1, this->data[x + 1][y - 1]);
+		this->cache[x + 1][y] = this->toMapTile(x + 1, y, this->data[x + 1][y]);
+		if (y < this->getHeight() - 1) this->cache[x + 1][y + 1] = this->toMapTile(x + 1, y + 1, this->data[x + 1][y + 1]);
+	}
 
 }
 

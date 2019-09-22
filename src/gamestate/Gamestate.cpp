@@ -6,16 +6,15 @@
 #include "boost/log/trivial.hpp"
 #include "SDL_image.h"
 
-#include "Display.h"
-#include "GameHandler.h"
-#include "AnimatedTexture.h"
-#include "Sprite.h"
-#include "InputBuffer.h"
-#include "Tileset.h"
-#include "Map.h"
-#include "MapTile.h"
-#include "Camera.h"
-#include "Bullet.h"
+#include "../Display.h"
+#include "../GameHandler.h"
+#include "../display/texture/AnimatedTexture.h"
+#include "../display/Sprite.h"
+#include "../input/InputBuffer.h"
+#include "../display/Tileset.h"
+#include "../display/map/Map.h"
+#include "../display/map/MapTile.h"
+#include "../display/Camera.h"
 
 const int TILE_SIZE = 32;
 
@@ -58,9 +57,6 @@ void Gamestate::initialize() {
 	this->tank->getTexture()->addFrame(32, 0, 32, 32);
 	this->tank->getTexture()->addFrame(64, 0, 32, 32);
 	this->tank->getTexture()->addFrame(96, 0, 32, 32);
-
-	this->bullet = new Bullet(new AnimatedTexture(this->gameHandler->getTexture(BULLET_SPRITESHEET), 20), { 0.f,0.f }, { 32,32 });
-	this->bullet->getTexture()->addFrame(0, 0, 32, 32);
 
 	this->tileset->loadTileset(this->gameHandler->getTexture(TILESET), 32);
 	this->tileset2->loadTileset(this->gameHandler->getTexture(TILESET2), 32);
@@ -136,7 +132,6 @@ void Gamestate::update(InputBuffer input, Uint32 delta )
 		input.mousePosition( &mouse );
 		camera->toWorldView( &mouse );
 		map->toMapView(&mouse);
-		BOOST_LOG_TRIVIAL(info) << "Left pressed on cell " << mouse.x << ", " << mouse.y;
 		map->setData(mouse.x, mouse.y, 1);
 	}
 
@@ -257,9 +252,4 @@ void Gamestate::render()
 
 	this->gameHandler->render(this->tank, this->target);
 	
-	this->target->x = (int)this->bullet->getPosition().x;
-	this->target->y = (int)this->bullet->getPosition().y;
-	this->camera->toCameraView(this->target);
-	this->gameHandler->render(this->bullet, this->target);
-
 }
