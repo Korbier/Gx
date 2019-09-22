@@ -6,6 +6,7 @@
 #include "boost/log/trivial.hpp"
 #include "SDL_image.h"
 
+#include "../Game.h"
 #include "../Display.h"
 #include "../GameHandler.h"
 #include "../display/texture/AnimatedTexture.h"
@@ -34,7 +35,7 @@ Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 	this->camera = new Camera();
 
 	this->camera->setPosition({ 0.f, 0.f });
-	this->camera->setSize(800, 600);
+	this->camera->setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 }
 
