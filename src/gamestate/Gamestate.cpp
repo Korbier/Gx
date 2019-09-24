@@ -14,7 +14,7 @@
 #include "../input/InputBuffer.h"
 #include "../display/Tileset.h"
 #include "../display/map/Map.h"
-#include "../display/map/MapTile.h"
+#include "../display/map/Tile.h"
 #include "../display/Camera.h"
 
 const int TILE_SIZE = 32;
@@ -239,7 +239,7 @@ void Gamestate::render()
 
 			this->camera->toCameraView( this->target );
 
-			MapTile* mTile = this->map->getTileAt(i, j);
+			Tile* mTile = this->map->getTileAt(i, j);
 			this->gameHandler->render(mTile->getTile(), mTile->getAngle(), target);
 
 			count++;

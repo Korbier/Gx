@@ -2,11 +2,11 @@
 
 class Tileset;
 
-class MapTileReference
+class TileReference
 {
 public:
-	MapTileReference(Tileset* tilset, bool solid, int x, int y);
-	MapTileReference(Tileset* tilset, bool solid, bool merged);
+	TileReference(Tileset* tilset, bool solid, int x, int y);
+	TileReference(Tileset* tilset, bool solid, bool merged);
 
 	Tileset* getTileset();
 	

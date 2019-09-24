@@ -2,10 +2,10 @@
 
 class Texture;
 
-class MapTile
+class Tile
 {
 public:
-	MapTile(Texture* tile, int angle, bool solid);
+	Tile(Texture* tile, int angle, bool solid);
 	Texture* getTile();
 	int getAngle();
 	bool isSolid();

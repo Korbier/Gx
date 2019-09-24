@@ -5,9 +5,9 @@
 #include <string>
 
 #include "boost/log/trivial.hpp"
-#include "MapTileReference.h"
+#include "TileReference.h"
 #include "../Tileset.h"
-#include "MapTile.h"
+#include "Tile.h"
 #include "../Sprite.h"
 
 Map::Map() {
@@ -17,14 +17,14 @@ void Map::addReference(int index, Tileset* tileset, bool solid, int tileX, int t
 {
 	BOOST_LOG_TRIVIAL(info) << "Tileset : " << tileset;
 
-	MapTileReference* reference = new MapTileReference(tileset, solid, tileX, tileY);
-	this->references.insert(std::pair<int, MapTileReference*>(index, reference));
+	TileReference* reference = new TileReference(tileset, solid, tileX, tileY);
+	this->references.insert(std::pair<int, TileReference*>(index, reference));
 }
 
 void Map::addReference(int index, Tileset* tileset, bool solid, bool merged)
 {
-	MapTileReference* reference = new MapTileReference(tileset, solid, merged);
-	this->references.insert(std::pair<int, MapTileReference*>(index, reference));
+	TileReference* reference = new TileReference(tileset, solid, merged);
+	this->references.insert(std::pair<int, TileReference*>(index, reference));
 }
 
 void Map::setData(std::vector<std::vector<int>> data, int width, int height)
@@ -93,7 +93,7 @@ void Map::debug() {
 	BOOST_LOG_TRIVIAL(info) << "\n" << message.str();
 
 }
-MapTile* Map::getTileAt(int x, int y)
+Tile* Map::getTileAt(int x, int y)
 {
 	return this->cache[x][y];
 }
@@ -267,9 +267,9 @@ void Map::loadIndexes()
 
 }
 
-MapTile* Map::toMapTile(int x, int y, int data) {
+Tile* Map::toMapTile(int x, int y, int data) {
 
-	MapTileReference* reference = this->references[data];
+	TileReference* reference = this->references[data];
 	Texture* tile = nullptr;
 	int angle = 0;
 
@@ -294,7 +294,7 @@ MapTile* Map::toMapTile(int x, int y, int data) {
 		);
 	}
 
-	return new MapTile(tile, angle, reference);
+	return new Tile(tile, angle, reference);
 
 }
 
@@ -302,7 +302,7 @@ void Map::loadCache()
 {
 
 	for (int i = 0; i < this->getWidth(); i++) {
-		std::vector<MapTile*> row;
+		std::vector<Tile*> row;
 		for (int j = 0; j < this->getHeight(); j++) {
 			int data = this->getData(i, j);
 			row.push_back( this->toMapTile(i, j, data) );
@@ -311,7 +311,7 @@ void Map::loadCache()
 	}
 }
 
-bool Map::isNeighbour(int data, MapTileReference* reference, int x, int y) {
+bool Map::isNeighbour(int data, TileReference* reference, int x, int y) {
 
 	if (x < 0) return true;
 	if (y < 0) return true;
@@ -330,7 +330,7 @@ bool Map::isNeighbour(int data, MapTileReference* reference, int x, int y) {
 
 }
 
-int Map::toAutoTileIndex(int data, MapTileReference* reference, int x, int y) {
+int Map::toAutoTileIndex(int data, TileReference* reference, int x, int y) {
 
 	int value = 0;
 	

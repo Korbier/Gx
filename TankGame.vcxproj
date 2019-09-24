@@ -32,9 +32,9 @@
     <ClCompile Include="src\GameContext.cpp" />
     <ClCompile Include="src\gamestate\GameStateManager.cpp" />
     <ClCompile Include="src\display\Camera.cpp" />
-    <ClCompile Include="src\display\map\MapTile.cpp" />
+    <ClCompile Include="src\display\map\Tile.cpp" />
     <ClCompile Include="src\display\map\Map.cpp" />
-    <ClCompile Include="src\display\map\MapTileReference.cpp" />
+    <ClCompile Include="src\display\map\TileReference.cpp" />
     <ClCompile Include="src\display\texture\AnimatedTexture.cpp" />
     <ClCompile Include="src\display\Sprite.cpp" />
     <ClCompile Include="src\input\InputBuffer.cpp" />
@@ -52,11 +52,11 @@
     <ClInclude Include="src\display\Camera.h" />
     <ClInclude Include="src\GameContext.h" />
     <ClInclude Include="src\gamestate\GameStateManager.h" />
-    <ClInclude Include="src\display\map\MapTile.h" />
+    <ClInclude Include="src\display\map\Tile.h" />
     <ClInclude Include="src\display\map\Map.h" />
     <ClInclude Include="src\display\texture\AnimatedTexture.h" />
     <ClInclude Include="src\Display.h" />
-    <ClInclude Include="src\display\map\MapTileReference.h" />
+    <ClInclude Include="src\display\map\TileReference.h" />
     <ClInclude Include="src\display\Sprite.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameHandler.h" />
