@@ -1,6 +1,6 @@
 #pragma once
 
-class Texture;
+#include "display/texture/Texture.h"
 
 class Tile
 {

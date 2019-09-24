@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include "SDL.h"
+#include <SDL.h>
 
-class Texture;
+#include "display/texture/Texture.h"
 
 class Tileset
 {
@@ -15,8 +15,8 @@ public:
 private:
 	SDL_Texture* texture = nullptr;
 	Texture*** tiles = {};
-	int width;
-	int height;
+	int width = 0;
+	int height = 0;
 	
 };
 

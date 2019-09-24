@@ -1,10 +1,5 @@
 #include "TextureManager.h"
 
-#include "SDL_image.h"
-#include "boost/log/trivial.hpp"
-
-#include "Display.h"
-
 TextureManager::TextureManager( Display* display )
 {
 	this->display = display;

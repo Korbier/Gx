@@ -3,18 +3,20 @@
 #include <map>
 #include <vector>
 #include <utility>
+#include <sstream>
+#include <string>
 
-#include "SDL.h"
+#include <SDL.h>
 
-class TileReference;
-class Tileset;
-class Tile;
-class Sprite;
+#include "boost/log/trivial.hpp"
+
+#include "display/map/Tile.h"
+#include "display/map/TileReference.h"
+#include "display/Tileset.h"
+#include "display/Sprite.h"
 
 class Map {
 public:
-	
-	Map();
 
 	void addReference(int index, Tileset* tileset, bool solid, int tileX, int tileY);
 	void addReference(int index, Tileset* tileset, bool solid, bool merged);

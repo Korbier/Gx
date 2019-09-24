@@ -1,10 +1,12 @@
 #pragma once
 
 #include <stack>
-#include "SDL.h"
+
+#include <SDL.h>
+
+#include "input/InputBuffer.h"
 
 class Gamestate;
-class InputBuffer;
 
 class GameStateManager
 {

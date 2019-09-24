@@ -1,7 +1,5 @@
 #include "Sprite.h"
 
-#include "AnimatedTexture.h"
-
 Sprite::Sprite(AnimatedTexture* texture, SDL_FPoint position, SDL_Point size )
 {
 	this->texture = texture;

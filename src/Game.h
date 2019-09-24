@@ -1,20 +1,24 @@
 #pragma once
 
-#include "SDL.h"
+#include <sstream>
+
+#include <SDL.h>
+#include <SDL_image.h>
+
+#include "boost/log/trivial.hpp"
+
+#include "Display.h"
+#include "GameHandler.h"
+#include "display/texture/TextureManager.h"
 #include "input/InputBuffer.h"
 #include "gamestate/GameStateManager.h"
+#include "gamestate/Gamestate.h"
+#include "utils/Timer.h"
 
-const int SCREEN_WIDTH      = 800;
-const int SCREEN_HEIGHT     = 600;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
 const int FRAMES_PER_SECOND = 30;
-const int TICKS_PER_FRAME   = 1000 / FRAMES_PER_SECOND;
-
-class GameHandler;
-class Display;
-class GameStateManager;
-class Gamestate;
-class Timer;
-class TextureManager;
+const int TICKS_PER_FRAME = 1000 / FRAMES_PER_SECOND;
 
 class Game
 {

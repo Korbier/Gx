@@ -1,9 +1,7 @@
 #pragma once
 
-#include "SDL.h"
-
-class Texture;
-class AnimatedTexture;
+#include <SDL.h>
+#include "display/texture/AnimatedTexture.h"
 
 class Sprite
 {

@@ -1,7 +1,6 @@
 #include "GameStateManager.h"
 
-#include "Gamestate.h"
-#include "../input/InputBuffer.h"
+#include "gamestate/Gamestate.h"
 
 void GameStateManager::push(Gamestate* gstate)
 {

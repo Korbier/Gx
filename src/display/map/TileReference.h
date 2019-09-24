@@ -1,6 +1,6 @@
 #pragma once
 
-class Tileset;
+#include "display/Tileset.h"
 
 class TileReference
 {

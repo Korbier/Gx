@@ -2,6 +2,7 @@
 
 Texture::Texture(SDL_Texture* texture) {
 	this->texture = texture;
+	this->textureCrop = {};
 }
 
 Texture::Texture(SDL_Texture* texture, SDL_Rect crop):Texture(texture)

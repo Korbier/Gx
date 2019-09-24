@@ -1,7 +1,5 @@
 #include "AnimatedTexture.h"
 
-#include "boost/log/trivial.hpp"
-
 AnimatedTexture::AnimatedTexture(SDL_Texture* texture, float delay):Texture(texture)
 {
 	this->delay = delay;

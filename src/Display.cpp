@@ -1,9 +1,5 @@
 #include "Display.h"
 
-#include <iostream>
-#include <string>
-#include "boost/log/trivial.hpp"
-
 Display::Display(const char* title, int width, int height, bool fullscreen, bool vsync)
 {
 

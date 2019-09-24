@@ -1,18 +1,5 @@
 #include "Map.h"
 
-#include <vector>
-#include <sstream>
-#include <string>
-
-#include "boost/log/trivial.hpp"
-#include "TileReference.h"
-#include "../Tileset.h"
-#include "Tile.h"
-#include "../Sprite.h"
-
-Map::Map() {
-}
-
 void Map::addReference(int index, Tileset* tileset, bool solid, int tileX, int tileY)
 {
 	BOOST_LOG_TRIVIAL(info) << "Tileset : " << tileset;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <utility>
-#include "SDL.h"
+#include <SDL.h>
 
 class Camera
 {

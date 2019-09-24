@@ -4,7 +4,7 @@
 * Source from http://lazyfoo.net/tutorials/SDL/25_capping_frame_rate/index.php
 **/
 
-#include "SDL.h"
+#include <SDL.h>
 
 class Timer
 {

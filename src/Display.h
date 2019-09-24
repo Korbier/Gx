@@ -1,9 +1,13 @@
 #ifndef WINDOWS_H_
 #define WINDOWS_H_
 
-#include <SDL.h>
 #include <stdio.h>
 #include <string>
+#include <iostream>
+
+#include <SDL.h>
+
+#include "boost/log/trivial.hpp"
 
 class Display
 {

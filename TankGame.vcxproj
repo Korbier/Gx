@@ -29,7 +29,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\GameContext.cpp" />
     <ClCompile Include="src\gamestate\GameStateManager.cpp" />
     <ClCompile Include="src\display\Camera.cpp" />
     <ClCompile Include="src\display\map\Tile.cpp" />
@@ -37,6 +36,7 @@
     <ClCompile Include="src\display\map\TileReference.cpp" />
     <ClCompile Include="src\display\texture\AnimatedTexture.cpp" />
     <ClCompile Include="src\display\Sprite.cpp" />
+    <ClCompile Include="src\game\bullet\BulletDescriptor.cpp" />
     <ClCompile Include="src\input\InputBuffer.cpp" />
     <ClCompile Include="src\display\texture\Texture.cpp" />
     <ClCompile Include="src\Display.cpp" />
@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\display\Camera.h" />
-    <ClInclude Include="src\GameContext.h" />
     <ClInclude Include="src\gamestate\GameStateManager.h" />
     <ClInclude Include="src\display\map\Tile.h" />
     <ClInclude Include="src\display\map\Map.h" />
@@ -62,6 +61,7 @@
     <ClInclude Include="src\GameHandler.h" />
     <ClInclude Include="src\gamestate\Gamestate.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="src\game\bullet\BulletDescriptor.h" />
     <ClInclude Include="src\input\InputBuffer.h" />
     <ClInclude Include="src\display\texture\Texture.h" />
     <ClInclude Include="src\display\texture\TextureManager.h" />
@@ -141,7 +141,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Lenovo\Workspaces\_platform\c\libs\sdl\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Lenovo\Workspaces\_platform\c\libs\sdl\SDL2\include;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -171,7 +171,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Lenovo\Workspaces\_platform\c\libs\sdl\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Lenovo\Workspaces\_platform\c\libs\sdl\SDL2\include;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

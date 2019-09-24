@@ -1,9 +1,13 @@
 #pragma once
 
-#include <SDL.h>
 #include <vector>
-#include "Texture.h"
-#include "../../utils/Timer.h"
+
+#include <SDL.h>
+
+#include "boost/log/trivial.hpp"
+
+#include "display/texture/Texture.h"
+#include "utils/Timer.h"
 
 class AnimatedTexture : public Texture
 {

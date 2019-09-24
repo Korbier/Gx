@@ -1,24 +1,5 @@
 #include "Gamestate.h"
 
-#include <vector>
-#include <cstdlib>
-
-#include "boost/log/trivial.hpp"
-#include "SDL_image.h"
-
-#include "../Game.h"
-#include "../Display.h"
-#include "../GameHandler.h"
-#include "../display/texture/AnimatedTexture.h"
-#include "../display/Sprite.h"
-#include "../input/InputBuffer.h"
-#include "../display/Tileset.h"
-#include "../display/map/Map.h"
-#include "../display/map/Tile.h"
-#include "../display/Camera.h"
-
-const int TILE_SIZE = 32;
-
 Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 {
 	this->display     = display;

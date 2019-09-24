@@ -1,13 +1,16 @@
 #pragma once
 
 #include <string>
-#include "SDL.h"
 
-class Display;
+#include <SDL.h>
+
+#include "Display.h"
+#include "display/texture/TextureManager.h"
+#include "display/Sprite.h"
+#include "display/texture/AnimatedTexture.h"
+#include "display/texture/Texture.h"
+
 class Game;
-class TextureManager;
-class Sprite;
-class Texture;
 
 class GameHandler
 {

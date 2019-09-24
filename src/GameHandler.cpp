@@ -1,11 +1,6 @@
 #include "GameHandler.h"
 
 #include "Game.h"
-#include "Display.h"
-#include "display/texture/TextureManager.h"
-#include "display/Sprite.h"
-#include "display/texture/AnimatedTexture.h"
-#include "display/texture/Texture.h"
 
 GameHandler::GameHandler(Display* display, Game* game)
 {

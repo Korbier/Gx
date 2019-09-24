@@ -1,17 +1,26 @@
 #pragma once
 
-#include <SDL.h>
 #include <string>
+#include <vector>
+#include <cstdlib>
 
-class Display;
-class GameHandler;
-class Sprite;
-class InputBuffer;
-class Tile;
-class Tileset;
-class TileMap;
-class Map;
-class Camera;
+#include <SDL.h>
+#include <SDL_image.h>
+
+#include "boost/log/trivial.hpp"
+
+#include "Game.h"
+#include "Display.h"
+#include "GameHandler.h"
+#include "display/texture/AnimatedTexture.h"
+#include "display/Sprite.h"
+#include "input/InputBuffer.h"
+#include "display/Tileset.h"
+#include "display/map/Map.h"
+#include "display/map/Tile.h"
+#include "display/Camera.h"
+
+const int TILE_SIZE = 32;
 
 const float TANK_SPEED = 0;
 const std::string TANK_SPRITESHEET = "resources/tank_move_002.png";

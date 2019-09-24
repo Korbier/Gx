@@ -1,19 +1,5 @@
 #include "Game.h"
 
-#include <sstream>
-
-#include "SDL.h"
-#include "SDL_image.h"
-
-#include "boost/log/trivial.hpp"
-
-#include "GameHandler.h"
-#include "Display.h"
-#include "gamestate/Gamestate.h"
-#include "utils/Timer.h"
-#include "display/texture/TextureManager.h"
-#include "input/InputBuffer.h"
-
 Game::Game()
 {
 	this->running        = false;
