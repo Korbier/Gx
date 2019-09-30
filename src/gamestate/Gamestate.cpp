@@ -18,6 +18,13 @@ Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 	this->camera->setPosition({ 0.f, 0.f });
 	this->camera->setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
+	this->bDesc = new BulletDescriptor(
+		new AnimatedTexture(this->gameHandler->getTexture(BULLET_SPRITESHEET), 20),
+		new AnimatedTexture(this->gameHandler->getTexture(BULLET_SPRITESHEET), 20)
+	);
+
+	this->bGen = new BulletGenerator(this->bDesc);
+
 }
 
 Gamestate::~Gamestate()
@@ -56,52 +63,8 @@ void Gamestate::initialize() {
 		}
 		m.push_back(row);
 	}
-	/*
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
-			m[0][j] = 2;
-			m[width-1][j] = 2;
-			m[i][0] = 2;
-			m[i][height-1] = 2;
-		}
-	}
-
-	for (int i = 0; i < 30; i++) {
-		for (int j = 10; j < 40; j++) {
-			m[i][j] = 2;
-		}
-	}
-
-	for (int i = 20; i < 40; i++) {
-		for (int j = 20; j < 40; j++) {
-			if (i != 25 && i != 34 && j != 34 && j != 25) {
-				m[i][j] = 1;
-			}
-		}
-	}
-
-	for (int i = 25; i < 35; i++) {
-		for (int j = 25; j < 35; j++) {
-			m[i][j] = 2;
-		}
-	}
-
-	for (int i = 0; i < 34; i++) {
-		m[i][30] = 1;
-		m[i][31] = 1;
-		m[i][32] = 1;
-	}
-
-	m[0][0] = 0;
-	m[0][1] = 0;
-	m[1][0] = 0;
-	m[1][1] = 0;
-	
-	*/
 
 	this->map->setData(m, width, height);
-
-	//this->map->debug();
 
 }
 
@@ -195,6 +158,13 @@ void Gamestate::update(InputBuffer input, Uint32 delta )
 
 	this->camera->setPosition({ xVal, yVal });
 
+
+	/** Bullet engine **/
+	this->bGen->update(delta);
+	if (input.isPressed(SDL_SCANCODE_F)) {
+		this->bGen->fire();
+	}
+
 }
 
 void Gamestate::render()
@@ -234,4 +204,13 @@ void Gamestate::render()
 
 	this->gameHandler->render(this->tank, this->target);
 	
+	std::vector<Bullet*> bullets = this->bGen->getBulletsToRender();
+
+	for (std::vector<Bullet*>::iterator it = bullets.begin(); it != bullets.end(); ++it) {
+		this->target->x = (int) (*it)->getPosition().x;
+		this->target->y = (int) (*it)->getPosition().y;
+		this->camera->toCameraView(this->target);
+		this->gameHandler->render(*it, this->target);
+	}
+
 }

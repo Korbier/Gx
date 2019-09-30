@@ -36,6 +36,8 @@
     <ClCompile Include="src\display\map\TileReference.cpp" />
     <ClCompile Include="src\display\texture\AnimatedTexture.cpp" />
     <ClCompile Include="src\display\Sprite.cpp" />
+    <ClCompile Include="src\game\bullet\BulletGenerator.cpp" />
+    <ClCompile Include="src\game\bullet\Bullet.cpp" />
     <ClCompile Include="src\game\bullet\BulletDescriptor.cpp" />
     <ClCompile Include="src\input\InputBuffer.cpp" />
     <ClCompile Include="src\display\texture\Texture.cpp" />
@@ -61,6 +63,8 @@
     <ClInclude Include="src\GameHandler.h" />
     <ClInclude Include="src\gamestate\Gamestate.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="src\game\bullet\BulletGenerator.h" />
+    <ClInclude Include="src\game\bullet\Bullet.h" />
     <ClInclude Include="src\game\bullet\BulletDescriptor.h" />
     <ClInclude Include="src\input\InputBuffer.h" />
     <ClInclude Include="src\display\texture\Texture.h" />

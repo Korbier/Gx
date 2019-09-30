@@ -20,6 +20,10 @@
 #include "display/map/Tile.h"
 #include "display/Camera.h"
 
+#include "game/bullet/Bullet.h"
+#include "game/bullet/BulletDescriptor.h"
+#include "game/bullet/BulletGenerator.h"
+
 const int TILE_SIZE = 32;
 
 const float TANK_SPEED = 0;
@@ -55,5 +59,8 @@ private:
 	Map* map = nullptr;
 
 	Camera* camera;
+
+	BulletDescriptor* bDesc = nullptr;
+	BulletGenerator* bGen = nullptr;
 
 };
