@@ -16,7 +16,7 @@ public:
 	
 	BulletGenerator(BulletDescriptor* descriptor);
 	
-	void fire();
+	void fire(float direction);
 	void release(Bullet* bullet);
 	bool canFire();
 
@@ -40,7 +40,7 @@ private:
 	SDL_FPoint position = {};	
 	float direction = 0.f;
 
-	int fireDelay = 100;
+	int fireDelay = 60;
 	int currrentTime = 0;
 	bool fireAvailable = true;
 

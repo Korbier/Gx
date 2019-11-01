@@ -5,7 +5,7 @@ BulletGenerator::BulletGenerator(BulletDescriptor* descriptor)
 	this->descriptor = descriptor;
 }
 
-void BulletGenerator::fire()
+void BulletGenerator::fire( float direction )
 {
 	BOOST_LOG_TRIVIAL(info) << "Fire";
 	if (this->canFire()) {
@@ -25,7 +25,10 @@ void BulletGenerator::fire()
 		this->fireAvailable = false;
 		this->currrentTime = 0;
 
-		BOOST_LOG_TRIVIAL(info) << "Fired : " << this->fired.size();
+		b->setPosition(this->getPosition());
+		b->setAngle( this->getDirection() );
+
+		BOOST_LOG_TRIVIAL(info) << "Fired : " << this->fired.size() << ", Angle : " << b->getAngle();
 
 	}
 }
@@ -50,12 +53,18 @@ void BulletGenerator::update(Uint32 delta)
 		this->fireAvailable = true;
 	}
 
+	float distance = this->descriptor->getInitialVelocity().x * (delta / 1000.f);
+
 	for (std::vector<Bullet*>::iterator it = this->fired.begin(); it != this->fired.end(); ++it) {
+	
 		Bullet* b = *it;
-		b->move({ 
-			this->descriptor->getInitialVelocity().x * (delta / 1000.f), 
-			this->descriptor->getInitialVelocity().y * (delta / 1000.f),
-		});
+		
+		float angle = b->getAngle() * M_PI / 180.0 ;
+		float x     = sin(angle) * distance;
+		float y     = cos(angle) * distance * -1;
+
+		b->move({ x, y });
+
 	}
 
 }

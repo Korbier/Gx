@@ -6,7 +6,7 @@ BulletDescriptor::BulletDescriptor(AnimatedTexture* fireTexture, AnimatedTexture
 	this->fireTexture->addFrame(0, 0, 32, 32);
 	this->explosionTexture = explosionTexture;
 	this->explosionTexture->addFrame(0, 0, 32, 32);
-	this->initialVelocity = { 200, 200 };
+	this->initialVelocity = { 400, 400 };
 }
 
 AnimatedTexture* BulletDescriptor::getFireTexture()

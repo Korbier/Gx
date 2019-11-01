@@ -41,7 +41,7 @@ void Gamestate::initialize() {
 	int width  = 300;
 
 	this->tank = new Sprite(new AnimatedTexture(this->gameHandler->getTexture(TANK_SPRITESHEET), 20), { 0.f,0.f }, { 32,32 });
-	this->tank->setVelocity({ 300.f, 300.f });
+	this->tank->setVelocity({ 200.f, 200.f });
 	this->tank->getTexture()->addFrame( 0, 0, 32, 32);
 	this->tank->getTexture()->addFrame(32, 0, 32, 32);
 	this->tank->getTexture()->addFrame(64, 0, 32, 32);
@@ -160,9 +160,11 @@ void Gamestate::update(InputBuffer input, Uint32 delta )
 
 
 	/** Bullet engine **/
+	this->bGen->setPosition(this->tank->getPosition());
+	this->bGen->setDirection(this->tank->getAngle());
 	this->bGen->update(delta);
 	if (input.isPressed(SDL_SCANCODE_F)) {
-		this->bGen->fire();
+		this->bGen->fire( 50.f );
 	}
 
 }
