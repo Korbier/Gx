@@ -71,15 +71,35 @@ void Gamestate::initialize() {
 
 void Gamestate::update(InputBuffer input, Uint32 delta )
 {
-	
-	if (input.isMouseLeftPressed()) {
-		SDL_Point mouse;
-		input.mousePosition( &mouse );
-		camera->toWorldView( &mouse );
-		map->toMapView(&mouse);
-		map->setData(mouse.x, mouse.y, 1);
+
+	SDL_Point mouse;
+	input.mousePosition(&mouse);
+	camera->toWorldView(&mouse);
+		
+	if ( input.isMouseLeftPressed() ) {
+		if (input.isPressed(SDL_SCANCODE_TAB)) {
+			map->toMapView(&mouse);
+			map->setData(mouse.x, mouse.y, 1);
+		}
+		else {
+
+			BOOST_LOG_TRIVIAL(info) << "Mouse : " << mouse.x << "," << mouse.y << "; tank : " << tank->getPosition().x << "," << tank->getPosition().y;
+
+			float Ax = tank->getPosition().x + tank->getSize().x / 2;
+			float Ay = tank->getPosition().y + tank->getSize().y / 2;
+
+			float Bx = mouse.x;
+			float By = mouse.y;
+
+			float x = Bx - Ax;
+			float y = By - Ay;
+
+			this->bGen->fire( atan2(x, y * -1) * 180 / M_PI );
+
+		}
 	}
 
+	
 	float xVal = 0;
 	float yVal = 0;
 
@@ -163,10 +183,7 @@ void Gamestate::update(InputBuffer input, Uint32 delta )
 	this->bGen->setPosition(this->tank->getPosition());
 	this->bGen->setDirection(this->tank->getAngle());
 	this->bGen->update(delta);
-	if (input.isPressed(SDL_SCANCODE_F)) {
-		this->bGen->fire( 50.f );
-	}
-
+	
 }
 
 void Gamestate::render()

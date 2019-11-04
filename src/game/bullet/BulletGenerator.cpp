@@ -7,7 +7,6 @@ BulletGenerator::BulletGenerator(BulletDescriptor* descriptor)
 
 void BulletGenerator::fire( float direction )
 {
-	BOOST_LOG_TRIVIAL(info) << "Fire";
 	if (this->canFire()) {
 		
 		BOOST_LOG_TRIVIAL(info) << "Effective fire";
@@ -26,9 +25,7 @@ void BulletGenerator::fire( float direction )
 		this->currrentTime = 0;
 
 		b->setPosition(this->getPosition());
-		b->setAngle( this->getDirection() );
-
-		BOOST_LOG_TRIVIAL(info) << "Fired : " << this->fired.size() << ", Angle : " << b->getAngle();
+		b->setAngle( direction );
 
 	}
 }
