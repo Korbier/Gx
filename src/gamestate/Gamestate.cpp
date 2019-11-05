@@ -77,9 +77,17 @@ void Gamestate::update(InputBuffer input, Uint32 delta )
 	camera->toWorldView(&mouse);
 		
 	if ( input.isMouseLeftPressed() ) {
-		if (input.isPressed(SDL_SCANCODE_TAB)) {
+		if (input.isPressed(SDL_SCANCODE_0)) {
+			map->toMapView(&mouse);
+			map->setData(mouse.x, mouse.y, 0);
+		}
+		else if (input.isPressed(SDL_SCANCODE_1)) {
 			map->toMapView(&mouse);
 			map->setData(mouse.x, mouse.y, 1);
+		}
+		else if (input.isPressed(SDL_SCANCODE_2)) {
+			map->toMapView(&mouse);
+			map->setData(mouse.x, mouse.y, 2);
 		}
 		else {
 
