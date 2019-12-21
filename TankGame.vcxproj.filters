@@ -169,5 +169,8 @@
     <Image Include="resources\sprite_bullet.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
+    <Image Include="resources\canon.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
   </ItemGroup>
 </Project>

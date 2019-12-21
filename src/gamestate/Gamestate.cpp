@@ -33,6 +33,8 @@ Gamestate::~Gamestate()
 	delete this->tileset;
 	delete this->tileset2;
 	delete this->map;
+	delete this->tank;
+	delete this->canon;
 }
 
 void Gamestate::initialize() {
@@ -46,6 +48,9 @@ void Gamestate::initialize() {
 	this->tank->getTexture()->addFrame(32, 0, 32, 32);
 	this->tank->getTexture()->addFrame(64, 0, 32, 32);
 	this->tank->getTexture()->addFrame(96, 0, 32, 32);
+
+	this->canon = new Sprite(new AnimatedTexture(this->gameHandler->getTexture(CANON_SPRITESHEET), 20), { 0.f,0.f }, { 32,32 });
+	this->canon->getTexture()->addFrame(0, 0, 32, 32);
 
 	this->tileset->loadTileset(this->gameHandler->getTexture(TILESET), 32);
 	this->tileset2->loadTileset(this->gameHandler->getTexture(TILESET2), 32);
@@ -76,7 +81,21 @@ void Gamestate::update(InputBuffer input, Uint32 delta )
 	input.mousePosition(&mouse);
 	camera->toWorldView(&mouse);
 		
+
+	float Ax = tank->getPosition().x + tank->getSize().x / 2;
+	float Ay = tank->getPosition().y + tank->getSize().y / 2;
+
+	float Bx = mouse.x;
+	float By = mouse.y;
+
+	float x = Bx - Ax;
+	float y = By - Ay;
+
+	float mouseAngle = atan2(x, y * -1) * 180 / M_PI; //Angle tank/mouse
+	this->canon->setAngle(mouseAngle);
+
 	if ( input.isMouseLeftPressed() ) {
+		
 		if (input.isPressed(SDL_SCANCODE_0)) {
 			map->toMapView(&mouse);
 			map->setData(mouse.x, mouse.y, 0);
@@ -90,24 +109,10 @@ void Gamestate::update(InputBuffer input, Uint32 delta )
 			map->setData(mouse.x, mouse.y, 2);
 		}
 		else {
-
-			BOOST_LOG_TRIVIAL(info) << "Mouse : " << mouse.x << "," << mouse.y << "; tank : " << tank->getPosition().x << "," << tank->getPosition().y;
-
-			float Ax = tank->getPosition().x + tank->getSize().x / 2;
-			float Ay = tank->getPosition().y + tank->getSize().y / 2;
-
-			float Bx = mouse.x;
-			float By = mouse.y;
-
-			float x = Bx - Ax;
-			float y = By - Ay;
-
-			this->bGen->fire( atan2(x, y * -1) * 180 / M_PI );
-
+			this->bGen->fire(mouseAngle);
 		}
 	}
 
-	
 	float xVal = 0;
 	float yVal = 0;
 
@@ -157,6 +162,8 @@ void Gamestate::update(InputBuffer input, Uint32 delta )
 	if (animateTank) {
 		this->tank->getTexture()->animate();
 	}
+
+	this->canon->setPosition(this->tank->getPosition());
 
 	/*
 	 * Camera manuelle
@@ -230,6 +237,7 @@ void Gamestate::render()
 	this->camera->toCameraView(this->target);
 
 	this->gameHandler->render(this->tank, this->target);
+	this->gameHandler->render(this->canon, this->target);
 	
 	std::vector<Bullet*> bullets = this->bGen->getBulletsToRender();
 

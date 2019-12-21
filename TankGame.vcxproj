@@ -73,6 +73,7 @@
     <ClInclude Include="src\utils\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="resources\canon.png" />
     <Image Include="resources\sprite_bullet.png" />
     <Image Include="resources\tank_move_002.png" />
     <Image Include="resources\tileset.png" />

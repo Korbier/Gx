@@ -9,7 +9,6 @@ void BulletGenerator::fire( float direction )
 {
 	if (this->canFire()) {
 		
-		BOOST_LOG_TRIVIAL(info) << "Effective fire";
 		Bullet* b = nullptr;
 		
 		if (this->available.empty()) {
@@ -26,6 +25,8 @@ void BulletGenerator::fire( float direction )
 
 		b->setPosition(this->getPosition());
 		b->setAngle( direction );
+
+		this->moveBullet(b, 14);
 
 	}
 }
@@ -53,17 +54,16 @@ void BulletGenerator::update(Uint32 delta)
 	float distance = this->descriptor->getInitialVelocity().x * (delta / 1000.f);
 
 	for (std::vector<Bullet*>::iterator it = this->fired.begin(); it != this->fired.end(); ++it) {
-	
-		Bullet* b = *it;
-		
-		float angle = b->getAngle() * M_PI / 180.0 ;
-		float x     = sin(angle) * distance;
-		float y     = cos(angle) * distance * -1;
-
-		b->move({ x, y });
-
+		this->moveBullet(*it, distance);
 	}
 
+}
+
+void BulletGenerator::moveBullet(Bullet* bullet, float distance) {
+	float angle = bullet->getAngle() * M_PI / 180.0;
+	float x = sin(angle) * distance;
+	float y = cos(angle) * distance * -1;
+	bullet->move({ x, y });
 }
 
 void BulletGenerator::setPosition(SDL_FPoint position)

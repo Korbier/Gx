@@ -40,13 +40,14 @@ private:
 	SDL_FPoint position = {};	
 	float direction = 0.f;
 
-	int fireDelay = 60;
+	int fireDelay = 10;
 	int currrentTime = 0;
 	bool fireAvailable = true;
 
 	std::vector<Bullet*> fired = {};
 	std::vector<Bullet*> available = {};
 
+	void moveBullet(Bullet* bullet, float distance);
 
 };
 
