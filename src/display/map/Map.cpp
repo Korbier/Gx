@@ -113,9 +113,9 @@ bool Map::collide(Sprite* sprite)
 	int bottomTile = (int) (sprite->getPosition().y + sprite->getSize().y - 1) / 32;
 
 	if (leftTile < 0) leftTile = 0;
-	if (rightTile > this->getWidth()) rightTile = this->getWidth();
+	if (rightTile >= this->getWidth()) rightTile = this->getWidth() - 1;
 	if (topTile < 0) topTile = 0;
-	if (bottomTile > this->getHeight()) bottomTile = this->getHeight();
+	if (bottomTile >= this->getHeight()) bottomTile = this->getHeight() - 1;
 
 	for (int i = leftTile; i <= rightTile; i++)
 	{

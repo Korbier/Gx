@@ -26,7 +26,7 @@ void BulletGenerator::fire( float direction )
 		b->setPosition(this->getPosition());
 		b->setAngle( direction );
 
-		this->moveBullet(b, 14);
+		this->moveBullet(b, 15);
 
 	}
 }

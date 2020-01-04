@@ -3,7 +3,7 @@
 Game::Game()
 {
 	this->running        = false;
-	this->display        = new Display("MyGame", SCREEN_WIDTH, SCREEN_HEIGHT, false, false);
+	this->display        = new Display("MyGame", SCREEN_WIDTH, SCREEN_HEIGHT, false, true);
 	this->textureManager = new TextureManager(this->display);
 	this->gHandler       = new GameHandler(this->display, this);
 	this->inputBuffer    = {};
