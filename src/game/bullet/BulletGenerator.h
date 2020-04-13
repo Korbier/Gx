@@ -41,7 +41,7 @@ private:
 	SDL_FPoint position = {};	
 	float direction = 0.f;
 
-	int fireDelay = 200;
+	int fireDelay = 10;
 	int currrentTime = 0;
 	bool fireAvailable = true;
 

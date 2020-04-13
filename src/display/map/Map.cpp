@@ -128,36 +128,35 @@ bool Map::collide(Sprite* sprite)
 
 }
 
-bool Map::checkBallCollision(Sprite* sprite) {
-	
-	SDL_FPoint sCenter      = sprite->getHitboxCenter();
-	float      radius       = sprite->getHitboxRadius();
-	float      fullDistance = radius/* + distance*/;
+SDL_Point Map::getCellForRadialCollision(Sprite* sprite) {
+
+	SDL_FPoint sCenter = sprite->getHitboxCenter();
+	float      radius = sprite->getHitboxRadius();
+	float      fullDistance = radius;
 
 	SDL_FPoint mvt = radMvtToCoord(sprite->getAngle(), fullDistance);
 	SDL_FPoint target = { sCenter.x + mvt.x, sCenter.y + mvt.y };
 
-	int xTile = (int) target.x / 32;
-	int yTile = (int) target.y / 32;
+	int xTile = (int)target.x / 32;
+	int yTile = (int)target.y / 32;
+
+	return { xTile, yTile };
+
+}
+
+bool Map::checkBallCollision(SDL_Point cell) {
+	
+	int xTile = cell.x;
+	int yTile = cell.y;
 
 	if (xTile < 0) return true;
 	if (xTile >= this->getWidth()) return true;
 	if (yTile < 0) return true;
 	if (yTile >= this->getHeight()) return true;
 
-	int cell = this->getData(xTile, yTile);
-
-	return this->references[cell]->isSolid();
-		
+	int c = this->getData(xTile, yTile);
+	return this->references[c]->isSolid();
 	
-	/*
-	float angle = sprite->getAngle() * M_PI / 180.0;
-	
-	float x = sin(angle) * distance;
-	float y = cos(angle) * distance * -1;
-
-	return { this->checKCollisionX(sprite, x), this->checKCollisionY(sprite, y) };
-	*/
 }
 
 float Map::checKCollisionX(Sprite* sprite, float decal)

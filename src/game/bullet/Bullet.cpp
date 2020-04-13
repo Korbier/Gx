@@ -45,6 +45,24 @@ bool Bullet::isRenderable()
 	return this->getState() == 0 || this->getState() == 1;
 }
 
+int Bullet::getRemainingBounces()
+{
+	return this->bounces;
+}
+
+void Bullet::bounceHorizontal()
+{
+	this->setAngle(180 - ( (int) this->getAngle() + 360 % 360 ) );
+	this->bounces--;
+}
+
+void Bullet::bounceVertical()
+{
+	//this->setAngle(180 - ((int)this->getAngle() + 360 % 360));
+	this->setAngle( -1 * this->getAngle());
+	this->bounces--;
+}
+
 AnimatedTexture* Bullet::getFireTexture()
 {
 	return this->fireTexture;

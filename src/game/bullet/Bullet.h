@@ -15,6 +15,10 @@ public:
 
 	AnimatedTexture* getTexture();
 	bool isRenderable();
+	
+	int getRemainingBounces();
+	void bounceHorizontal();
+	void bounceVertical();
 
 	AnimatedTexture* getFireTexture();
 	AnimatedTexture* getExplosionTexture();
@@ -25,7 +29,9 @@ private:
 	BulletDescriptor* descriptor;
 	BulletGenerator* generator;
 	int state = 0;
+	int bounces = 20;
 	AnimatedTexture* fireTexture;
 	AnimatedTexture* explosionTexture;
+
 };
 

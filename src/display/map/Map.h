@@ -30,7 +30,8 @@ public:
 	Tile* getTileAt(int x, int y);
 	void boundToMap(Sprite* sprite);
 	bool collide(Sprite* sprite);
-	bool checkBallCollision(Sprite* sprite);
+	SDL_Point getCellForRadialCollision(Sprite* sprite);
+	bool checkBallCollision(SDL_Point cell);
 	float checKCollisionX(Sprite* sprite, float decal);
 	float checKCollisionY(Sprite* sprite, float decal);
 

@@ -56,13 +56,33 @@ void BulletGenerator::update( Map * map, Uint32 delta)
 
 		if ( (*it)->getState() == 0) {
 
+			SDL_Point cell = map->getCellForRadialCollision(*it);
 
-			float distance = (*it)->getVelocity().x * (delta / 1000.f);
+			if (map->checkBallCollision(cell)) {
+				
+				BOOST_LOG_TRIVIAL(error) << "Collision !\n";
 			
-			if (map->checkBallCollision(*it)) {
-				(*it)->setState(1);
+				if ((*it)->getRemainingBounces() > 0) {
+					
+					SDL_FPoint sCenter = (*it)->getHitboxCenter();
+					SDL_Point target = { sCenter.x / 32, sCenter.y / 32 };
+
+					if (cell.x != target.x) {
+						(*it)->bounceVertical();
+					}
+					else {
+						(*it)->bounceHorizontal();
+					}
+
+					
+				}
+				else {
+					(*it)->setState(1);
+				}
+
 			}
 			else {
+				float distance = (*it)->getVelocity().x * (delta / 1000.f);
 				SDL_FPoint mvt = radMvtToCoord((*it)->getAngle(), distance);
 				(*it)->move(mvt);
 			}
