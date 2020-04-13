@@ -2,8 +2,6 @@
 
 void Map::addReference(int index, Tileset* tileset, bool solid, int tileX, int tileY)
 {
-	BOOST_LOG_TRIVIAL(info) << "Tileset : " << tileset;
-
 	TileReference* reference = new TileReference(tileset, solid, tileX, tileY);
 	this->references.insert(std::pair<int, TileReference*>(index, reference));
 }
@@ -102,8 +100,6 @@ void Map::boundToMap(Sprite* sprite)
 
 }
 
-
-
 bool Map::collide(Sprite* sprite)
 {
 
@@ -129,6 +125,131 @@ bool Map::collide(Sprite* sprite)
 	}
 
 	return false;
+
+}
+
+bool Map::checkBallCollision(Sprite* sprite) {
+	
+	SDL_FPoint sCenter      = sprite->getHitboxCenter();
+	float      radius       = sprite->getHitboxRadius();
+	float      fullDistance = radius/* + distance*/;
+
+	SDL_FPoint mvt = radMvtToCoord(sprite->getAngle(), fullDistance);
+	SDL_FPoint target = { sCenter.x + mvt.x, sCenter.y + mvt.y };
+
+	int xTile = (int) target.x / 32;
+	int yTile = (int) target.y / 32;
+
+	if (xTile < 0) return true;
+	if (xTile >= this->getWidth()) return true;
+	if (yTile < 0) return true;
+	if (yTile >= this->getHeight()) return true;
+
+	int cell = this->getData(xTile, yTile);
+
+	return this->references[cell]->isSolid();
+		
+	
+	/*
+	float angle = sprite->getAngle() * M_PI / 180.0;
+	
+	float x = sin(angle) * distance;
+	float y = cos(angle) * distance * -1;
+
+	return { this->checKCollisionX(sprite, x), this->checKCollisionY(sprite, y) };
+	*/
+}
+
+float Map::checKCollisionX(Sprite* sprite, float decal)
+{
+
+	SDL_FPoint position = {
+		sprite->getPosition().x + sprite->getHitbox().getPosition().x,
+		sprite->getPosition().y + sprite->getHitbox().getPosition().y
+	};
+
+	SDL_Point size = { sprite->getHitbox().getSize().x, sprite->getHitbox().getSize().y };
+
+	int topTile    = (int) position.y / 32;
+	int bottomTile = (int) (position.y + size.y - 1) / 32;
+
+	if (topTile < 0) topTile = 0;
+	if (bottomTile >= this->getHeight()) bottomTile = this->getHeight() - 1;
+
+	if (decal < 0) {
+		
+		int t = (int)(position.x + decal) / 32;
+		if (t < 0) t = 0;
+
+		for (int j = topTile; j <= bottomTile; j++) {
+			int cell = this->getData(t, j);
+			if (this->references[cell]->isSolid()) {
+				return -1 * (position.x - (t + 1) * 32);
+			}
+		}
+	}
+
+	if (decal > 0) {
+		
+		int t = (int)(position.x + decal + size.x) / 32;
+		if (t >= this->getWidth()) t = this->getWidth() - 1;
+
+		for (int j = topTile; j <= bottomTile; j++) {
+			int cell = this->getData(t, j);
+			if (this->references[cell]->isSolid()) {
+				float d = t * 32 - (position.x + size.x);
+				return d;
+			}
+		}
+	}
+
+	return decal;
+}
+
+float Map::checKCollisionY(Sprite* sprite, float decal)
+{
+
+	SDL_FPoint position = {
+		sprite->getPosition().x + sprite->getHitbox().getPosition().x,
+		sprite->getPosition().y + sprite->getHitbox().getPosition().y
+	};
+
+	SDL_Point size = { sprite->getHitbox().getSize().x, sprite->getHitbox().getSize().y };
+
+	int leftTile = (int)position.x / 32;
+	int rightTile = (int)(position.x + size.x - 1) / 32;
+
+	if (leftTile < 0) leftTile = 0;
+	if (rightTile >= this->getWidth()) rightTile = this->getWidth() - 1;
+
+	if (decal < 0) {
+
+		int t = (int)(position.y + decal) / 32;
+		if (t < 0) t = 0;
+
+		for (int j = leftTile; j <= rightTile; j++) {
+			int cell = this->getData(j, t);
+			if (this->references[cell]->isSolid()) {
+				return -1 * (position.y - (t + 1) * 32);
+			}
+		}
+	}
+
+	if (decal > 0) {
+
+		int t = (int)(position.y + decal + size.y) / 32;
+		if (t >= this->getHeight()) t = this->getHeight() - 1;
+
+		for (int j = leftTile; j <= rightTile; j++) {
+			int cell = this->getData(j, t);
+			if (this->references[cell]->isSolid()) {
+				float d = t * 32 - (position.y + size.y);
+				return d;
+			}
+		}
+	}
+
+	return decal;
 
 }
 
@@ -259,8 +380,6 @@ Tile* Map::toMapTile(int x, int y, int data) {
 	TileReference* reference = this->references[data];
 	Texture* tile = nullptr;
 	int angle = 0;
-
-	//BOOST_LOG_TRIVIAL(info) << "Data : " << data;
 
 	if (reference->isAutoTile()) {
 

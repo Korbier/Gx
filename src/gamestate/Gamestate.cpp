@@ -20,8 +20,38 @@ Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 
 	this->bDesc = new BulletDescriptor(
 		new AnimatedTexture(this->gameHandler->getTexture(BULLET_SPRITESHEET), 20),
-		new AnimatedTexture(this->gameHandler->getTexture(BULLET_SPRITESHEET), 20)
+		new AnimatedTexture(this->gameHandler->getTexture(EXPLOSION_SPRITESHEET), 10)
 	);
+
+	this->bDesc->getExplosionTexture()->addFrame(0,   0, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(32,  0, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(64, 0, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(96, 0, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(128, 0, 32, 32);
+
+	this->bDesc->getExplosionTexture()->addFrame(0, 32, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(32, 32, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(64, 32, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(96, 32, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(128, 32, 32, 32);
+
+	this->bDesc->getExplosionTexture()->addFrame(0, 64, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(32, 64, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(64, 64, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(96, 64, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(128, 64, 32, 32);
+
+	this->bDesc->getExplosionTexture()->addFrame(0, 96, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(32, 96, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(64, 96, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(96, 96, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(128, 96, 32, 32);
+
+	this->bDesc->getExplosionTexture()->addFrame(0, 128, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(32, 128, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(64, 128, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(96, 128, 32, 32);
+	this->bDesc->getExplosionTexture()->addFrame(128, 128, 32, 32);
 
 	this->bGen = new BulletGenerator(this->bDesc);
 
@@ -39,8 +69,8 @@ Gamestate::~Gamestate()
 
 void Gamestate::initialize() {
 
-	int height = 30;
-	int width  = 30;
+	int height = 300;
+	int width  = 300;
 
 	this->tank = new Sprite(new AnimatedTexture(this->gameHandler->getTexture(TANK_SPRITESHEET), 20), { 0.f,0.f }, { 32,32 });
 	this->tank->setVelocity({ 200.f, 200.f });
@@ -91,7 +121,7 @@ void Gamestate::update(InputBuffer input, Uint32 delta )
 	float x = Bx - Ax;
 	float y = By - Ay;
 
-	float mouseAngle = atan2(x, y * -1) * 180 / M_PI; //Angle tank/mouse
+	float mouseAngle = (double) atan2(x, y * -1) * 180 / M_PI; //Angle tank/mouse
 	this->canon->setAngle(mouseAngle);
 
 	if ( input.isMouseLeftPressed() ) {
@@ -123,22 +153,15 @@ void Gamestate::update(InputBuffer input, Uint32 delta )
 	if (input.isPressed(SDL_SCANCODE_DOWN))  yVal = this->tank->getVelocity().y * (delta / 1000.f);
 
 	if (xVal != 0) {
-		this->tank->move({ xVal, 0 });
-		if (this->map->collide(this->tank)) {
-			this->tank->move({ -xVal, 0 });
-		}
+		this->tank->move({ this->map->checKCollisionX(this->tank, xVal), 0 });
 	}
 
 	if (yVal != 0) {
-		this->tank->move({ 0, yVal });
-		if (this->map->collide(this->tank)) {
-			this->tank->move({ 0, -yVal });
-		}
+		this->tank->move({ 0, this->map->checKCollisionY(this->tank, yVal) });
 	}
 	
 	this->map->boundToMap(this->tank);
-
-	
+		
 	bool animateTank = true;
 
 	if (xVal > 0) {
@@ -166,18 +189,6 @@ void Gamestate::update(InputBuffer input, Uint32 delta )
 	this->canon->setPosition(this->tank->getPosition());
 
 	/*
-	 * Camera manuelle
-	 */
-	/*
-	xVal = yVal = 0;
-	if (input->isPressed(SDL_SCANCODE_KP_6))  xVal = 600 * (delta / 1000.f);
-	if (input->isPressed(SDL_SCANCODE_KP_4))  xVal = -1 * 600 * (delta / 1000.f);
-	if (input->isPressed(SDL_SCANCODE_KP_8))  yVal = -1 * 600 * (delta / 1000.f);
-	if (input->isPressed(SDL_SCANCODE_KP_2))  yVal = 600 * (delta / 1000.f);
-	this->camera->setPosition(xVal, yVal);
-	*/
-
-	/*
 	 * Camera centre sur le sprite
 	 */
 	xVal = this->tank->getPosition().x + (32 / 2) - this->camera->getSize().x / 2;
@@ -193,11 +204,10 @@ void Gamestate::update(InputBuffer input, Uint32 delta )
 
 	this->camera->setPosition({ xVal, yVal });
 
-
 	/** Bullet engine **/
 	this->bGen->setPosition(this->tank->getPosition());
 	this->bGen->setDirection(this->tank->getAngle());
-	this->bGen->update(delta);
+	this->bGen->update( this->map, delta);
 	
 }
 
@@ -242,10 +252,12 @@ void Gamestate::render()
 	std::vector<Bullet*> bullets = this->bGen->getBulletsToRender();
 
 	for (std::vector<Bullet*>::iterator it = bullets.begin(); it != bullets.end(); ++it) {
-		this->target->x = (int) (*it)->getPosition().x;
-		this->target->y = (int) (*it)->getPosition().y;
-		this->camera->toCameraView(this->target);
-		this->gameHandler->render(*it, this->target);
+		if ((*it)->isRenderable() ) {
+			this->target->x = (int)(*it)->getPosition().x;
+			this->target->y = (int)(*it)->getPosition().y;
+			this->camera->toCameraView(this->target);
+			this->gameHandler->render(*it, this->target);
+		}
 	}
 
 }

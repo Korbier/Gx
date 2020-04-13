@@ -19,31 +19,28 @@ void BulletGenerator::fire( float direction )
 			this->available.pop_back();
 		}
 
+		b->setPosition(this->getPosition());
+		b->setAngle(direction);
+
 		this->fired.push_back(b);
 		this->fireAvailable = false;
 		this->currrentTime = 0;
 
-		b->setPosition(this->getPosition());
-		b->setAngle( direction );
-
-		this->moveBullet(b, 15);
+		SDL_FPoint mvt = radMvtToCoord(b->getAngle(), 15);
+		b->move(mvt);
 
 	}
-}
-
-void BulletGenerator::release(Bullet* bullet)
-{
-	std::vector<Bullet*> v = this->fired;
-	v.erase(std::remove(v.begin(), v.end(), bullet), v.end());
-	this->available.push_back(bullet);
 }
 
 bool BulletGenerator::canFire() {
 	return this->fireAvailable;
 }
 
-void BulletGenerator::update(Uint32 delta)
+void BulletGenerator::update( Map * map, Uint32 delta)
 {
+
+	this->clearUnactiveBullets();
+
 	this->currrentTime += delta;
 
 	if (this->currrentTime > this->fireDelay) {
@@ -51,19 +48,39 @@ void BulletGenerator::update(Uint32 delta)
 		this->fireAvailable = true;
 	}
 
-	float distance = this->descriptor->getInitialVelocity().x * (delta / 1000.f);
-
 	for (std::vector<Bullet*>::iterator it = this->fired.begin(); it != this->fired.end(); ++it) {
-		this->moveBullet(*it, distance);
+		
+		if ((*it)->isRenderable()) {
+			(*it)->getTexture()->animate();
+		}
+
+		if ( (*it)->getState() == 0) {
+
+
+			float distance = (*it)->getVelocity().x * (delta / 1000.f);
+			
+			if (map->checkBallCollision(*it)) {
+				(*it)->setState(1);
+			}
+			else {
+				SDL_FPoint mvt = radMvtToCoord((*it)->getAngle(), distance);
+				(*it)->move(mvt);
+			}
+
+		}
 	}
 
 }
 
-void BulletGenerator::moveBullet(Bullet* bullet, float distance) {
-	float angle = bullet->getAngle() * M_PI / 180.0;
-	float x = sin(angle) * distance;
-	float y = cos(angle) * distance * -1;
-	bullet->move({ x, y });
+void BulletGenerator::clearUnactiveBullets()
+{
+
+	auto end = std::remove_if(this->fired.begin(), this->fired.end(), []( Bullet * bullet) {
+		return bullet->getState() > 1;
+	});
+
+	this->fired.erase(end, this->fired.end());
+
 }
 
 void BulletGenerator::setPosition(SDL_FPoint position)

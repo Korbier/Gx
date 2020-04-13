@@ -29,6 +29,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\display\Hitbox.cpp" />
     <ClCompile Include="src\gamestate\GameStateManager.cpp" />
     <ClCompile Include="src\display\Camera.cpp" />
     <ClCompile Include="src\display\map\Tile.cpp" />
@@ -49,8 +50,14 @@
     <ClCompile Include="src\display\texture\TextureManager.cpp" />
     <ClCompile Include="src\utils\Timer.cpp" />
     <ClCompile Include="src\display\Tileset.cpp" />
+    <ClCompile Include="src\utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimatedTextureEvent.h" />
+    <ClInclude Include="src\display\texture\AnimatedTextureEvent.h" />
+    <ClInclude Include="src\utils\Utils.h" />
+    <ClInclude Include="Utils.h" />
+    <ClInclude Include="Hitbox.h" />
     <ClInclude Include="src\display\Camera.h" />
     <ClInclude Include="src\gamestate\GameStateManager.h" />
     <ClInclude Include="src\display\map\Tile.h" />
@@ -74,7 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\canon.png" />
+    <Image Include="resources\explosion.png" />
     <Image Include="resources\sprite_bullet.png" />
+    <Image Include="resources\sprite_bullet_2.png" />
     <Image Include="resources\tank_move_002.png" />
     <Image Include="resources\tileset.png" />
     <Image Include="resources\tileset_01.png" />

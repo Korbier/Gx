@@ -87,6 +87,12 @@
     <ClCompile Include="src\game\bullet\BulletGenerator.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\display\Hitbox.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\Utils.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Display.h">
@@ -149,6 +155,21 @@
     <ClInclude Include="src\game\bullet\BulletGenerator.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Hitbox.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Utils.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedTextureEvent.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\display\texture\AnimatedTextureEvent.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\tank_move_002.png">
@@ -170,6 +191,12 @@
       <Filter>Fichiers de ressources</Filter>
     </Image>
     <Image Include="resources\canon.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="resources\explosion.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="resources\sprite_bullet_2.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>

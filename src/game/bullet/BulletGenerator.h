@@ -7,6 +7,8 @@
 
 #include "boost/log/trivial.hpp"
 
+#include "utils/Utils.h"
+#include "display/map/Map.h"
 #include "game/bullet/Bullet.h"
 #include "game/bullet/BulletDescriptor.h"
 
@@ -17,10 +19,9 @@ public:
 	BulletGenerator(BulletDescriptor* descriptor);
 	
 	void fire(float direction);
-	void release(Bullet* bullet);
 	bool canFire();
 
-	void update(Uint32 delay);
+	void update(Map* map, Uint32 delay);
 
 	void setPosition(SDL_FPoint position);
 	SDL_FPoint getPosition();
@@ -40,14 +41,14 @@ private:
 	SDL_FPoint position = {};	
 	float direction = 0.f;
 
-	int fireDelay = 10;
+	int fireDelay = 200;
 	int currrentTime = 0;
 	bool fireAvailable = true;
 
 	std::vector<Bullet*> fired = {};
 	std::vector<Bullet*> available = {};
 
-	void moveBullet(Bullet* bullet, float distance);
+	void clearUnactiveBullets();
 
 };
 

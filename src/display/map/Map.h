@@ -10,6 +10,8 @@
 
 #include "boost/log/trivial.hpp"
 
+#include "utils/Utils.h"
+
 #include "display/map/Tile.h"
 #include "display/map/TileReference.h"
 #include "display/Tileset.h"
@@ -28,6 +30,9 @@ public:
 	Tile* getTileAt(int x, int y);
 	void boundToMap(Sprite* sprite);
 	bool collide(Sprite* sprite);
+	bool checkBallCollision(Sprite* sprite);
+	float checKCollisionX(Sprite* sprite, float decal);
+	float checKCollisionY(Sprite* sprite, float decal);
 
 	int getWidth();
 	int getHeight();
