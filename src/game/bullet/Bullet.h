@@ -29,7 +29,7 @@ private:
 	BulletDescriptor* descriptor;
 	BulletGenerator* generator;
 	int state = 0;
-	int bounces = 20;
+	int bounces = 0;
 	AnimatedTexture* fireTexture;
 	AnimatedTexture* explosionTexture;
 

@@ -26,4 +26,25 @@ void GameHandler::render(Sprite* sprite, SDL_Rect* target)
 void GameHandler::render(Texture* texture, int angle, SDL_Rect* target)
 {
 	SDL_RenderCopyEx(this->display->getRenderer(), texture->getTexture(), &(texture->getCrop()), target, angle, nullptr, SDL_FLIP_NONE);
+	//SDL_SetRenderDrawColor(this->display->getRenderer(), 250, 250, 250, 255);
+	//SDL_RenderDrawRect(this->display->getRenderer(), target);
+}
+
+void GameHandler::render(Text* text, SDL_Rect* target)
+{
+	SDL_Rect src = { 0, 0, text->getWith(), text->getHeight() };
+	SDL_Rect tgt = { target->x, target->y, text->getWith(), text->getHeight() };
+	SDL_RenderCopyEx(this->display->getRenderer(), text->getTexture(), &src, &tgt, text->getAngle(), nullptr, SDL_FLIP_NONE);
+}
+
+void GameHandler::render(SDL_Point start, SDL_Point end) 
+{
+	SDL_SetRenderDrawColor(this->display->getRenderer(), 250, 0, 0, 255);
+	SDL_RenderDrawLine(this->display->getRenderer(), start.x, start.y, end.x, end.y);
+}
+
+void GameHandler::render(SDL_Rect rect)
+{
+	SDL_SetRenderDrawColor(this->display->getRenderer(), 250, 0, 0, 255);
+	SDL_RenderDrawRect(this->display->getRenderer(), &rect);
 }

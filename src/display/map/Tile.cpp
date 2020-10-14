@@ -1,10 +1,10 @@
 #include "Tile.h"
 
-Tile::Tile(Texture* tile, int angle, bool solid)
+Tile::Tile(Texture* tile, int angle, TileReference* reference)
 {
 	this->tile = tile;
 	this->angle = angle;
-	this->solid = solid;
+	this->reference = reference;
 }
 
 Texture* Tile::getTile()
@@ -17,7 +17,7 @@ int Tile::getAngle()
 	return this->angle;
 }
 
-bool Tile::isSolid()
+TileReference* Tile::getReference()
 {
-	return this->solid;
+	return this->reference;
 }

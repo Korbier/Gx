@@ -4,6 +4,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 #include "boost/log/trivial.hpp"
 
@@ -13,6 +14,8 @@
 #include "input/InputBuffer.h"
 #include "gamestate/GameStateManager.h"
 #include "gamestate/Gamestate.h"
+#include "gamestate/MenuGameState.h"
+#include "gamestate/LevelGameState.h"
 #include "utils/Timer.h"
 
 const int SCREEN_WIDTH = 800;

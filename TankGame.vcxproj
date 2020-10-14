@@ -25,11 +25,13 @@
     <None Include="..\_platform\c\libs\sdl\SDL2\lib\x86\libpng16-16.dll" />
     <None Include="..\_platform\c\libs\sdl\SDL2\lib\x86\SDL2.dll" />
     <None Include="..\_platform\c\libs\sdl\SDL2\lib\x86\SDL2_image.dll" />
+    <None Include="..\_platform\c\libs\sdl\SDL2\lib\x86\SDL2_ttf.dll" />
     <None Include="..\_platform\c\libs\sdl\SDL2\lib\x86\zlib1.dll" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\display\Hitbox.cpp" />
+    <ClCompile Include="src\display\text\Text.cpp" />
     <ClCompile Include="src\gamestate\GameStateManager.cpp" />
     <ClCompile Include="src\display\Camera.cpp" />
     <ClCompile Include="src\display\map\Tile.cpp" />
@@ -37,9 +39,13 @@
     <ClCompile Include="src\display\map\TileReference.cpp" />
     <ClCompile Include="src\display\texture\AnimatedTexture.cpp" />
     <ClCompile Include="src\display\Sprite.cpp" />
+    <ClCompile Include="src\gamestate\LevelGameState.cpp" />
+    <ClCompile Include="src\gamestate\MenuGameState.cpp" />
     <ClCompile Include="src\game\bullet\BulletGenerator.cpp" />
     <ClCompile Include="src\game\bullet\Bullet.cpp" />
     <ClCompile Include="src\game\bullet\BulletDescriptor.cpp" />
+    <ClCompile Include="src\game\enemy\Bot.cpp" />
+    <ClCompile Include="src\game\pathfinding\Pathfinder.cpp" />
     <ClCompile Include="src\input\InputBuffer.cpp" />
     <ClCompile Include="src\display\texture\Texture.cpp" />
     <ClCompile Include="src\Display.cpp" />
@@ -53,10 +59,13 @@
     <ClCompile Include="src\utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AnimatedTextureEvent.h" />
     <ClInclude Include="src\display\texture\AnimatedTextureEvent.h" />
+    <ClInclude Include="src\display\text\Text.h" />
+    <ClInclude Include="src\gamestate\LevelGameState.h" />
+    <ClInclude Include="src\gamestate\MenuGameState.h" />
+    <ClInclude Include="src\game\enemy\Bot.h" />
+    <ClInclude Include="src\game\pathfinding\Pathfinder.h" />
     <ClInclude Include="src\utils\Utils.h" />
-    <ClInclude Include="Utils.h" />
     <ClInclude Include="Hitbox.h" />
     <ClInclude Include="src\display\Camera.h" />
     <ClInclude Include="src\gamestate\GameStateManager.h" />
@@ -89,6 +98,10 @@
     <Image Include="resources\tileset_01.png" />
     <Image Include="resources\tileset_02.png" />
     <Image Include="resources\wang-blob-tilesets.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="resources\font.TTF" />
+    <Font Include="resources\SIXTY.TTF" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -159,7 +172,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\Lenovo\Workspaces\_platform\c\libs\sdl\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -174,7 +187,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>C:\Users\Lenovo\Workspaces\_platform\c\libs\sdl\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -191,7 +204,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\Lenovo\Workspaces\_platform\c\libs\sdl\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

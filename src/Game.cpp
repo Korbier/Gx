@@ -17,7 +17,7 @@ Game::~Game()
 	delete this->display;
 	delete this->gHandler;
 
-	BOOST_LOG_TRIVIAL(info) << "Game end";
+	BOOST_LOG_TRIVIAL(info) << "Game end\n";
 
 }
 
@@ -26,11 +26,24 @@ void Game::run()
 
 	BOOST_LOG_TRIVIAL(info) << "Game start";
 
-	SDL_Init(SDL_INIT_VIDEO);
-	IMG_Init(IMG_INIT_PNG);
+	if (SDL_Init(SDL_INIT_VIDEO) == -1) {
+		BOOST_LOG_TRIVIAL(error) << "Video initialisation failed\n";
+		return;
+	}
+
+	if (IMG_Init(IMG_INIT_PNG) == -1) {
+		BOOST_LOG_TRIVIAL(error) << "Image initialisation failed\n";
+		return;
+	}
+
+	if (TTF_Init() == -1) {
+		BOOST_LOG_TRIVIAL(error) << "Font initialisation failed\n";
+		return;
+	}
 
 	this->display->show();
-	this->gStateManager.push(new Gamestate(this->display, this->gHandler));
+	this->gStateManager.push(new LevelGameState(this->display, this->gHandler));
+	this->gStateManager.push(new MenuGameState(this->display, this->gHandler));
 	
 	BOOST_LOG_TRIVIAL(info) << "Entering game loop";
 	Uint32 lastMeasure = SDL_GetTicks();
@@ -90,11 +103,9 @@ void Game::input()
 {
 	
 	SDL_Event event;
-	
 	while (SDL_PollEvent(&event)) {
-
 		switch (event.type) {
-		case SDL_KEYDOWN: this->inputBuffer.press(event.key.keysym.scancode); break;
+		case SDL_KEYDOWN: this->inputBuffer.press(event.key.keysym.scancode, event.key.repeat != 0 ? SDL_TRUE : SDL_FALSE); break;
 		case SDL_KEYUP:   this->inputBuffer.release(event.key.keysym.scancode); break;
 		case SDL_QUIT:    this->stop(); break;
 		case SDL_MOUSEBUTTONDOWN: 

@@ -1,17 +1,18 @@
 #pragma once
 
 #include "display/texture/Texture.h"
+#include "display/map/TileReference.h"
 
 class Tile
 {
 public:
-	Tile(Texture* tile, int angle, bool solid);
+	Tile(Texture* tile, int angle, TileReference* reference);
 	Texture* getTile();
 	int getAngle();
-	bool isSolid();
+	TileReference* getReference();
 private:
 	Texture* tile = nullptr;
 	int angle = 0;
-	bool solid = false;
+	TileReference* reference;
 };
 

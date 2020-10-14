@@ -60,8 +60,6 @@ void BulletGenerator::update( Map * map, Uint32 delta)
 
 			if (map->checkBallCollision(cell)) {
 				
-				BOOST_LOG_TRIVIAL(error) << "Collision !\n";
-			
 				if ((*it)->getRemainingBounces() > 0) {
 					
 					SDL_FPoint sCenter = (*it)->getHitboxCenter();
