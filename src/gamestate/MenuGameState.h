@@ -7,25 +7,44 @@
 #include "gamestate/Gamestate.h"
 #include "display/text/Text.h"
 
-class MenuGameState: public Gamestate
+class MenuGamestate: public Gamestate
 {
 
 public:
-	MenuGameState(Display* display, GameHandler* gamehandler);
-	~MenuGameState();
+	MenuGamestate(Display* display, GameHandler* gamehandler);
+	~MenuGamestate();
 
-	void initialize();
-	void update(InputBuffer input, Uint32 delta);
-	void render();
+	virtual void initialize();
+	virtual void update(InputBuffer input, Uint32 delta);
+	virtual void render();
+
+protected:
+	
+	void addItem(int selector, std::string text);
+	virtual void onUpPressed();
+	virtual void onDownPressed();
+	virtual void onRightPressed();
+	virtual void onLeftPressed();
+	virtual void onReturnPressed();
+
+	unsigned int getSelection();
+
 
 private:
 	TTF_Font* font;
 
-	int selection = 0;
+	unsigned int selection = 0;
+	std::map<int, Text*> items;
 
-	Text* textRun;
-	Text* textOptions;
-	Text* textQuit;
+	bool wasUpPressed   = false;
+	bool wasDownPressed = false;
+	bool wasRightPressed = false;
+	bool wasLeftPressed = false;
+	bool wasReturnPressed = false;
+
+	void clearItems();
+	void renderItems();
+	void enlightSelection();
 
 };
 

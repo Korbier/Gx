@@ -13,6 +13,21 @@ void GameHandler::stop()
 	this->game->stop();
 }
 
+void GameHandler::push(Gamestate* gstate)
+{
+	this->game->getGameStateManager()->push(gstate);
+}
+
+void GameHandler::pop()
+{
+	this->game->getGameStateManager()->pop();
+}
+
+void GameHandler::pop( unsigned int count )
+{
+	this->game->getGameStateManager()->pop(count);
+}
+
 SDL_Texture* GameHandler::getTexture(std::string path)
 {
 	return this->game->getTextureManager()->get(path);
@@ -43,8 +58,13 @@ void GameHandler::render(SDL_Point start, SDL_Point end)
 	SDL_RenderDrawLine(this->display->getRenderer(), start.x, start.y, end.x, end.y);
 }
 
-void GameHandler::render(SDL_Rect rect)
+void GameHandler::render(SDL_Rect rect, bool fill, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
-	SDL_SetRenderDrawColor(this->display->getRenderer(), 250, 0, 0, 255);
-	SDL_RenderDrawRect(this->display->getRenderer(), &rect);
+	SDL_SetRenderDrawColor(this->display->getRenderer(), r, g, b, a);
+	if (fill) {
+		SDL_RenderFillRect(this->display->getRenderer(), &rect);
+	}
+	else {
+		SDL_RenderDrawRect(this->display->getRenderer(), &rect);
+	}
 }

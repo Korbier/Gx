@@ -1,9 +1,8 @@
 #include "InputBuffer.h"
 
-void InputBuffer::press(SDL_Scancode code, SDL_bool keyrepeat)
+void InputBuffer::press(SDL_Scancode code)
 {
 	this->key[code] = SDL_TRUE;
-	this->repeat[code] = keyrepeat;
 }
 
 
@@ -15,11 +14,6 @@ void InputBuffer::release(SDL_Scancode code)
 SDL_bool InputBuffer::isPressed(SDL_Scancode code)
 {
 	return this->key[code];
-}
-
-SDL_bool InputBuffer::isRepeated(SDL_Scancode code)
-{
-	return this->repeat[code];
 }
 
 void InputBuffer::pressMouseLeft()

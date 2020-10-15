@@ -40,7 +40,8 @@ void Display::show() {
 		BOOST_LOG_TRIVIAL(error) << "could not create renderer: " << SDL_GetError();
 	}
 	else {
-		SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
+		SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 128);
+		SDL_SetRenderDrawBlendMode(this->renderer, SDL_BLENDMODE_BLEND);
 		BOOST_LOG_TRIVIAL(info) << "Renderer created";
 	}
 }
@@ -75,5 +76,15 @@ SDL_Window* Display::getWindow()
 SDL_Renderer* Display::getRenderer()
 {
 	return this->renderer;
+}
+
+int Display::getWidth()
+{
+	return this->width;
+}
+
+int Display::getHeight()
+{
+	return this->height;
 }
 

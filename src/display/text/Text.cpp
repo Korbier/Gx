@@ -15,13 +15,19 @@ Text::~Text()
 
 void Text::setText(std::string text)
 {
-	/*
-	if (this->text.compare(text) == 0) {
-		return;
-	}
-	*/
 	this->text = text;
+	this->buildTexture();
+}
 
+void Text::setColor(SDL_Color color)
+{
+	this->color = color;
+	this->buildTexture();
+}
+
+void Text::buildTexture()
+{
+	
 	if (this->texture != nullptr) {
 		SDL_DestroyTexture(this->texture);
 	}
@@ -64,10 +70,6 @@ SDL_Texture* Text::getTexture()
 	return this->texture;
 }
 
-void Text::setColor(SDL_Color color)
-{
-	this->color = color;
-}
 
 SDL_Color Text::getColor()
 {

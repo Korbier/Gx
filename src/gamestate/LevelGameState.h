@@ -2,6 +2,7 @@
 #pragma once
 
 #include "gamestate/Gamestate.h"
+#include "gamestate/InGameMenuGamestate.h"
 
 #include <string>
 #include <vector>
@@ -55,8 +56,6 @@ private:
 
 	Sprite* tank = nullptr;
 	Sprite* canon = nullptr;
-
-	SDL_Rect* target = nullptr;
 
 	Tileset* tileset = nullptr;
 	Tileset* tileset2 = nullptr;

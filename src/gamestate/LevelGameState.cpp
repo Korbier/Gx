@@ -3,6 +3,8 @@
 LevelGameState::LevelGameState(Display* display, GameHandler* gamehandler): Gamestate(display, gamehandler)
 {
 
+	std::cout << "construct";
+
 	this->tileset = new Tileset();
 	this->tileset2 = new Tileset();
 
@@ -106,6 +108,11 @@ void LevelGameState::initialize()
 
 void LevelGameState::update(InputBuffer input, Uint32 delta)
 {
+
+	if (input.isPressed(SDL_SCANCODE_ESCAPE)) {
+		this->gameHandler->push(new InGameMenuGameState(this->display, this->gameHandler));
+		return;
+	}
 
 	SDL_Point mouse;
 	input.mousePosition(&mouse);

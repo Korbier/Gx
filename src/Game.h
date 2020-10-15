@@ -14,8 +14,7 @@
 #include "input/InputBuffer.h"
 #include "gamestate/GameStateManager.h"
 #include "gamestate/Gamestate.h"
-#include "gamestate/MenuGameState.h"
-#include "gamestate/LevelGameState.h"
+#include "gamestate/MainMenuGamestate.h"
 #include "utils/Timer.h"
 
 const int SCREEN_WIDTH = 800;
@@ -36,6 +35,7 @@ public:
 	bool isRunning();
 
 	TextureManager* getTextureManager();
+	GameStateManager* getGameStateManager();
 
 private:
 
@@ -44,7 +44,7 @@ private:
 	GameHandler*    gHandler  = nullptr;
 	TextureManager* textureManager = nullptr;
 	
-	GameStateManager gStateManager;
+	GameStateManager* gStateManager;
 	InputBuffer      inputBuffer;
 
 	

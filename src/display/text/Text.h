@@ -35,7 +35,7 @@ private:
 	Display* display;
 	TTF_Font* font;
 
-	std::string text;
+	std::string text = "notext";
 	SDL_Texture* texture = nullptr;
 
 	SDL_Point position;
@@ -45,5 +45,7 @@ private:
 	int height;
 
 	SDL_Color color = { 255, 255, 255 };
+
+	void buildTexture();
 
 };

@@ -39,7 +39,9 @@
     <ClCompile Include="src\display\map\TileReference.cpp" />
     <ClCompile Include="src\display\texture\AnimatedTexture.cpp" />
     <ClCompile Include="src\display\Sprite.cpp" />
+    <ClCompile Include="src\gamestate\InGameMenuGamestate.cpp" />
     <ClCompile Include="src\gamestate\LevelGameState.cpp" />
+    <ClCompile Include="src\gamestate\MainMenuGamestate.cpp" />
     <ClCompile Include="src\gamestate\MenuGameState.cpp" />
     <ClCompile Include="src\game\bullet\BulletGenerator.cpp" />
     <ClCompile Include="src\game\bullet\Bullet.cpp" />
@@ -61,7 +63,9 @@
   <ItemGroup>
     <ClInclude Include="src\display\texture\AnimatedTextureEvent.h" />
     <ClInclude Include="src\display\text\Text.h" />
+    <ClInclude Include="src\gamestate\InGameMenuGamestate.h" />
     <ClInclude Include="src\gamestate\LevelGameState.h" />
+    <ClInclude Include="src\gamestate\MainMenuGamestate.h" />
     <ClInclude Include="src\gamestate\MenuGameState.h" />
     <ClInclude Include="src\game\enemy\Bot.h" />
     <ClInclude Include="src\game\pathfinding\Pathfinder.h" />

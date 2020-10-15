@@ -23,4 +23,9 @@ protected:
 	GameHandler* gameHandler = nullptr;
 	SDL_Rect* target = nullptr;
 
+	bool isCleanUpRequested();
+
+private:
+	bool cleanUpRequested = false;
+
 };

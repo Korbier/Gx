@@ -12,6 +12,7 @@
 #include "display/text/Text.h"
 
 class Game;
+class Gamestate;
 
 class GameHandler
 {
@@ -21,13 +22,17 @@ public:
 
 	/*Game control*/
 	void stop();
+	void push(Gamestate* gstate);
+	void pop();
+	void pop(unsigned int count);
+
 	void render(Sprite* Sprite, SDL_Rect* target);
 	void render(Texture* tile, int angle, SDL_Rect* target);
 	void render(Text* text, SDL_Rect* target);
 
 	void render(SDL_Point start, SDL_Point end);
 
-	void render(SDL_Rect rect);
+	void render(SDL_Rect rect, bool fill, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
 	/*Resource loader*/
 	SDL_Texture* getTexture(std::string path);

@@ -7,7 +7,7 @@ Game::Game()
 	this->textureManager = new TextureManager(this->display);
 	this->gHandler       = new GameHandler(this->display, this);
 	this->inputBuffer    = {};
-	this->gStateManager  = {};
+	this->gStateManager  = new GameStateManager();
 }
 
 Game::~Game()
@@ -42,8 +42,8 @@ void Game::run()
 	}
 
 	this->display->show();
-	this->gStateManager.push(new LevelGameState(this->display, this->gHandler));
-	this->gStateManager.push(new MenuGameState(this->display, this->gHandler));
+	//this->gStateManager.push(new LevelGameState(this->display, this->gHandler));
+	this->gStateManager->push(new MainMenuGamestate(this->display, this->gHandler));
 	
 	BOOST_LOG_TRIVIAL(info) << "Entering game loop";
 	Uint32 lastMeasure = SDL_GetTicks();
@@ -59,7 +59,7 @@ void Game::run()
 
 		Uint32 currentMeasure = SDL_GetTicks();
 
-		this->gStateManager.update(this->inputBuffer, currentMeasure - lastMeasure);
+		this->gStateManager->update(this->inputBuffer, currentMeasure - lastMeasure);
 		this->render();
 
 		fps++;
@@ -99,13 +99,18 @@ TextureManager* Game::getTextureManager()
 	return this->textureManager;
 }
 
+GameStateManager* Game::getGameStateManager()
+{
+	return this->gStateManager;
+}
+
 void Game::input()
 {
 	
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
-		case SDL_KEYDOWN: this->inputBuffer.press(event.key.keysym.scancode, event.key.repeat != 0 ? SDL_TRUE : SDL_FALSE); break;
+		case SDL_KEYDOWN: this->inputBuffer.press(event.key.keysym.scancode); break;
 		case SDL_KEYUP:   this->inputBuffer.release(event.key.keysym.scancode); break;
 		case SDL_QUIT:    this->stop(); break;
 		case SDL_MOUSEBUTTONDOWN: 
@@ -128,7 +133,7 @@ void Game::input()
 
 void Game::render()
 {
-	SDL_RenderClear(this->display->getRenderer());
-	this->gStateManager.render();
+	//SDL_RenderClear(this->display->getRenderer());
+	this->gStateManager->render();
 	SDL_RenderPresent(this->display->getRenderer());
 }

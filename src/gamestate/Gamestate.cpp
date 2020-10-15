@@ -2,6 +2,8 @@
 
 Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 {
+	std::cout << "construct";
+
 	this->display = display;
 	this->gameHandler = gamehandler;
 	this->target = new SDL_Rect();
@@ -10,4 +12,10 @@ Gamestate::Gamestate(Display* display, GameHandler* gamehandler)
 
 Gamestate::~Gamestate()
 {
+	this->cleanUpRequested = true;
+}
+
+bool Gamestate::isCleanUpRequested()
+{
+	return this->cleanUpRequested;
 }
